@@ -1,0 +1,1 @@
+public enum ItemType { Helmet, Vest, Shoes, Weapon, Food }
