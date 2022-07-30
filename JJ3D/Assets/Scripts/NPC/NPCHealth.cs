@@ -9,7 +9,7 @@ public class NPCHealth : MonoBehaviour
     [SerializeField] Transform healthBar;
     [SerializeField] GameObject objHealth;
     [SerializeField] float mxHealth;
-    private float health;
+    [HideInInspector] public float health;
 
     private void Start()
     {
@@ -24,7 +24,6 @@ public class NPCHealth : MonoBehaviour
         healthBar.localScale = new Vector3(health / mxHealth, 1, 1);
         CancelInvoke("DesableHealthBar");
         Invoke("DesableHealthBar", 20);
-
         if (health <= 0) Dye();
         else if (animalMovement) animalMovement.Hurt();
     }

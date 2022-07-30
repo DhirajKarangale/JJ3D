@@ -17,6 +17,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] ParticleSystem psEnemyDye;
     [SerializeField] ParticleSystem psEnemyBlood;
     [SerializeField] ParticleSystem psPlayerBlood;
+    [SerializeField] ParticleSystem psFireballDestroy;
     [SerializeField] ParticleSystem psPick;
 
     [Header("Audio")]
@@ -79,6 +80,15 @@ public class GameManager : Singleton<GameManager>
         psEnemyDye.Play();
         audioSource.transform.position = pos;
         audioSource.PlayOneShot(clipEnemyDye);
+    }
+
+    public void FireballDestroyEffect(Vector3 pos)
+    {
+        audioSource.volume = 0.4f;
+        psFireballDestroy.transform.position = pos;
+        psFireballDestroy.Play();
+        audioSource.transform.position = pos;
+        audioSource.PlayOneShot(clipDestroyItem);
     }
 
     public void ButtonSound()

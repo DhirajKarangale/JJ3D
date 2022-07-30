@@ -9,9 +9,14 @@ public class EquipementManager : MonoBehaviour
     [SerializeField] GameObject objVest;
     [SerializeField] GameObject objShoesLeft;
     [SerializeField] GameObject objShoesRight;
-    public GameObject objSward;
+    public GameObject objSwardNormal;
+    public GameObject objSwardIce;
+    public GameObject objSwardLightning;
     public GameObject objBow;
     [SerializeField] GameObject crossHair;
+
+    [HideInInspector] public bool isSwardActive;
+    [HideInInspector] public bool isBowActive;
 
     private GameManager gameManager;
     private Inventory inventory;
@@ -20,7 +25,9 @@ public class EquipementManager : MonoBehaviour
     private void Awake()
     {
         objBow.SetActive(false);
-        objSward.SetActive(false);
+        objSwardNormal.SetActive(false);
+        objSwardIce.SetActive(false);
+        objSwardLightning.SetActive(false);
         crossHair.SetActive(false);
         int noOfSlots = System.Enum.GetNames(typeof(ItemType)).Length;
         currEquipments = new Item[noOfSlots];
@@ -83,18 +90,35 @@ public class EquipementManager : MonoBehaviour
                 break;
             case ItemType.Weapon:
 
-                objSward.SetActive(false);
+                objSwardNormal.SetActive(false);
+                objSwardIce.SetActive(false);
+                objSwardLightning.SetActive(false);
                 objBow.SetActive(false);
                 crossHair.SetActive(false);
 
-                if (item.transform.name.Contains("Sword"))
+                isSwardActive = false;
+                isBowActive = false;
+
+                if (item.transform.name.Contains("SwardNormal"))
                 {
-                    objSward.SetActive(isActive);
+                    objSwardNormal.SetActive(isActive);
+                    isSwardActive = isActive;
+                }
+                else if (item.transform.name.Contains("SwardIce"))
+                {
+                    objSwardIce.SetActive(isActive);
+                    isSwardActive = isActive;
+                }
+                if (item.transform.name.Contains("SwordLightning"))
+                {
+                    objSwardLightning.SetActive(isActive);
+                    isSwardActive = isActive;
                 }
                 else if (item.transform.name.Contains("Bow"))
                 {
                     objBow.SetActive(isActive);
                     crossHair.SetActive(isActive);
+                    isBowActive = isActive;
                 }
                 break;
         }
@@ -116,7 +140,7 @@ public class EquipementManager : MonoBehaviour
             case ItemType.Weapon:
                 if (item.transform.name.Contains("Sword"))
                 {
-                    gameManager.DestroyEffect(objSward.transform.position);
+                    gameManager.DestroyEffect(objSwardNormal.transform.position);
                 }
                 else if (item.transform.name.Contains("Bow"))
                 {
@@ -124,6 +148,5 @@ public class EquipementManager : MonoBehaviour
                 }
                 break;
         }
-        item.DestroyItem();
     }
 }

@@ -5,6 +5,7 @@ public class PlayerAttack : MonoBehaviour
     [Header("Refrence")]
     [SerializeField] Camera cam;
     public Animator animator;
+    [SerializeField] EquipmentSlot equipmentSlot;
     [SerializeField] PlayerMovement playerMovement;
 
     [Header("Sward")]
@@ -23,9 +24,12 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] AudioClip clipArrow;
 
     private AnimatorOverrideController overrideController;
-    private float coolDownTime;
     private EquipementManager equipementManager;
-    private bool isSwardActive;
+    private float coolDownTime;
+
+    private bool isSwardNormalActive;
+    private bool isSwardIceActive;
+    private bool isSwardLightningActive;
     private bool isBowActive;
 
     private void Start()
@@ -38,21 +42,17 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
-        if (equipementManager.objSward.activeInHierarchy)
-        {
-            animator.SetBool("isAming", false);
-            animator.SetBool("isShoothing", false);
-            SwardAttack();
-        }
-        else if (equipementManager.objBow.activeInHierarchy)
+        if (equipementManager.isBowActive)
         {
             BowAttack();
             BowPunch();
         }
-        else
+        else if (equipementManager.isSwardActive)
         {
             animator.SetBool("isAming", false);
             animator.SetBool("isShoothing", false);
+            ReSetRotation();
+            SwardAttack();
         }
 
         coolDownTime -= Time.deltaTime;
@@ -109,6 +109,7 @@ public class PlayerAttack : MonoBehaviour
 
         GameObject currArrow = Instantiate(arrowPrefab, bow.transform.position, bow.rotation);
         currArrow.GetComponent<Rigidbody>().AddForce((targetPoint - bow.transform.position).normalized * force, ForceMode.Impulse);
+        currArrow.GetComponent<PlayerWeapon>().item = equipmentSlot.equipedItem;
 
         Invoke("ReSetRotation", 0.6f);
         coolDownTime = 1.1f;
@@ -125,16 +126,24 @@ public class PlayerAttack : MonoBehaviour
 
     public void DesableWeapon()
     {
-        isSwardActive = equipementManager.objSward.activeInHierarchy;
-        isBowActive = equipementManager.objBow.activeInHierarchy;
+        isSwardNormalActive = equipementManager.objSwardNormal.activeInHierarchy;
+        isSwardIceActive = equipementManager.objSwardIce.activeInHierarchy;
+        isSwardLightningActive = equipementManager.objSwardLightning.activeInHierarchy;
 
-        equipementManager.objSward.SetActive(false);
+        isBowActive = equipementManager.isBowActive;
+
+        equipementManager.objSwardNormal.SetActive(false);
+        equipementManager.objSwardIce.SetActive(false);
+        equipementManager.objSwardLightning.SetActive(false);
         equipementManager.objBow.SetActive(false);
     }
 
     public void EnableWeapon()
     {
-        equipementManager.objSward.SetActive(isSwardActive);
+        equipementManager.objSwardNormal.SetActive(isSwardNormalActive);
+        equipementManager.objSwardIce.SetActive(isSwardIceActive);
+        equipementManager.objSwardLightning.SetActive(isSwardLightningActive);
+
         equipementManager.objBow.SetActive(isBowActive);
     }
 

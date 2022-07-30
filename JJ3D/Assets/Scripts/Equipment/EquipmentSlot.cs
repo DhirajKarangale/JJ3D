@@ -57,7 +57,7 @@ public class EquipmentSlot : MonoBehaviour
                 upgradeCost = item.cost;
                 txtUpgrade.text = "Upgrade";
             }
-            txtCost.text = upgradeCost.ToString();
+            txtCost.text = upgradeCost.ToString("F0");
             buttonUpgrade.interactable = Msg.instance.coin > upgradeCost;
         }
         else
