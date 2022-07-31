@@ -13,6 +13,7 @@ public class PlayerAttack : MonoBehaviour
 
     [Header("Bow")]
     [SerializeField] GameObject arrowPrefab;
+    [SerializeField] GameObject fireArrowPrefab;
     [SerializeField] Transform bow;
     [SerializeField] float force;
     private bool isAming;
@@ -26,11 +27,15 @@ public class PlayerAttack : MonoBehaviour
     private AnimatorOverrideController overrideController;
     private EquipementManager equipementManager;
     private float coolDownTime;
+    private Item item;
 
     private bool isSwardNormalActive;
     private bool isSwardIceActive;
     private bool isSwardLightningActive;
-    private bool isBowActive;
+
+    private bool isBowNormalActive;
+    private bool isBowThreeActive;
+    private bool isBowFireActive;
 
     private void Start()
     {
@@ -62,6 +67,17 @@ public class PlayerAttack : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F) && (coolDownTime <= 0))
         {
+            item = equipmentSlot.equipedItem;
+            if (item.currHealth > 0)
+            {
+                item.currHealth -= item.armorModifire;
+            }
+            else
+            {
+                item.DestroyItem();
+                return;
+            }
+
             coolDownTime = 1.1f;
             int attack = Random.Range(0, swardClips.Length);
             animator.Play("SwardAttack");
@@ -73,6 +89,17 @@ public class PlayerAttack : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.G) && (coolDownTime <= 0))
         {
+            item = equipmentSlot.equipedItem;
+            if (item.currHealth > 0)
+            {
+                item.currHealth -= item.armorModifire;
+            }
+            else
+            {
+                item.DestroyItem();
+                return;
+            }
+
             animator.Play("BowPunch");
             coolDownTime = 1.1f;
         }
@@ -82,6 +109,22 @@ public class PlayerAttack : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && (coolDownTime <= 0))
         {
+            item = equipmentSlot.equipedItem;
+            if (item.currHealth > 0)
+            {
+                item.currHealth -= item.armorModifire;
+            }
+            else
+            {
+                item.DestroyItem();
+                animator.SetBool("isAming", false);
+                animator.SetBool("isShoothing", false);
+                ReSetRotation();
+                isAming = false;
+                isShoothing = false;
+                return;
+            }
+
             isShoothing = false;
             isAming = true;
         }
@@ -106,10 +149,31 @@ public class PlayerAttack : MonoBehaviour
     {
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
         Vector3 targetPoint = ray.GetPoint(1000);
+        Vector3 shootDir = (targetPoint - bow.transform.position).normalized;
 
-        GameObject currArrow = Instantiate(arrowPrefab, bow.transform.position, bow.rotation);
-        currArrow.GetComponent<Rigidbody>().AddForce((targetPoint - bow.transform.position).normalized * force, ForceMode.Impulse);
-        currArrow.GetComponent<PlayerWeapon>().item = equipmentSlot.equipedItem;
+        if (equipementManager.objBowFire.activeInHierarchy)
+        {
+            GameObject currArrow = Instantiate(fireArrowPrefab, bow.transform.position + new Vector3(0, 1, 0), bow.rotation);
+            currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
+            currArrow.GetComponent<FireArrow>().damage = equipmentSlot.equipedItem.damageModifire;
+        }
+        else
+        {
+            GameObject currArrow = Instantiate(arrowPrefab, bow.transform.position + new Vector3(0, 1, 0), bow.rotation);
+            currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
+            currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.damageModifire;
+        }
+
+        if (equipementManager.objBowThree.activeInHierarchy)
+        {
+            GameObject currArrow = Instantiate(arrowPrefab, bow.transform.position + new Vector3(1, 1, 0), bow.rotation);
+            currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
+            currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.damageModifire;
+
+            currArrow = Instantiate(arrowPrefab, bow.transform.position - new Vector3(1, -1, 0), bow.rotation);
+            currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
+            currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.damageModifire;
+        }
 
         Invoke("ReSetRotation", 0.6f);
         coolDownTime = 1.1f;
@@ -130,12 +194,17 @@ public class PlayerAttack : MonoBehaviour
         isSwardIceActive = equipementManager.objSwardIce.activeInHierarchy;
         isSwardLightningActive = equipementManager.objSwardLightning.activeInHierarchy;
 
-        isBowActive = equipementManager.isBowActive;
+        isBowNormalActive = equipementManager.objBowNormal;
+        isBowThreeActive = equipementManager.objBowThree;
+        isBowFireActive = equipementManager.objBowFire;
 
         equipementManager.objSwardNormal.SetActive(false);
         equipementManager.objSwardIce.SetActive(false);
         equipementManager.objSwardLightning.SetActive(false);
-        equipementManager.objBow.SetActive(false);
+
+        equipementManager.objBowNormal.SetActive(false);
+        equipementManager.objBowThree.SetActive(false);
+        equipementManager.objBowFire.SetActive(false);
     }
 
     public void EnableWeapon()
@@ -144,7 +213,9 @@ public class PlayerAttack : MonoBehaviour
         equipementManager.objSwardIce.SetActive(isSwardIceActive);
         equipementManager.objSwardLightning.SetActive(isSwardLightningActive);
 
-        equipementManager.objBow.SetActive(isBowActive);
+        equipementManager.objBowNormal.SetActive(isBowNormalActive);
+        equipementManager.objBowThree.SetActive(isBowThreeActive);
+        equipementManager.objBowFire.SetActive(isBowFireActive);
     }
 
     public void SwipeSound()

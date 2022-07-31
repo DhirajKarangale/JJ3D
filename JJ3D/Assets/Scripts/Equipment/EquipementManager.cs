@@ -12,7 +12,9 @@ public class EquipementManager : MonoBehaviour
     public GameObject objSwardNormal;
     public GameObject objSwardIce;
     public GameObject objSwardLightning;
-    public GameObject objBow;
+    public GameObject objBowNormal;
+    public GameObject objBowThree;
+    public GameObject objBowFire;
     [SerializeField] GameObject crossHair;
 
     [HideInInspector] public bool isSwardActive;
@@ -24,10 +26,14 @@ public class EquipementManager : MonoBehaviour
 
     private void Awake()
     {
-        objBow.SetActive(false);
+        objBowNormal.SetActive(false);
+        objBowThree.SetActive(false);
+        objBowFire.SetActive(false);
+
         objSwardNormal.SetActive(false);
         objSwardIce.SetActive(false);
         objSwardLightning.SetActive(false);
+
         crossHair.SetActive(false);
         int noOfSlots = System.Enum.GetNames(typeof(ItemType)).Length;
         currEquipments = new Item[noOfSlots];
@@ -93,18 +99,22 @@ public class EquipementManager : MonoBehaviour
                 objSwardNormal.SetActive(false);
                 objSwardIce.SetActive(false);
                 objSwardLightning.SetActive(false);
-                objBow.SetActive(false);
+
+                objBowNormal.SetActive(false);
+                objBowThree.SetActive(false);
+                objBowFire.SetActive(false);
+
                 crossHair.SetActive(false);
 
                 isSwardActive = false;
                 isBowActive = false;
 
-                if (item.transform.name.Contains("SwardNormal"))
+                if (item.transform.name.Contains("SwordNormal"))
                 {
                     objSwardNormal.SetActive(isActive);
                     isSwardActive = isActive;
                 }
-                else if (item.transform.name.Contains("SwardIce"))
+                else if (item.transform.name.Contains("SwordIce"))
                 {
                     objSwardIce.SetActive(isActive);
                     isSwardActive = isActive;
@@ -114,9 +124,21 @@ public class EquipementManager : MonoBehaviour
                     objSwardLightning.SetActive(isActive);
                     isSwardActive = isActive;
                 }
-                else if (item.transform.name.Contains("Bow"))
+                else if (item.transform.name.Contains("BowNormal"))
                 {
-                    objBow.SetActive(isActive);
+                    objBowNormal.SetActive(isActive);
+                    crossHair.SetActive(isActive);
+                    isBowActive = isActive;
+                }
+                else if (item.transform.name.Contains("BowThree"))
+                {
+                    objBowThree.SetActive(isActive);
+                    crossHair.SetActive(isActive);
+                    isBowActive = isActive;
+                }
+                else if (item.transform.name.Contains("BowFire"))
+                {
+                    objBowFire.SetActive(isActive);
                     crossHair.SetActive(isActive);
                     isBowActive = isActive;
                 }
@@ -144,7 +166,7 @@ public class EquipementManager : MonoBehaviour
                 }
                 else if (item.transform.name.Contains("Bow"))
                 {
-                    gameManager.DestroyEffect(objBow.transform.position);
+                    gameManager.DestroyEffect(objBowNormal.transform.position);
                 }
                 break;
         }

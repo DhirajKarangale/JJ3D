@@ -22,14 +22,14 @@ public class ForestGenerator : MonoBehaviour
 
     private float lastHeight;
 
-    private void Start()
-    {
-        ResetItemCount();
-    }
+    // private void Start()
+    // {
+    //     ResetItemCount();
+    // }
 
     public void Generate(Vector3[] vertices, Transform itemParent)
     {
-        // ResetItemCount();
+        ResetItemCount();
 
         for (int i = 0; i < vertices.Length; i++)
         {
@@ -224,6 +224,7 @@ public class ForestGenerator : MonoBehaviour
     {
         foreach (ForestItem item in items)
         {
+            item.itemCount = 1;
             item.currCount = 0;
         }
     }

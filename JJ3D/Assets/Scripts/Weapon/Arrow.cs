@@ -4,7 +4,7 @@ public class Arrow : MonoBehaviour
 {
     private void Start()
     {
-        Invoke("DestroyArrow", 10);
+        Invoke("DestroyArrow", 5);
     }
 
     private void OnCollisionEnter(Collision collision)

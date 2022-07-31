@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class NPCHealth : MonoBehaviour
 {
+    public Rigidbody rigidBody;
     [SerializeField] AnimalMovement animalMovement;
     [SerializeField] EnemyMovement enemyMovement;
-    [SerializeField] Rigidbody rigidBody;
     [SerializeField] GameObject item;
     [SerializeField] Transform healthBar;
     [SerializeField] GameObject objHealth;

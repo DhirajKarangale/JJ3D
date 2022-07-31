@@ -74,6 +74,7 @@ public class Item : MonoBehaviour
         }
         else
         {
+            equipementManager.UnEquip((int)itemType, false);
             equipmentSlot.RemoveItem(false);
             equipementManager.DestroyItem(this);
         }
