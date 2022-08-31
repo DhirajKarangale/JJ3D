@@ -21,6 +21,8 @@ public class EnemyMovement : NPC
 
     protected override void FixedUpdate()
     {
+        if (isDye) return;
+
         playerDist = Mathf.Abs(Vector3.Distance(myTransform.position, player.position));
 
         if (gameManager.isGameOver)
@@ -33,7 +35,7 @@ public class EnemyMovement : NPC
         else
         {
             if (!isAttack && playerDist < attackDist) Attack();
-            else if (isAttack && playerDist > (attackDist + 1.5f) && playerDist < followDist) FollowPlayer();
+            else if (isAttack && playerDist > (attackDist + 3f) && playerDist < followDist) FollowPlayer();
             else if (!isAttack && playerDist < followDist) FollowPlayer();
             else if (!isAttack && playerDist > followDist && !isWalk && !isIdle) StartCoroutine(IEWalkIdle());
         }

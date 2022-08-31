@@ -19,6 +19,7 @@ public class NPC : MonoBehaviour
     protected bool isWalk;
     protected bool isRun;
     protected bool isAttack;
+    protected bool isDye;
 
     protected virtual void Start()
     {
@@ -28,6 +29,8 @@ public class NPC : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
+        if (isDye) return;
+        
         Look();
 
         if (isWalk) Move(moveSpeed);
@@ -131,6 +134,8 @@ public class NPC : MonoBehaviour
 
     protected virtual void DyeState()
     {
+        // targetPos = transform.position;
+        isDye = true;
         isIdle = false;
         isWalk = false;
         isRun = false;
