@@ -4,7 +4,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public InventoryUI inventoryUI;
-    [SerializeField] Item sward;
+    [SerializeField] Item itemDefault;
     [SerializeField] Transform player;
 
     public int space = 20;
@@ -15,8 +15,14 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        sward.Pickup();
-        sward.Use();
+        DefaultItem();
+    }
+
+    private void DefaultItem()
+    {
+        if (!itemDefault) return;
+        itemDefault.Pickup();
+        itemDefault.Use();
     }
 
     public bool Add(Item item)

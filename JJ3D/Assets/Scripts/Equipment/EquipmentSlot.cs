@@ -76,7 +76,7 @@ public class EquipmentSlot : MonoBehaviour
         iconColor.a = 0.5f;
         icon.color = iconColor;
 
-        // if (equipedItem && equipementManager) equipementManager.UnEquip((int)equipedItem.itemType, isThrowItem);
+        if (equipedItem && this.gameObject.activeInHierarchy) equipementManager.UnEquip((int)equipedItem.itemType, isThrowItem);
 
         icon.sprite = defaultSprite;
         slider.value = 1;

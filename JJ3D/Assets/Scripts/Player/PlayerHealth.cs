@@ -5,6 +5,7 @@ using System.Collections;
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Refrence")]
+    public Rigidbody rigidBody;
     [SerializeField] PlayerAttack playerAttack;
     [SerializeField] AudioSource audioSource;
     [SerializeField] Slider sliderHealth;
@@ -47,7 +48,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.T))
         {
             TakeDamage(15);
         }
@@ -120,6 +121,7 @@ public class PlayerHealth : MonoBehaviour
     private void PlayerDye()
     {
         playerAttack.animator.Play("Dye");
+        rigidBody.mass = 200;
         gameManager.GameOver();
     }
 

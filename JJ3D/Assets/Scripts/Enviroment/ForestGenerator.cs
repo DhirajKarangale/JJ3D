@@ -19,6 +19,8 @@ public class ForestGenerator : MonoBehaviour
     [SerializeField] ForestItem[] deadTrees;
     [SerializeField] ForestItem[] farmAnimals;
     [SerializeField] ForestItem[] dinasours;
+    [SerializeField] GameObject testObj;
+    int testCount = 0;
 
     private float lastHeight;
 
@@ -192,6 +194,7 @@ public class ForestGenerator : MonoBehaviour
                 }
             }
 
+            // Dinasours
             if (Random.value > 0.9999f)
             {
                 ForestItem dinasour = dinasours[Random.Range(0, dinasours.Length)];
@@ -203,6 +206,15 @@ public class ForestGenerator : MonoBehaviour
                     currDinasour.transform.SetParent(itemParent.transform);
                     dinasour.currCount++;
                 }
+            }
+
+            // Test Object
+            if (testObj && testCount < 1)
+            {
+                Vector3 testPos = new Vector3(0, 10, 0);
+                EnemyMovement currTestObj = Instantiate(testObj, testPos, Quaternion.identity).GetComponent<EnemyMovement>();
+                currTestObj.StartPos(vertices, itemParent);
+                testCount++;
             }
 
             lastHeight = currHeight;

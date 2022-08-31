@@ -2,51 +2,40 @@ using UnityEngine;
 
 public class NPCHealth : MonoBehaviour
 {
-    public Rigidbody rigidBody;
-    [SerializeField] AnimalMovement animalMovement;
-    [SerializeField] EnemyMovement enemyMovement;
-    [SerializeField] GameObject item;
-    [SerializeField] Transform healthBar;
-    [SerializeField] GameObject objHealth;
+    [SerializeField] NPC npc;
+    [SerializeField] HealthBar healthBar;
     [SerializeField] float mxHealth;
+    [SerializeField] GameObject[] items;
     [HideInInspector] public float health;
 
     private void Start()
     {
-        objHealth.SetActive(false);
         health = mxHealth;
     }
 
     public void TakeDamage(float damage)
     {
         health -= damage;
-        objHealth.SetActive(health > 0);
-        healthBar.localScale = new Vector3(health / mxHealth, 1, 1);
-        CancelInvoke("DesableHealthBar");
-        Invoke("DesableHealthBar", 20);
+        healthBar.SetBar(health / mxHealth);
         if (health <= 0) Dye();
-        else if (animalMovement) animalMovement.Hurt();
-    }
-
-    private void DesableHealthBar()
-    {
-        objHealth.SetActive(false);
+        else npc.Hurt();
     }
 
     private void Dye()
     {
         if (IsInvoking("DestroyBody")) return;
-        if (animalMovement) animalMovement.Dye();
-        else if (enemyMovement) enemyMovement.Dye();
-        rigidBody.AddForce(Vector3.down * 15, ForceMode.Impulse);
-        rigidBody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-        Invoke("DestroyBody", 3);
+        npc.Dye();
+        Invoke("DestroyBody", 5);
     }
 
     private void DestroyBody()
     {
         GameManager.instance.DestroyBodyEffect(transform.position);
-        Instantiate(item, transform.position + new Vector3(0, 3, 0), Quaternion.identity);
+        foreach (GameObject item in items)
+        {
+            Vector3 spwanPos = transform.position + new Vector3(Random.Range(-2f, 2f), Random.Range(0.5f, 3f), Random.Range(-2f, 2f));
+            Instantiate(item, spwanPos, Quaternion.identity);
+        }
         Destroy(this.gameObject);
     }
 }

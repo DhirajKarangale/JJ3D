@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyWeapon : MonoBehaviour
 {
-    [SerializeField] float impactForce;
+    // [SerializeField] float impactForce;
     [SerializeField] float damage;
     private GameManager gameManager;
 
@@ -15,17 +15,12 @@ public class EnemyWeapon : MonoBehaviour
     {
         if (gameManager.isGameOver) return;
 
-        Rigidbody rigidBody = collision.gameObject.GetComponent<Rigidbody>();
-        if (rigidBody)
-        {
-            Vector3 dir = collision.transform.position - this.transform.position;
-            dir = dir.normalized;
-            rigidBody.AddForce(dir * impactForce, ForceMode.Impulse);
-        }
-
         PlayerHealth player = collision.gameObject.GetComponent<PlayerHealth>();
         if (player)
         {
+            // Vector3 dir = collision.transform.position - this.transform.position;
+            // dir.Normalize();
+            // player.rigidBody.AddForce(dir * impactForce);
             gameManager.PlayerBloodEffect(collision.GetContact(0).point);
             player.TakeDamage(damage);
         }

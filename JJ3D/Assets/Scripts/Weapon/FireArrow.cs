@@ -25,22 +25,10 @@ public class FireArrow : MonoBehaviour
             if (npcHealth)
             {
                 npcHealth.TakeDamage(damage);
-
-                // if (item.currHealth > 0)
-                // {
-                //     item.currHealth -= item.armorModifire;
-                // }
-                // else
-                // {
-                //     item.DestroyItem();
-                //     return;
-                // }
-
-                // npcHealth.rigidBody.AddExplosionForce(force, transform.position, radius);
             }
 
             Rigidbody rigidBody = nearByObj.GetComponent<Rigidbody>();
-            if (rigidBody)
+            if (rigidBody && rigidBody.useGravity)
             {
                 rigidBody.AddExplosionForce(force, transform.position, radius);
             }

@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public float interactRadius = 3f;
-    public EquipmentSlot equipmentSlot;
+    public float interactRadius = 7f;
     public ItemType itemType;
 
     [Header("Inventory")]
@@ -26,12 +25,14 @@ public class Item : MonoBehaviour
     public float multiplier;
 
     private Inventory inventory;
+    private EquipmentSlot equipmentSlot;
     private EquipementManager equipementManager;
 
     private void Start()
     {
         equipementManager = GameManager.instance.equipementManager;
         inventory = GameManager.instance.inventory;
+        equipmentSlot = GameManager.instance.weaponSlot;
         currHealth = mxHealth;
     }
 
