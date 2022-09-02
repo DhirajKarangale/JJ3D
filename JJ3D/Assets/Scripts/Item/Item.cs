@@ -87,9 +87,9 @@ public class Item : MonoBehaviour
             this.gameObject.SetActive(false);
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, interactRadius);
-    }
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawWireSphere(transform.position, interactRadius);
+    // }
 }

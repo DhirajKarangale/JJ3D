@@ -134,7 +134,6 @@ public class NPC : MonoBehaviour
 
     protected virtual void DyeState()
     {
-        // targetPos = transform.position;
         isDye = true;
         isIdle = false;
         isWalk = false;

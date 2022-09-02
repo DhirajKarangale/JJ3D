@@ -8,7 +8,7 @@ public class EnemyMovement : NPC
     protected GameManager gameManager;
     protected PlayerHealth playerHealth;
     protected Transform player;
-    private float playerDist;
+    protected float playerDist;
 
     protected override void Start()
     {
@@ -54,7 +54,7 @@ public class EnemyMovement : NPC
         base.Look();
     }
 
-    protected virtual void Attack()
+    private void Attack()
     {
         StopAllCoroutines();
         AttackState();
