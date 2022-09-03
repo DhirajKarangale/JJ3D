@@ -32,7 +32,6 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] AudioClip clipPlayerHurt;
     [SerializeField] AudioClip clipHit;
 
-
     public bool isGameOver;
 
     private void Start()

@@ -15,7 +15,20 @@ public class Projectile : MonoBehaviour
     {
         if (isCollisionDestroy)
         {
-            DestroyProjectile();
+            NPCHealth npcHealth = collision.gameObject.GetComponent<NPCHealth>();
+            if (npcHealth)
+            {
+                if (npcHealth.isDestroyBody)
+                {
+                    DestroyProjectile();
+                    // Debug.Log("Destroy NPC");
+                }
+                else
+                {
+                    // Debug.Log("Save NPC");
+                    Destroy(this.gameObject);
+                }
+            }
         }
         else
         {

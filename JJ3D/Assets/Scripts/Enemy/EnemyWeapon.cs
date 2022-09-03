@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyWeapon : MonoBehaviour
 {
-    [SerializeField] float impactForce;
+    [SerializeField] float throwForce = 200;
     [SerializeField] float damage;
     private GameManager gameManager;
 
@@ -19,7 +19,7 @@ public class EnemyWeapon : MonoBehaviour
         if (player)
         {
             Vector3 direction = player.transform.position - transform.position;
-            player.rigidBody.AddForceAtPosition(direction.normalized, transform.position);
+            player.rigidBody.AddForce(direction.normalized * throwForce);
             gameManager.PlayerBloodEffect(collision.GetContact(0).point);
             player.TakeDamage(damage);
         }

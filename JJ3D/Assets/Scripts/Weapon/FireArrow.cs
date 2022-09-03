@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class FireArrow : MonoBehaviour
 {
-    // [SerializeField] PlayerWeapon playerWeapon;
-    // public Item item;
     [HideInInspector] public float damage;
     [SerializeField] float force = 700;
     [SerializeField] float radius = 5;

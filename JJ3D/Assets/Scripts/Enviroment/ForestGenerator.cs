@@ -19,6 +19,8 @@ public class ForestGenerator : MonoBehaviour
     [SerializeField] ForestItem[] deadTrees;
     [SerializeField] ForestItem[] farmAnimals;
     [SerializeField] ForestItem[] dinasours;
+    [SerializeField] ForestItem[] smallEnemies;
+    [SerializeField] ForestItem[] midEnemies;
     [SerializeField] GameObject testObj;
     int testCount = 0;
 
@@ -205,6 +207,34 @@ public class ForestGenerator : MonoBehaviour
                     currDinasour.StartPos(vertices, itemParent);
                     currDinasour.transform.SetParent(itemParent.transform);
                     dinasour.currCount++;
+                }
+            }
+
+            // Small Enemis
+            if (Random.value > 0.99994f)
+            {
+                ForestItem smallEnemy = smallEnemies[Random.Range(0, smallEnemies.Length)];
+                if (smallEnemy.currCount < smallEnemy.itemCount)
+                {
+                    Vector3 smallEnemyPos = new Vector3(vertices[i].x + itemParent.position.x, vertices[i].y + 5, vertices[i].z + itemParent.position.z);
+                    EnemyMovement currSmallEnemy = Instantiate(smallEnemy.item, smallEnemyPos, Quaternion.identity).GetComponent<EnemyMovement>();
+                    currSmallEnemy.StartPos(vertices, itemParent);
+                    currSmallEnemy.transform.SetParent(itemParent.transform);
+                    smallEnemy.currCount++;
+                }
+            }
+
+            // Mid Enemis
+            if (Random.value > 0.99997f)
+            {
+                ForestItem midEnemy = midEnemies[Random.Range(0, midEnemies.Length)];
+                if (midEnemy.currCount < midEnemy.itemCount)
+                {
+                    Vector3 midEnemyPos = new Vector3(vertices[i].x + itemParent.position.x, vertices[i].y + 5, vertices[i].z + itemParent.position.z);
+                    EnemyMovement currMidEnemy = Instantiate(midEnemy.item, midEnemyPos, Quaternion.identity).GetComponent<EnemyMovement>();
+                    currMidEnemy.StartPos(vertices, itemParent);
+                    currMidEnemy.transform.SetParent(itemParent.transform);
+                    midEnemy.currCount++;
                 }
             }
 

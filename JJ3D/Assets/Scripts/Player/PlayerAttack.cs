@@ -29,6 +29,7 @@ public class PlayerAttack : MonoBehaviour
     private EquipementManager equipementManager;
     private float coolDownTime;
     private Item item;
+    private GameManager gameManager;
 
     private bool isSwardNormalActive;
     private bool isSwardIceActive;
@@ -43,11 +44,14 @@ public class PlayerAttack : MonoBehaviour
         overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = overrideController;
         coolDownTime = 0;
-        equipementManager = GameManager.instance.equipementManager;
+        gameManager = GameManager.instance;
+        equipementManager = gameManager.equipementManager;
     }
 
     private void Update()
     {
+        if(gameManager.isGameOver) return;
+
         if (equipementManager.isBowActive)
         {
             BowAttack();
