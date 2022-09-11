@@ -30,7 +30,7 @@ public class NPC : MonoBehaviour
     protected virtual void FixedUpdate()
     {
         if (isDye) return;
-        
+
         Look();
 
         if (isWalk) Move(moveSpeed);
@@ -76,7 +76,10 @@ public class NPC : MonoBehaviour
 
     protected virtual void Look()
     {
-        myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(targetPos - myTransform.position), 2 * Time.deltaTime);
+        var x = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(targetPos - myTransform.position), 2 * Time.deltaTime);
+        x.x = 0;
+        x.z = 0;
+        myTransform.rotation = x;
     }
 
     public void StartPos(Vector3[] vertices, Transform itemParent)
@@ -89,14 +92,14 @@ public class NPC : MonoBehaviour
 
     internal virtual void Hurt()
     {
-        
+
     }
 
     public void Dye()
     {
         StopAllCoroutines();
         DyeState();
-        rigidBody.mass = 100;
+        rigidBody.mass = 100000;
     }
 
     protected virtual void ChangePos()

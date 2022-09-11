@@ -121,7 +121,7 @@ public class PlayerHealth : MonoBehaviour
     private void PlayerDye()
     {
         playerAttack.animator.Play("Dye");
-        rigidBody.mass = 200;
+        rigidBody.mass = 2000;
         gameManager.GameOver();
     }
 

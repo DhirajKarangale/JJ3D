@@ -48,7 +48,7 @@ public class Inventory : MonoBehaviour
 
     private void ThrowItem(Item item)
     {
-        item.transform.position = player.transform.position + new Vector3(0, 1, 1);
+        item.transform.position = player.transform.position + new Vector3(0, 2, 2);
         item.gameObject.SetActive(true);
     }
 }

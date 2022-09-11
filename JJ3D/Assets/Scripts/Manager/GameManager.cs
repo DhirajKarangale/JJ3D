@@ -10,6 +10,9 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] internal PlayerInteract playerInteract;
     [SerializeField] internal PlayerMovement playerMovement;
     [SerializeField] internal Inventory inventory;
+    [SerializeField] internal EquipmentSlot helmetSlot;
+    [SerializeField] internal EquipmentSlot vestSlot;
+    [SerializeField] internal EquipmentSlot shoesSlot;
     [SerializeField] internal EquipmentSlot weaponSlot;
     [SerializeField] GameObject mainCanvas;
 
@@ -118,6 +121,11 @@ public class GameManager : Singleton<GameManager>
     {
         isGameOver = true;
         mainCanvas.SetActive(false);
+        if (weaponSlot.equipedItem)
+        {
+            inventory.Remove(weaponSlot.equipedItem, true);
+            weaponSlot.equipedItem.RemoveItem();
+        }
         playerAttack.enabled = false;
         playerHealth.enabled = false;
         playerInteract.enabled = false;

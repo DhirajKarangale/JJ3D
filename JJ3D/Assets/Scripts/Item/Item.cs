@@ -32,8 +32,26 @@ public class Item : MonoBehaviour
     {
         equipementManager = GameManager.instance.equipementManager;
         inventory = GameManager.instance.inventory;
-        equipmentSlot = GameManager.instance.weaponSlot;
         currHealth = mxHealth;
+
+        switch (itemType)
+        {
+            case ItemType.Helmet:
+                equipmentSlot = GameManager.instance.helmetSlot;
+                break;
+
+            case ItemType.Vest:
+                equipmentSlot = GameManager.instance.vestSlot;
+                break;
+
+            case ItemType.Shoes:
+                equipmentSlot = GameManager.instance.shoesSlot;
+                break;
+
+            case ItemType.Weapon:
+                equipmentSlot = GameManager.instance.weaponSlot;
+                break;
+        }
     }
 
     public virtual void Use()
@@ -79,6 +97,11 @@ public class Item : MonoBehaviour
             equipmentSlot.RemoveItem(false);
             equipementManager.DestroyItem(this);
         }
+    }
+
+    public void RemoveItem()
+    {
+        equipmentSlot.RemoveItem(true);
     }
 
     public void Pickup()

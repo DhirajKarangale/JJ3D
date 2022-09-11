@@ -67,7 +67,7 @@ public class EquipmentSlot : MonoBehaviour
             txtCost.text = "Max";
         }
 
-        if(gameManager) gameManager.ButtonSound();
+        if (gameManager) gameManager.ButtonSound();
     }
 
     public void RemoveItem(bool isThrowItem)
@@ -76,7 +76,21 @@ public class EquipmentSlot : MonoBehaviour
         iconColor.a = 0.5f;
         icon.color = iconColor;
 
-        if (equipedItem && this.gameObject.activeInHierarchy) equipementManager.UnEquip((int)equipedItem.itemType, isThrowItem);
+        if (!gameManager)
+        {
+            gameManager = GameManager.instance;
+            equipementManager = gameManager.equipementManager;
+        }
+
+        // if (equipedItem && (this.gameObject.activeInHierarchy || gameManager.isGameOver))
+        // {
+        //     equipementManager.UnEquip((int)equipedItem.itemType, isThrowItem);
+        // }
+
+        if (equipedItem)
+        {
+            equipementManager.UnEquip((int)equipedItem.itemType, isThrowItem);
+        }
 
         icon.sprite = defaultSprite;
         slider.value = 1;
@@ -88,7 +102,7 @@ public class EquipmentSlot : MonoBehaviour
         txtUpgrade.text = "Upgrade";
         equipedItem = null;
 
-        if(gameManager) gameManager.ButtonSound();
+        if (gameManager) gameManager.ButtonSound();
     }
 
     public void UpgradeButton()
@@ -105,6 +119,6 @@ public class EquipmentSlot : MonoBehaviour
             EquipItem(equipedItem);
         }
 
-        if(gameManager) gameManager.ButtonSound();
+        if (gameManager) gameManager.ButtonSound();
     }
 }

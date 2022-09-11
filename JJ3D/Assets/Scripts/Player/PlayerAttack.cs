@@ -5,6 +5,7 @@ public class PlayerAttack : MonoBehaviour
     [Header("Refrence")]
     [SerializeField] Camera cam;
     public Animator animator;
+    [SerializeField] CapsuleCollider capsuleCollider;
     [SerializeField] EquipmentSlot equipmentSlot;
     [SerializeField] PlayerMovement playerMovement;
 
@@ -50,7 +51,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
-        if(gameManager.isGameOver) return;
+        if (gameManager.isGameOver) return;
 
         if (equipementManager.isBowActive)
         {
@@ -241,4 +242,11 @@ public class PlayerAttack : MonoBehaviour
     {
         playerMovement.WalkSound();
     }
+
+    public void ReduceCollider()
+    {
+        capsuleCollider.height = 0.2f;
+        capsuleCollider.material = null;
+    }
+
 }
