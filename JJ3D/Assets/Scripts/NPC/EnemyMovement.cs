@@ -35,7 +35,8 @@ public class EnemyMovement : NPC
         else
         {
             if (!isAttack && playerDist < attackDist) Attack();
-            else if (isAttack && playerDist > (attackDist + 3f) && playerDist < followDist) FollowPlayer();
+            else if (isAttack && playerDist > (attackDist + 1.7f) && playerDist < followDist) FollowPlayer();
+            // else if (isAttack && playerDist > (attackDist + 3f) && playerDist < followDist) FollowPlayer();
             else if (!isAttack && playerDist < followDist) FollowPlayer();
             else if (!isAttack && playerDist > followDist && !isWalk && !isIdle) StartCoroutine(IEWalkIdle());
         }

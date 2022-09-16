@@ -170,5 +170,7 @@ public class EquipementManager : MonoBehaviour
                 }
                 break;
         }
+
+        Destroy(item.gameObject);
     }
 }

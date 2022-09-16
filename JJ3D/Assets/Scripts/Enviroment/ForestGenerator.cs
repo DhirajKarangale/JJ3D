@@ -216,7 +216,7 @@ public class ForestGenerator : MonoBehaviour
                 ForestItem smallEnemy = smallEnemies[Random.Range(0, smallEnemies.Length)];
                 if (smallEnemy.currCount < smallEnemy.itemCount)
                 {
-                    Vector3 smallEnemyPos = new Vector3(vertices[i].x + itemParent.position.x, vertices[i].y + 5, vertices[i].z + itemParent.position.z);
+                    Vector3 smallEnemyPos = new Vector3(vertices[i].x + itemParent.position.x, vertices[i].y + 2, vertices[i].z + itemParent.position.z);
                     EnemyMovement currSmallEnemy = Instantiate(smallEnemy.item, smallEnemyPos, Quaternion.identity).GetComponent<EnemyMovement>();
                     currSmallEnemy.StartPos(vertices, itemParent);
                     currSmallEnemy.transform.SetParent(itemParent.transform);

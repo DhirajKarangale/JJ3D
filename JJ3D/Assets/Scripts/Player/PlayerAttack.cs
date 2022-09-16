@@ -167,12 +167,12 @@ public class PlayerAttack : MonoBehaviour
 
         if (equipementManager.objBowThree.activeInHierarchy)
         {
-            GameObject currArrow = Instantiate(arrowPrefab, bow.transform.position + new Vector3(1, 1, 0), bow.rotation);
+            GameObject currArrow = Instantiate(arrowPrefab, bow.transform.position + new Vector3(0.5f, 1f, 0), bow.rotation);
             currArrow.transform.rotation = Quaternion.LookRotation(bow.forward);
             currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
             currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.damageModifire;
 
-            currArrow = Instantiate(arrowPrefab, bow.transform.position - new Vector3(1, -1, 0), bow.rotation);
+            currArrow = Instantiate(arrowPrefab, bow.transform.position - new Vector3(0.5f, -1f, 0), bow.rotation);
             currArrow.transform.rotation = Quaternion.LookRotation(bow.forward);
             currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
             currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.damageModifire;
@@ -209,9 +209,9 @@ public class PlayerAttack : MonoBehaviour
         isSwardIceActive = equipementManager.objSwardIce.activeInHierarchy;
         isSwardLightningActive = equipementManager.objSwardLightning.activeInHierarchy;
 
-        isBowNormalActive = equipementManager.objBowNormal;
-        isBowThreeActive = equipementManager.objBowThree;
-        isBowFireActive = equipementManager.objBowFire;
+        isBowNormalActive = equipementManager.objBowNormal.activeInHierarchy;
+        isBowThreeActive = equipementManager.objBowThree.activeInHierarchy;
+        isBowFireActive = equipementManager.objBowFire.activeInHierarchy;
 
         equipementManager.objSwardNormal.SetActive(false);
         equipementManager.objSwardIce.SetActive(false);
@@ -248,5 +248,4 @@ public class PlayerAttack : MonoBehaviour
         capsuleCollider.height = 0.2f;
         capsuleCollider.material = null;
     }
-
 }

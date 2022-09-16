@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Item : MonoBehaviour
 {
@@ -34,6 +35,8 @@ public class Item : MonoBehaviour
         inventory = GameManager.instance.inventory;
         currHealth = mxHealth;
 
+        InvokeRepeating("CheckPos", 10, 10);
+
         switch (itemType)
         {
             case ItemType.Helmet:
@@ -54,12 +57,21 @@ public class Item : MonoBehaviour
         }
     }
 
+    private void CheckPos()
+    {
+        if (this.transform.position.x <= -100)
+        {
+            transform.position = new Vector3(transform.position.x, 20, transform.position.z);
+        }
+    }
+
     public virtual void Use()
     {
         if (itemType == ItemType.Food)
         {
             GameManager.instance.playerHealth.Eat(armorModifire, damageModifire, currLevel);
             inventory.inventoryUI.InventoryButton(false);
+            Destroy(this.gameObject);
         }
         else
         {

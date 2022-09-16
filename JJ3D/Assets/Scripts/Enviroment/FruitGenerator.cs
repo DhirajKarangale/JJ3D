@@ -37,6 +37,10 @@ public class FruitGenerator : MonoBehaviour
     {
         fruits[index] = null;
         currFruits--;
-        if (currFruits < minItems) SpwanFruits();
+        if (currFruits < minItems)
+        {
+            CancelInvoke();
+            Invoke("SpwanFruits", 20);
+        }
     }
 }
