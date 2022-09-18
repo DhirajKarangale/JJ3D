@@ -21,6 +21,7 @@ public class ForestGenerator : MonoBehaviour
     [SerializeField] ForestItem[] dinasours;
     [SerializeField] ForestItem[] smallEnemies;
     [SerializeField] ForestItem[] midEnemies;
+    [SerializeField] ForestItem eyeMounster;
     [SerializeField] GameObject testObj;
     int testCount = 0;
 
@@ -221,6 +222,20 @@ public class ForestGenerator : MonoBehaviour
                     currSmallEnemy.StartPos(vertices, itemParent);
                     currSmallEnemy.transform.SetParent(itemParent.transform);
                     smallEnemy.currCount++;
+                }
+            }
+
+            // Eye Mounster
+            if (Random.value > 0.9997f && currHeight < 14)
+            {
+                ForestItem currEyeMounster = eyeMounster;
+                if (currEyeMounster.currCount < currEyeMounster.itemCount)
+                {
+                    Vector3 eyeMounsterPos = new Vector3(vertices[i].x + itemParent.position.x, vertices[i].y + 2, vertices[i].z + itemParent.position.z);
+                    EnemyMovement currSmallEnemy = Instantiate(currEyeMounster.item, eyeMounsterPos, Quaternion.identity).GetComponent<EnemyMovement>();
+                    currSmallEnemy.StartPos(vertices, itemParent);
+                    currSmallEnemy.transform.SetParent(itemParent.transform);
+                    currEyeMounster.currCount++;
                 }
             }
 

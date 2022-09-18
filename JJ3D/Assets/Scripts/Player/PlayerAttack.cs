@@ -15,10 +15,12 @@ public class PlayerAttack : MonoBehaviour
     [Header("Bow")]
     [SerializeField] GameObject arrowPrefab;
     [SerializeField] GameObject fireArrowPrefab;
-    [SerializeField] Transform bow;
+    [SerializeField] Transform firePos;
+    [SerializeField] Transform firePos1;
+    [SerializeField] Transform firePos2;
     [SerializeField] float force;
-    private bool isAming;
-    private bool isShoothing;
+    internal bool isAming;
+    internal bool isShoothing;
     private bool isBowDestroyed;
 
     [Header("Sound")]
@@ -40,6 +42,9 @@ public class PlayerAttack : MonoBehaviour
     private bool isBowThreeActive;
     private bool isBowFireActive;
 
+    private float requiredView;
+    [SerializeField] float camSpeed;
+
     private void Start()
     {
         overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
@@ -47,11 +52,18 @@ public class PlayerAttack : MonoBehaviour
         coolDownTime = 0;
         gameManager = GameManager.instance;
         equipementManager = gameManager.equipementManager;
+
+        requiredView = 60;
+        cam.fieldOfView = 60;
     }
 
     private void Update()
     {
-        if (gameManager.isGameOver) return;
+        if (gameManager.isGameOver)
+        {
+            cam.fieldOfView = 60;
+            return;
+        }
 
         if (equipementManager.isBowActive)
         {
@@ -67,6 +79,8 @@ public class PlayerAttack : MonoBehaviour
         }
 
         coolDownTime -= Time.deltaTime;
+
+        Scope();
     }
 
     private void SwardAttack()
@@ -127,10 +141,14 @@ public class PlayerAttack : MonoBehaviour
 
             isShoothing = false;
             isAming = true;
+
+            Invoke("GetView", 0.3f);
         }
         if (Input.GetMouseButtonUp(0))
         {
             isShoothing = true;
+
+            Invoke("ResetView", 1);
         }
 
         if (isAming)
@@ -142,38 +160,64 @@ public class PlayerAttack : MonoBehaviour
         animator.SetBool("isAming", isAming);
     }
 
+    private void Scope()
+    {
+        if (requiredView != 60)
+        {
+            if (cam.fieldOfView > requiredView)
+            {
+                cam.fieldOfView -= Time.deltaTime * camSpeed;
+            }
+        }
+        else if (cam.fieldOfView < 60)
+        {
+            cam.fieldOfView += Time.deltaTime * camSpeed;
+        }
+    }
+
+    private void ResetView()
+    {
+        requiredView = 60;
+    }
+
+    private void GetView()
+    {
+        if (isShoothing) return;
+        requiredView = 20;
+    }
+
     public void ShootArrow()
     {
         if (Time.timeScale == 0) return;
 
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
         Vector3 targetPoint = ray.GetPoint(1000);
-        Vector3 shootDir = (targetPoint - bow.transform.position).normalized;
+        Vector3 shootDir = (targetPoint - firePos.transform.position).normalized;
 
         if (equipementManager.objBowFire.activeInHierarchy)
         {
-            GameObject currArrow = Instantiate(fireArrowPrefab, bow.position + new Vector3(0, 1, 0), bow.rotation);
-            currArrow.transform.rotation = Quaternion.LookRotation(bow.forward);
+            GameObject currArrow = Instantiate(fireArrowPrefab, firePos.position, Quaternion.identity);
+            currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
             currArrow.GetComponent<FireArrow>().damage = equipmentSlot.equipedItem.damageModifire;
         }
         else
         {
-            GameObject currArrow = Instantiate(arrowPrefab, bow.transform.position + new Vector3(0, 1, 0), Quaternion.identity);
-            currArrow.transform.rotation = Quaternion.LookRotation(bow.forward);
+            GameObject currArrow = Instantiate(arrowPrefab, firePos.position, Quaternion.identity);
+            currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
             currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.damageModifire;
         }
 
         if (equipementManager.objBowThree.activeInHierarchy)
         {
-            GameObject currArrow = Instantiate(arrowPrefab, bow.transform.position + new Vector3(0.5f, 1f, 0), bow.rotation);
-            currArrow.transform.rotation = Quaternion.LookRotation(bow.forward);
+            GameObject currArrow = Instantiate(arrowPrefab, firePos1.position, Quaternion.identity);
+            currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
             currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.damageModifire;
 
-            currArrow = Instantiate(arrowPrefab, bow.transform.position - new Vector3(0.5f, -1f, 0), bow.rotation);
-            currArrow.transform.rotation = Quaternion.LookRotation(bow.forward);
+            currArrow = Instantiate(arrowPrefab, firePos2.position, Quaternion.identity);
+            currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
             currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.damageModifire;
         }

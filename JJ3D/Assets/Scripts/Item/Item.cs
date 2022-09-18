@@ -37,6 +37,11 @@ public class Item : MonoBehaviour
 
         InvokeRepeating("CheckPos", 10, 10);
 
+        GetSlot();
+    }
+
+    private void GetSlot()
+    {
         switch (itemType)
         {
             case ItemType.Helmet:
@@ -59,7 +64,7 @@ public class Item : MonoBehaviour
 
     private void CheckPos()
     {
-        if (this.transform.position.x <= -100)
+        if (this.transform.position.y <= -100)
         {
             transform.position = new Vector3(transform.position.x, 20, transform.position.z);
         }

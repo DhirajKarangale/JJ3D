@@ -27,10 +27,10 @@ public class NPC : MonoBehaviour
         IdleState();
     }
 
-    protected virtual void FixedUpdate()
+    protected virtual void Update()
     {
         if (isDye) return;
-
+       
         Look();
 
         if (isWalk) Move(moveSpeed);
@@ -99,6 +99,7 @@ public class NPC : MonoBehaviour
     {
         StopAllCoroutines();
         DyeState();
+        rigidBody.useGravity = true;
         rigidBody.mass = 100000;
     }
 

@@ -13,9 +13,9 @@ public class EyeMounster : SmallEnemy
     [SerializeField] GameObject spikePrefab;
     [SerializeField] Transform[] attackPoints;
 
-    protected override void FixedUpdate()
+    protected override void Update()
     {
-        base.FixedUpdate();
+        base.Update();
         Laser();
     }
 
@@ -49,9 +49,10 @@ public class EyeMounster : SmallEnemy
             laser.transform.position = laserPos.position;
             laser.StartPos = Vector3.zero;
             float playerDist = 11 * Mathf.Abs(Vector3.Distance(transform.position, player.position + new Vector3(0, 1, 0)));
+            // Debug.Log("Player Dist : " + playerDist);
             laser.EndPos = new Vector3(0, 0, playerDist);
             gameManager.PlayerBloodEffect(player.position);
-            playerHealth.TakeDamage(0.035f);
+            playerHealth.TakeDamage(0.04f);
         }
     }
 

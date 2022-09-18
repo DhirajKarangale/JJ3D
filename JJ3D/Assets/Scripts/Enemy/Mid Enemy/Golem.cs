@@ -18,7 +18,6 @@ public class Golem : EnemyMovement
 
     private float originalAttackDist;
     private int attackState;
-    private bool isAttackChanged;
 
     protected override void Start()
     {
@@ -28,32 +27,26 @@ public class Golem : EnemyMovement
         base.Start();
     }
 
-    private void Update()
+    protected override void Update()
     {
-        if (isAttack)
-        {
-            if (playerDist < originalAttackDist)
-            {
-                attackState = Random.Range(0, 2);
-                attackDist = originalAttackDist;
-            }
-            else if (playerDist < rockThrow)
-            {
-                attackState = Random.value <= 0.2f ? 3 : 2;
-                attackDist = rockThrow;
-            }
-            else if (playerDist < rockShower)
-            {
-                attackState = 3;
-                attackDist = rockShower;
-            }
-        }
+        if (this.animator.GetCurrentAnimatorStateInfo(0).IsName("Attack")) return;
+        base.Update();
+        Look();
+        ChangeAttackAnim();
     }
 
     private IEnumerator IEChangeAttack()
     {
         yield return new WaitForSecondsRealtime(2);
 
+        ChangeAttackAnim();
+        overrideController[attackClips[0].name] = attackClips[attackState];
+        AttackState();
+    }
+
+
+    private void ChangeAttackAnim()
+    {
         if (playerDist < originalAttackDist)
         {
             attackState = Random.Range(0, 2);
@@ -61,7 +54,7 @@ public class Golem : EnemyMovement
         }
         else if (playerDist < rockThrow)
         {
-            attackState = Random.value <= 0.2f ? 3 : 2;
+            attackState = Random.value <= 0.1f ? 3 : 2;
             attackDist = rockThrow;
         }
         else if (playerDist < rockShower)
@@ -69,35 +62,8 @@ public class Golem : EnemyMovement
             attackState = 3;
             attackDist = rockShower;
         }
-        overrideController[attackClips[0].name] = attackClips[attackState];
-
-        isAttackChanged = true;
-        AttackState();
     }
 
-    protected override void IdleState()
-    {
-        base.IdleState();
-        if (!isAttackChanged) ChangeAttack();
-    }
-
-    protected override void WalkState()
-    {
-        base.WalkState();
-        if (!isAttackChanged) ChangeAttack();
-    }
-
-    protected override void RunState()
-    {
-        base.RunState();
-        if (!isAttackChanged) ChangeAttack();
-    }
-
-    protected override void AttackState()
-    {
-        isAttackChanged = false;
-        base.AttackState();
-    }
 
     public void ChangeAttack()
     {

@@ -150,6 +150,7 @@ public class PlayerMovement : MonoBehaviour
     [Serializable]
     public class Movement
     {
+        [SerializeField] PlayerAttack playerAttack;
         public float ForwardSpeed = 8.0f;   // Speed when walking forward
         public float BackwardSpeed = 4.0f;  // Speed when walking backwards
         public float StrafeSpeed = 4.0f;    // Speed when walking sideways
@@ -176,7 +177,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 //forwards
                 //handled last as if strafing and moving forward at the same time forwards speed should take precedence
-                CurrentTargetSpeed = ForwardSpeed;
+                // CurrentTargetSpeed = StrafeSpeed; - Original just Commented
+
+                // Added By DK
+                if (playerAttack.isAming || playerAttack.isShoothing) CurrentTargetSpeed = StrafeSpeed;
+                else CurrentTargetSpeed = ForwardSpeed;
             }
 
             if (shoes)

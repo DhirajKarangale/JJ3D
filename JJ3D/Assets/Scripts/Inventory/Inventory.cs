@@ -15,7 +15,7 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        DefaultItem();
+        Invoke("DefaultItem", 1);
     }
 
     private void DefaultItem()

@@ -18,12 +18,6 @@ public class SmallEnemy : EnemyMovement
         base.Start();
     }
 
-    protected override void AttackState()
-    {
-        isAttackChanged = false;
-        base.AttackState();
-    }
-
     private void ChangeAttack()
     {
         if (attackClips.Length <= 0 || !overrideController) return;
@@ -49,5 +43,11 @@ public class SmallEnemy : EnemyMovement
     {
         base.RunState();
         if (!isAttackChanged) ChangeAttack();
+    }
+
+    protected override void AttackState()
+    {
+        isAttackChanged = false;
+        base.AttackState();
     }
 }

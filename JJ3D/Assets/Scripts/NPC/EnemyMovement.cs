@@ -9,6 +9,7 @@ public class EnemyMovement : NPC
     protected PlayerHealth playerHealth;
     protected Transform player;
     protected float playerDist;
+    private bool isHurt;
 
     protected override void Start()
     {
@@ -16,10 +17,11 @@ public class EnemyMovement : NPC
         playerHealth = gameManager.playerHealth;
         player = playerHealth.transform;
         targetPos = player.position;
+        isHurt = false;
         base.Start();
     }
 
-    protected override void FixedUpdate()
+    protected override void Update()
     {
         if (isDye) return;
 
@@ -37,10 +39,10 @@ public class EnemyMovement : NPC
             if (!isAttack && playerDist < attackDist) Attack();
             else if (isAttack && playerDist > (attackDist + 1.7f) && playerDist < followDist) FollowPlayer();
             // else if (isAttack && playerDist > (attackDist + 3f) && playerDist < followDist) FollowPlayer();
-            else if (!isAttack && playerDist < followDist) FollowPlayer();
+            else if (!isAttack && ((playerDist < followDist) || isHurt)) FollowPlayer();
             else if (!isAttack && playerDist > followDist && !isWalk && !isIdle) StartCoroutine(IEWalkIdle());
         }
-        base.FixedUpdate();
+        base.Update();
     }
 
     protected override void Move(float speed)
@@ -55,6 +57,12 @@ public class EnemyMovement : NPC
         base.Look();
     }
 
+    internal override void Hurt()
+    {
+        base.Hurt();
+        isHurt = true;
+    }
+
     private void Attack()
     {
         StopAllCoroutines();
@@ -66,10 +74,24 @@ public class EnemyMovement : NPC
         StopAllCoroutines();
         targetPos = player.position;
         RunState();
+
+        if (isHurt && !IsInvoking("DesableHurt") && playerDist > followDist && playerDist < 3 * followDist)
+        {
+            Invoke("DesableHurt", 20);
+        }
+    }
+
+    protected override void IdleState()
+    {
+        base.IdleState();
+
+        isHurt = false;
     }
 
     protected virtual void AttackState()
     {
+        isHurt = false;
+
         isIdle = false;
         isWalk = false;
         isRun = false;
@@ -81,5 +103,10 @@ public class EnemyMovement : NPC
     {
         base.SetAnimation();
         animator.SetBool("isAttack", isAttack);
+    }
+
+    private void DesableHurt()
+    {
+        isHurt = false;
     }
 }

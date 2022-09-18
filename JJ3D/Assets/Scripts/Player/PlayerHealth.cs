@@ -46,14 +46,6 @@ public class PlayerHealth : MonoBehaviour
         InvokeRepeating("AutoHealthIncrease", 60, 15);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            TakeDamage(15);
-        }
-    }
-
     public void TakeDamage(float damage)
     {
         damage = vest ? Armor(vest, damage) : damage;
