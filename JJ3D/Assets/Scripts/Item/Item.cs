@@ -1,13 +1,11 @@
 using UnityEngine;
-using System.Collections;
 
 public class Item : MonoBehaviour
 {
-    public float interactRadius = 7f;
     public ItemType itemType;
 
     [Header("Inventory")]
-    public string use;
+    // public string use;
     public Sprite icon = null;
 
     [Header("Upgradables")]

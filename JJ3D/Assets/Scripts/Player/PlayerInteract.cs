@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 public class PlayerInteract : MonoBehaviour
 {
     [SerializeField] Camera cam;
+    [SerializeField] float itemInteractRadius = 10f;
     private GameManager gameManager;
 
     private void Start()
@@ -36,7 +37,7 @@ public class PlayerInteract : MonoBehaviour
 
             if (item)
             {
-                if (Vector3.Distance(transform.position, item.transform.position) > item.interactRadius) return;
+                if (Vector3.Distance(transform.position, item.transform.position) > itemInteractRadius) return;
                 gameManager.PickEffet(item.transform.position);
                 item.Pickup();
             }

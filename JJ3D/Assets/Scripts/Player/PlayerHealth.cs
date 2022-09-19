@@ -62,7 +62,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void AutoHealthIncrease()
     {
-        if (currHealth < (mxHealth / 2) && (currHunger > 10))
+        if ((currHealth < mxHealth) && (currHunger > 1))
         {
             currHealth += 3;
             currHunger -= 6;

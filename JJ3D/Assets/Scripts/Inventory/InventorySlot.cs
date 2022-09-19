@@ -6,7 +6,6 @@ public class InventorySlot : MonoBehaviour
     public Image icon;
     public Button buttonRemove;
     public Button buttonUse;
-    public Text txtUse;
     [SerializeField] Inventory inventory;
     [HideInInspector] public Item item;
 
@@ -14,7 +13,6 @@ public class InventorySlot : MonoBehaviour
     {
         item = newItem;
 
-        txtUse.text = item.use;
         icon.sprite = item.icon;
         icon.enabled = true;
         buttonRemove.interactable = true;
