@@ -6,7 +6,6 @@ public class EquipmentSlot : MonoBehaviour
     [SerializeField] Sprite defaultSprite;
     [SerializeField] Image icon;
     [SerializeField] Slider slider;
-    [SerializeField] Text txtLevel;
     [SerializeField] Text txtCost;
     [SerializeField] Text txtDescription;
     [SerializeField] Text txtUpgrade;
@@ -41,15 +40,14 @@ public class EquipmentSlot : MonoBehaviour
 
         icon.sprite = item.icon;
         slider.value = item.currHealth / item.mxHealth;
-        txtLevel.text = item.currLevel.ToString();
-        txtDescription.text = "Armor : " + item.armorModifire.ToString("F2") + "\nDamage : " + item.damageModifire.ToString("F2") + "\nSpeed : " + item.speedModifire.ToString("F2");
+        txtDescription.text = item.modifireName + " : " + item.modifire.ToString("F2") + "\nLevel : " + item.level.ToString();
         buttonRemove.interactable = true;
 
-        if (item.currLevel < 5)
+        if (item.level < 10)
         {
             if (item.currHealth < item.mxHealth)
             {
-                upgradeCost = (int)(item.mxHealth - item.currHealth) * 10;
+                upgradeCost = (int)(item.mxHealth - item.currHealth) * 15;
                 txtUpgrade.text = "Heal";
             }
             else
@@ -82,11 +80,6 @@ public class EquipmentSlot : MonoBehaviour
             equipementManager = gameManager.equipementManager;
         }
 
-        // if (equipedItem && (this.gameObject.activeInHierarchy || gameManager.isGameOver))
-        // {
-        //     equipementManager.UnEquip((int)equipedItem.itemType, isThrowItem);
-        // }
-
         if (equipedItem)
         {
             equipementManager.UnEquip((int)equipedItem.itemType, isThrowItem);
@@ -95,7 +88,6 @@ public class EquipmentSlot : MonoBehaviour
         icon.sprite = defaultSprite;
         slider.value = 1;
         txtCost.text = "####";
-        txtLevel.text = "#";
         txtDescription.text = "Item not Set";
         buttonRemove.interactable = false;
         buttonUpgrade.interactable = false;
@@ -107,7 +99,8 @@ public class EquipmentSlot : MonoBehaviour
 
     public void UpgradeButton()
     {
-        Msg.instance.coin -= (int)upgradeCost;
+        // Msg.instance.coin -= (int)upgradeCost;  Reduce coin
+
         if (txtUpgrade.text == "Heal")
         {
             equipedItem.currHealth = equipedItem.mxHealth;

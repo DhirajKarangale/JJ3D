@@ -18,7 +18,7 @@ public class PlayerWeapon : MonoBehaviour
     {
         if (gameManager.isGameOver) return;
 
-        damage = (equipmentSlot.equipedItem) ? equipmentSlot.equipedItem.damageModifire : 10;
+        damage = (equipmentSlot.equipedItem) ? equipmentSlot.equipedItem.modifire : 10;
         Rigidbody rigidBody = collision.gameObject.GetComponent<Rigidbody>();
         if (rigidBody)
         {

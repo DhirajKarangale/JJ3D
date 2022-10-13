@@ -30,7 +30,7 @@ public class NPC : MonoBehaviour
     protected virtual void Update()
     {
         if (isDye) return;
-       
+
         Look();
 
         if (isWalk) Move(moveSpeed);
@@ -39,6 +39,7 @@ public class NPC : MonoBehaviour
         if (myTransform.position.y <= -60)
         {
             transform.position = terran.position + new Vector3(0, 5, 0);
+            rigidBody.velocity = Vector3.zero;
         }
     }
 

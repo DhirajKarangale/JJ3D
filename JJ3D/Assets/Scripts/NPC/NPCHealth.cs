@@ -24,13 +24,6 @@ public class NPCHealth : MonoBehaviour
 
     private void Dye()
     {
-        // if (isDestroyBody)
-        // {
-        //     GameManager.instance.DestroyEffect(transform.position);
-        //     SpwanItem();
-        //     return;
-        // }
-
         if (IsInvoking("DestroyBody")) return;
         npc.Dye();
         Invoke("DestroyBody", 5);

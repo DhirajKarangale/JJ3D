@@ -5,14 +5,11 @@ public class Item : MonoBehaviour
     public ItemType itemType;
 
     [Header("Inventory")]
-    // public string use;
     public Sprite icon = null;
 
     [Header("Upgradables")]
-    public float armorModifire;
-    public float damageModifire;
-    public float speedModifire;
-    public float modifierMultiplier;
+    public string modifireName;
+    public float modifire;
 
     [Header("Health")]
     public float mxHealth;
@@ -20,8 +17,7 @@ public class Item : MonoBehaviour
 
     [Header("Level")]
     public float cost;
-    public int currLevel;
-    public float multiplier;
+    public int level;
 
     private Inventory inventory;
     private EquipmentSlot equipmentSlot;
@@ -32,8 +28,6 @@ public class Item : MonoBehaviour
         equipementManager = GameManager.instance.equipementManager;
         inventory = GameManager.instance.inventory;
         currHealth = mxHealth;
-
-        InvokeRepeating("CheckPos", 10, 10);
 
         GetSlot();
     }
@@ -60,19 +54,11 @@ public class Item : MonoBehaviour
         }
     }
 
-    private void CheckPos()
-    {
-        if (this.transform.position.y <= -100)
-        {
-            transform.position = new Vector3(transform.position.x, 20, transform.position.z);
-        }
-    }
-
     public virtual void Use()
     {
         if (itemType == ItemType.Food)
         {
-            GameManager.instance.playerHealth.Eat(armorModifire, damageModifire, currLevel);
+            GameManager.instance.playerHealth.Eat(modifire, modifireName);
             inventory.inventoryUI.InventoryButton(false);
             Destroy(this.gameObject);
         }
@@ -85,12 +71,10 @@ public class Item : MonoBehaviour
 
     public void Upgrade()
     {
-        armorModifire *= modifierMultiplier;
-        speedModifire *= modifierMultiplier;
-        damageModifire *= modifierMultiplier;
-        mxHealth *= multiplier;
-        cost *= multiplier;
-        currLevel++;
+        modifire = modifire * 1.5f;
+        mxHealth = mxHealth * 1.15f;
+        cost = cost * 1.5f;
+        level++;
 
         currHealth = mxHealth;
     }

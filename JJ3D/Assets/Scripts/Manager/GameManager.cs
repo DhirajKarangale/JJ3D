@@ -24,6 +24,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] ParticleSystem psFireballDestroy;
     [SerializeField] ParticleSystem psBombExplosion;
     [SerializeField] ParticleSystem psPick;
+    [SerializeField] ParticleSystem psCollect;
 
     [Header("Audio")]
     [SerializeField] AudioSource audioSource;
@@ -34,6 +35,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] AudioClip clipNPCHurt;
     [SerializeField] AudioClip clipPlayerHurt;
     [SerializeField] AudioClip clipHit;
+    [SerializeField] AudioClip clipCollect;
 
     public bool isGameOver;
 
@@ -50,13 +52,22 @@ public class GameManager : Singleton<GameManager>
         audioSource.PlayOneShot(clipDestroyItem);
     }
 
-    public void PickEffet(Vector3 pos)
+    public void PickEffect(Vector3 pos)
     {
         audioSource.volume = 0.5f;
         psPick.transform.position = pos;
         psPick.Play();
         audioSource.transform.position = pos;
         audioSource.PlayOneShot(clipPick);
+    }
+
+    public void CollectEffect(Vector3 pos)
+    {
+        audioSource.volume = 0.5f;
+        psCollect.transform.position = pos;
+        psCollect.Play();
+        audioSource.transform.position = pos;
+        audioSource.PlayOneShot(clipCollect);
     }
 
     public void EnemyBloodEffect(Vector3 pos)

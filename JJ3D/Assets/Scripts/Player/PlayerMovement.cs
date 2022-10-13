@@ -188,7 +188,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (shoes.currHealth > 0)
                 {
-                    CurrentTargetSpeed *= shoes.speedModifire;
+                    CurrentTargetSpeed *= shoes.modifire;
                     shoes.currHealth -= 0.1f;
                 }
                 else

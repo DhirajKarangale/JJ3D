@@ -65,10 +65,11 @@ public class PlayerAttack : MonoBehaviour
             return;
         }
 
+        Attack();
+
         if (equipementManager.isBowActive)
         {
             BowAttack();
-            BowPunch();
             Scope();
         }
         else
@@ -77,57 +78,56 @@ public class PlayerAttack : MonoBehaviour
             animator.SetBool("isAming", false);
             animator.SetBool("isShoothing", false);
             ReSetRotation();
-            if (equipementManager.isSwardActive) SwardAttack();
         }
 
         coolDownTime -= Time.deltaTime;
 
     }
 
-    private void SwardAttack()
+    private void Attack()
     {
         if (Time.timeScale == 0) return;
 
         if (Input.GetKeyDown(KeyCode.F) && (coolDownTime <= 0))
         {
-
-            item = equipmentSlot.equipedItem;
-            if (item.currHealth > 0)
-            {
-                item.currHealth -= item.armorModifire;
-            }
-            else
-            {
-                item.DestroyItem();
-                return;
-            }
-
-            coolDownTime = 1.1f;
-            animator.Play("SwardAttack");
-            overrideController[swardClips[0].name] = swardClips[Random.Range(0, swardClips.Length)];
+            if (equipementManager.isSwardActive) SwardAttack();
+            else if (equipementManager.isBowActive) BowPunch();
         }
+    }
+
+    private void SwardAttack()
+    {
+        item = equipmentSlot.equipedItem;
+        if (item.currHealth > 0)
+        {
+            item.currHealth -= 1;
+        }
+        else
+        {
+            item.DestroyItem();
+            return;
+        }
+
+        coolDownTime = 1.1f;
+        animator.Play("SwardAttack");
+        overrideController[swardClips[0].name] = swardClips[Random.Range(0, swardClips.Length)];
     }
 
     private void BowPunch()
     {
-        if (Time.timeScale == 0) return;
-
-        if (Input.GetKeyDown(KeyCode.G) && (coolDownTime <= 0))
+        item = equipmentSlot.equipedItem;
+        if (item.currHealth > 0)
         {
-            item = equipmentSlot.equipedItem;
-            if (item.currHealth > 0)
-            {
-                item.currHealth -= item.armorModifire;
-            }
-            else
-            {
-                item.DestroyItem();
-                return;
-            }
-
-            animator.Play("BowPunch");
-            coolDownTime = 1.1f;
+            item.currHealth -= 1;
         }
+        else
+        {
+            item.DestroyItem();
+            return;
+        }
+
+        animator.Play("BowPunch");
+        coolDownTime = 1.1f;
     }
 
     private void BowAttack()
@@ -200,14 +200,14 @@ public class PlayerAttack : MonoBehaviour
             GameObject currArrow = Instantiate(fireArrowPrefab, firePos.position, Quaternion.identity);
             currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<FireArrow>().damage = equipmentSlot.equipedItem.damageModifire;
+            currArrow.GetComponent<FireArrow>().damage = equipmentSlot.equipedItem.modifire;
         }
         else
         {
             GameObject currArrow = Instantiate(arrowPrefab, firePos.position, Quaternion.identity);
             currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.damageModifire;
+            currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.modifire;
         }
 
         if (equipementManager.objBowThree.activeInHierarchy)
@@ -215,15 +215,15 @@ public class PlayerAttack : MonoBehaviour
             GameObject currArrow = Instantiate(arrowPrefab, firePos1.position, Quaternion.identity);
             currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.damageModifire;
+            currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.modifire;
 
             currArrow = Instantiate(arrowPrefab, firePos2.position, Quaternion.identity);
             currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.damageModifire;
+            currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.modifire;
         }
 
-        item.currHealth -= item.armorModifire;
+        item.currHealth -= 1;
         Invoke("ReSetRotation", 0.6f);
         coolDownTime = 1.1f;
         isAming = false;

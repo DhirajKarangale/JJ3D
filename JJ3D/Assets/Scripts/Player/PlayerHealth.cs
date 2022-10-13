@@ -8,8 +8,6 @@ public class PlayerHealth : MonoBehaviour
     public Rigidbody rigidBody;
     [SerializeField] PlayerAttack playerAttack;
     [SerializeField] AudioSource audioSource;
-    [SerializeField] Slider sliderHealth;
-    [SerializeField] Slider sliderHunger;
 
     [Header("Food")]
     [SerializeField] GameObject meat;
@@ -22,10 +20,16 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] ParticleSystem psEat;
 
     [Header("Health")]
+    [SerializeField] Slider sliderHealth;
+    [SerializeField] Image healthFillImage;
+    [SerializeField] Gradient healthGradient;
     [SerializeField] float mxHealth;
     private float currHealth;
 
     [Header("Hunger")]
+    [SerializeField] Slider sliderHunger;
+    [SerializeField] Image hungerFillImage;
+    [SerializeField] Gradient hungerGradient;
     [SerializeField] float mxHunger;
     private float currHunger;
 
@@ -93,8 +97,8 @@ public class PlayerHealth : MonoBehaviour
     {
         if (item.currHealth > 0)
         {
-            damage -= item.armorModifire;
-            item.currHealth -= (item.armorModifire / item.modifierMultiplier);
+            damage -= item.modifire;
+            item.currHealth -= item.modifire;
         }
         else
         {
@@ -108,6 +112,8 @@ public class PlayerHealth : MonoBehaviour
     {
         sliderHunger.value = currHunger / mxHunger;
         sliderHealth.value = currHealth / mxHealth;
+        hungerFillImage.color = hungerGradient.Evaluate(sliderHunger.value);
+        healthFillImage.color = healthGradient.Evaluate(sliderHealth.value);
     }
 
     private void PlayerDye()
@@ -117,27 +123,27 @@ public class PlayerHealth : MonoBehaviour
         gameManager.GameOver();
     }
 
-    public void IncreaseHealth(float increaseHealth, float increaseHunger)
+    public void IncreaseHealth(float modifier)
     {
-        currHealth = Mathf.Clamp(0, mxHealth, currHealth + increaseHealth);
-        currHunger = Mathf.Clamp(0, mxHunger, currHunger + increaseHunger);
+        currHealth = Mathf.Clamp(0, mxHealth, currHealth + modifier);
+        currHunger = Mathf.Clamp(0, mxHunger, currHunger + (modifier * 1.5f));
         UpdateSliders();
     }
 
-    public void Eat(float increaseHealth, float increaseHunger, int item)
+    public void Eat(float modifier, string name)
     {
-        StartCoroutine(IEEat(increaseHealth, increaseHunger, item));
+        StartCoroutine(IEEat(modifier, name));
     }
 
-    private IEnumerator IEEat(float increaseHealth, float increaseHunger, int item)
+    private IEnumerator IEEat(float modifier, string name)
     {
         playerAttack.animator.SetBool("isEating", true);
 
         audioSource.volume = 0.4f;
         audioSource.PlayOneShot(clipEat);
-        if (item == 1) meat.SetActive(true);
-        else if (item == 2) apple.SetActive(true);
-        else if (item == 3) mango.SetActive(true);
+        if (name == "Meat") meat.SetActive(true);
+        else if (name == "Apple") apple.SetActive(true);
+        else if (name == "Mango") mango.SetActive(true);
         psEat.Play();
 
         playerAttack.DesableWeapon();
@@ -150,7 +156,7 @@ public class PlayerHealth : MonoBehaviour
         apple.SetActive(false);
         mango.SetActive(false);
         psEat.Stop();
-        IncreaseHealth(increaseHealth, increaseHunger);
+        IncreaseHealth(modifier);
 
         playerAttack.animator.SetBool("isEating", false);
 

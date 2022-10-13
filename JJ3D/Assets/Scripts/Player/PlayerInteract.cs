@@ -38,7 +38,7 @@ public class PlayerInteract : MonoBehaviour
             if (item)
             {
                 if (Vector3.Distance(transform.position, item.transform.position) > itemInteractRadius) return;
-                gameManager.PickEffet(item.transform.position);
+                gameManager.PickEffect(item.transform.position);
                 item.Pickup();
             }
         }
