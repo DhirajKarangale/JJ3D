@@ -70,11 +70,10 @@ public class PlayerAttack : MonoBehaviour
         if (equipementManager.isBowActive)
         {
             BowAttack();
-            Scope();
+            BowPunch();
         }
         else
         {
-            cam.fieldOfView = 60;
             animator.SetBool("isAming", false);
             animator.SetBool("isShoothing", false);
             ReSetRotation();
@@ -82,6 +81,7 @@ public class PlayerAttack : MonoBehaviour
 
         coolDownTime -= Time.deltaTime;
 
+        Scope();
     }
 
     private void Attack()
