@@ -1,54 +1,27 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public InventoryUI inventoryUI;
-    [SerializeField] Item itemDefault;
-    [SerializeField] Transform player;
+    [SerializeField] InventorySlot inventorySlot;
+    [SerializeField] Transform content;
 
-    public int space = 20;
-    public List<Item> items = new List<Item>();
-
-    public delegate void OnItemChanged();
-    public OnItemChanged onItemChanged;
+    private List<InventorySlot> inventorySlots;
 
     private void Start()
     {
-        Invoke("DefaultItem", 1);
+        inventorySlots = new List<InventorySlot>();
+        InitializeInventory();
     }
 
-    private void DefaultItem()
+    public void InitializeInventory()
     {
-        if (!itemDefault) return;
-        itemDefault.Pickup();
-        itemDefault.Use();
-    }
-
-    public bool Add(Item item)
-    {
-        if (items.Count >= space)
+        for (int i = 0; i < 20; i++)
         {
-            Debug.Log("Not Enough Space");
-            return false;
+            InventorySlot slot = Instantiate(inventorySlot, Vector3.zero, Quaternion.identity);
+            slot.transform.SetParent(content);
+            inventorySlots.Add(slot);
         }
-
-        items.Add(item);
-        onItemChanged?.Invoke();
-
-        return true;
-    }
-
-    public void Remove(Item item, bool isThrow)
-    {
-        if (isThrow) ThrowItem(item);
-        items.Remove(item);
-        onItemChanged?.Invoke();
-    }
-
-    private void ThrowItem(Item item)
-    {
-        item.transform.position = player.transform.position + new Vector3(0, 2, 2);
-        item.gameObject.SetActive(true);
     }
 }

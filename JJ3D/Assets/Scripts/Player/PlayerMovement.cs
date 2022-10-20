@@ -277,10 +277,10 @@ public class PlayerMovement : MonoBehaviour
 
         animator.SetBool("isJump", m_Jumping);
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Debug.Break();
-        }
+        // if (Input.GetKeyDown(KeyCode.Escape))
+        // {
+        //     Debug.Break();
+        // }
 
         if (Input.GetKeyDown(KeyCode.P))
         {

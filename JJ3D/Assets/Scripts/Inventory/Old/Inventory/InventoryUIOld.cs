@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class InventoryUI : MonoBehaviour
+public class InventoryUIOld : MonoBehaviour
 {
     [SerializeField] GameObject inventoryUI;
     [SerializeField] GameObject controlsUI;
     [SerializeField] GameObject bagNotifyObj;
-    [SerializeField] Inventory inventory;
-    public InventorySlot[] inventorySlots;
+    [SerializeField] InventoryOld inventory;
+    public InventorySlotOld[] inventorySlots;
     private GameManager gameManager;
 
     private void Start()
@@ -36,7 +36,7 @@ public class InventoryUI : MonoBehaviour
 
     public void DesableUseButton()
     {
-        foreach (InventorySlot inventorySlot in inventorySlots)
+        foreach (InventorySlotOld inventorySlot in inventorySlots)
         {
             inventorySlot.DesableUseButton();
         }

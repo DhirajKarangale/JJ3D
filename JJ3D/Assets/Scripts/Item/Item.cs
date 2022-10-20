@@ -19,7 +19,7 @@ public class Item : MonoBehaviour
     public float cost;
     public int level;
 
-    private Inventory inventory;
+    private InventoryOld inventory;
     private EquipmentSlot equipmentSlot;
     private EquipementManager equipementManager;
 

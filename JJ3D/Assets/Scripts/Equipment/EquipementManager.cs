@@ -21,7 +21,7 @@ public class EquipementManager : MonoBehaviour
     [HideInInspector] public bool isBowActive;
 
     private GameManager gameManager;
-    private Inventory inventory;
+    private InventoryOld inventory;
     private Item[] currEquipments;
 
     private void Awake()

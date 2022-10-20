@@ -9,7 +9,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] internal PlayerHealth playerHealth;
     [SerializeField] internal PlayerInteract playerInteract;
     [SerializeField] internal PlayerMovement playerMovement;
-    [SerializeField] internal Inventory inventory;
+    [SerializeField] internal InventoryOld inventory;
     [SerializeField] internal EquipmentSlot helmetSlot;
     [SerializeField] internal EquipmentSlot vestSlot;
     [SerializeField] internal EquipmentSlot shoesSlot;
