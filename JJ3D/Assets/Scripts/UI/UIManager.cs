@@ -4,7 +4,7 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] GameObject pauseObj;
     [SerializeField] GameObject controlObj;
-    [SerializeField] GameObject inventoryObj;
+    [SerializeField] Inventory inventory;
 
     private GameManager gameManager;
 
@@ -18,7 +18,7 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (inventoryObj.activeInHierarchy || pauseObj.activeInHierarchy) DefaultUI();
+            if (inventory.isActive || pauseObj.activeInHierarchy) DefaultUI();
             else if (controlObj.activeInHierarchy) PauseButton();
         }
     }
@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1;
         pauseObj.SetActive(false);
         controlObj.SetActive(true);
-        inventoryObj.SetActive(false);
+        inventory.ButtonActive(false);
     }
 
     public void PauseButton()
@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 0;
         pauseObj.SetActive(true);
         controlObj.SetActive(false);
-        inventoryObj.SetActive(false);
+        inventory.ButtonActive(false);
     }
 
     public void InventoryButton()
@@ -48,6 +48,6 @@ public class UIManager : MonoBehaviour
         gameManager.ButtonSound();
         pauseObj.SetActive(false);
         controlObj.SetActive(false);
-        inventoryObj.SetActive(true);
+        inventory.ButtonActive(true);
     }
 }
