@@ -42,6 +42,7 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler, IBeginDragHand
 
     public void OnDrop(PointerEventData eventData)
     {
+        Debug.Log(this.name + " is Drop");
         OnItemDrop?.Invoke(this);
     }
 
