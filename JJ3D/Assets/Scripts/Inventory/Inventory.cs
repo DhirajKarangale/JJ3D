@@ -9,13 +9,14 @@ public class Inventory : MonoBehaviour
     [SerializeField] InventoryItem itemPrefab;
     [SerializeField] RectTransform itemContent;
     [SerializeField] MouseFollower mouseFollower;
+    [SerializeField] ItemActionPanel actionPanel;
 
     public List<InventoryItemObj> initialItems = new List<InventoryItemObj>();
 
     private List<InventoryItem> items;
     private int currDraggedItemIdx;
 
-    // public event Action<int> OnActionRequired;
+    public event Action<int> OnActionRequired;
     public event Action<int> OnBeginDragging;
     public event Action<int, int> OnSwapItems;
 
@@ -23,6 +24,7 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
+        actionPanel.Toggle(false);
         currDraggedItemIdx = -1;
         mouseFollower.Active(false);
         items = new List<InventoryItem>();
@@ -32,6 +34,53 @@ public class Inventory : MonoBehaviour
     }
 
 
+    private void PerformAction(int index)
+    {
+        InventoryItemObj inventoryItem = inventoryData.GetItemAt(index);
+        if (inventoryItem.isEmpty) return;
+
+        IDestroyableItem destroyableItem = inventoryItem.item as IDestroyableItem;
+        if (destroyableItem != null)
+        {
+            inventoryData.RemoveItem(index, 1);
+        }
+
+        IItemAction itemAction = inventoryItem.item as IItemAction;
+        if (itemAction != null)
+        {
+            itemAction.PerformAction(GameManager.instance.playerHealth.gameObject, inventoryItem.itemState);
+            // Action Sound (Item CLick Sound)    
+            if (inventoryData.GetItemAt(index).isEmpty) ResetAllItems();
+        }
+    }
+
+    // PerformAction Rename from
+    public void ActionRequired(int index)
+    {
+        InventoryItemObj inventoryItem = inventoryData.GetItemAt(index);
+        if (inventoryItem.isEmpty) return;
+
+        IItemAction itemAction = inventoryItem.item as IItemAction;
+        if (itemAction != null)
+        {
+            ShowItemAction(index);
+            AddAction(itemAction.ActionName, () => PerformAction(index));
+        }
+
+        IDestroyableItem destroyableItem = inventoryItem.item as IDestroyableItem;
+        if (destroyableItem != null)
+        {
+            AddAction("Drop", () => DropItem(index, inventoryItem.count));
+        }
+    }
+
+    private void DropItem(int index, int amount)
+    {
+        inventoryData.RemoveItem(index, amount);
+        ResetAllItems();
+        // Drop Sound
+        UpdateItemUI();
+    }
 
     private void BeginDragging(int itemIndex)
     {
@@ -50,7 +99,7 @@ public class Inventory : MonoBehaviour
         ResetAllItems();
         foreach (var item in inventoryState)
         {
-            UpdateData(item.Key, item.Value.item.Sprite, item.Value.item.Count);
+            UpdateData(item.Key, item.Value.item.Sprite, item.Value.count);
         }
     }
 
@@ -61,6 +110,8 @@ public class Inventory : MonoBehaviour
         DeselectItems();
         if (items[index].isEmpty) return;
         items[index].Select();
+
+        OnActionRequired?.Invoke(index);
     }
 
     private void OnBeginDrag(InventoryItem item)
@@ -116,14 +167,15 @@ public class Inventory : MonoBehaviour
         foreach (var item in items)
         {
             item.Reset();
-            item.Deselect();
         }
+        DeselectItems();
     }
 
     private void SetActions()
     {
         OnBeginDragging += BeginDragging;
         OnSwapItems += SwapItems;
+        OnActionRequired += ActionRequired;
         inventoryData.OnInventoryUpdate += InventoryUpdate;
     }
 
@@ -133,12 +185,24 @@ public class Inventory : MonoBehaviour
         {
             item.Deselect();
         }
+        actionPanel.Toggle(false);
     }
 
     private void ResetDragedItem()
     {
         currDraggedItemIdx = -1;
         mouseFollower.Active(false);
+    }
+
+    public void AddAction(string actionName, Action performAction)
+    {
+        actionPanel.AddButon(actionName, performAction);
+    }
+
+    public void ShowItemAction(int index)
+    {
+        actionPanel.Toggle(true);
+        actionPanel.transform.position = items[index].transform.position;
     }
 
 
@@ -158,17 +222,22 @@ public class Inventory : MonoBehaviour
     }
 
 
+    private void UpdateItemUI()
+    {
+        ResetDragedItem();
+        DeselectItems();
+        foreach (var item in inventoryData.GetCurrInventoryState())
+        {
+            UpdateData(item.Key, item.Value.item.Sprite, item.Value.count);
+        }
+    }
+
     public void ButtonActive(bool isActive)
     {
         obj.SetActive(isActive);
 
         if (!isActive) return;
 
-        ResetDragedItem();
-        DeselectItems();
-        foreach (var item in inventoryData.GetCurrInventoryState())
-        {
-            UpdateData(item.Key, item.Value.item.Sprite, item.Value.item.Count);
-        }
+        UpdateItemUI();
     }
 }

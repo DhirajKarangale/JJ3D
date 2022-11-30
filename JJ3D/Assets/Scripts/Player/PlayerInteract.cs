@@ -33,7 +33,7 @@ public class PlayerInteract : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 100))
         {
-            Item item = hit.collider.GetComponent<Item>();
+            ItemOld item = hit.collider.GetComponent<ItemOld>();
 
             if (item)
             {

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EquipementManager : MonoBehaviour
 {
-    public delegate void OnEquipementChanged(Item newItem, Item oldItem);
+    public delegate void OnEquipementChanged(ItemOld newItem, ItemOld oldItem);
     public OnEquipementChanged onEquipementChanged;
 
     [SerializeField] GameObject objHelmet;
@@ -22,7 +22,7 @@ public class EquipementManager : MonoBehaviour
 
     private GameManager gameManager;
     private InventoryOld inventory;
-    private Item[] currEquipments;
+    private ItemOld[] currEquipments;
 
     private void Awake()
     {
@@ -36,7 +36,7 @@ public class EquipementManager : MonoBehaviour
 
         crossHair.SetActive(false);
         int noOfSlots = System.Enum.GetNames(typeof(ItemType)).Length;
-        currEquipments = new Item[noOfSlots];
+        currEquipments = new ItemOld[noOfSlots];
     }
 
     private void Start()
@@ -45,10 +45,10 @@ public class EquipementManager : MonoBehaviour
         inventory = gameManager.inventory;
     }
 
-    public void Equip(Item newItem)
+    public void Equip(ItemOld newItem)
     {
         int slotIndex = (int)newItem.itemType;
-        Item oldItem = currEquipments[slotIndex];
+        ItemOld oldItem = currEquipments[slotIndex];
         if (oldItem) inventory.Add(oldItem);
         currEquipments[slotIndex] = newItem;
         newItem.Equipped();
@@ -62,7 +62,7 @@ public class EquipementManager : MonoBehaviour
         {
             ItemStatus(currEquipments[slotIndex], false);
 
-            Item oldItem = currEquipments[slotIndex];
+            ItemOld oldItem = currEquipments[slotIndex];
 
             if (!isThrowItem)
             {
@@ -80,7 +80,7 @@ public class EquipementManager : MonoBehaviour
         }
     }
 
-    private void ItemStatus(Item item, bool isActive)
+    private void ItemStatus(ItemOld item, bool isActive)
     {
         switch (item.itemType)
         {
@@ -146,7 +146,7 @@ public class EquipementManager : MonoBehaviour
         }
     }
 
-    public void DestroyItem(Item item)
+    public void DestroyItem(ItemOld item)
     {
         switch (item.itemType)
         {

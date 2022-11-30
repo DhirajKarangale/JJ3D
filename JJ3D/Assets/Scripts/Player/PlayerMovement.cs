@@ -158,7 +158,7 @@ public class PlayerMovement : MonoBehaviour
         public AnimationCurve SlopeCurveModifier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
         private bool m_Running;
         [HideInInspector] public float CurrentTargetSpeed = 8f;
-        [HideInInspector] public Item shoes;
+        [HideInInspector] public ItemOld shoes;
 
         public void UpdateDesiredTargetSpeed(Vector2 input)
         {
@@ -464,7 +464,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void OnEquipmentChanged(Item newItem, Item oldItem)
+    private void OnEquipmentChanged(ItemOld newItem, ItemOld oldItem)
     {
         if (oldItem && oldItem.itemType == ItemType.Shoes) movement.shoes = null;
         if (newItem && newItem.itemType == ItemType.Shoes) movement.shoes = newItem;

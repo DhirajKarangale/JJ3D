@@ -4,11 +4,11 @@ using UnityEngine;
 public class InventoryOld : MonoBehaviour
 {
     public InventoryUIOld inventoryUI;
-    [SerializeField] Item itemDefault;
+    [SerializeField] ItemOld itemDefault;
     [SerializeField] Transform player;
 
     public int space = 20;
-    public List<Item> items = new List<Item>();
+    public List<ItemOld> items = new List<ItemOld>();
 
     public delegate void OnItemChanged();
     public OnItemChanged onItemChanged;
@@ -25,7 +25,7 @@ public class InventoryOld : MonoBehaviour
         itemDefault.Use();
     }
 
-    public bool Add(Item item)
+    public bool Add(ItemOld item)
     {
         if (items.Count >= space)
         {
@@ -39,14 +39,14 @@ public class InventoryOld : MonoBehaviour
         return true;
     }
 
-    public void Remove(Item item, bool isThrow)
+    public void Remove(ItemOld item, bool isThrow)
     {
         if (isThrow) ThrowItem(item);
         items.Remove(item);
         onItemChanged?.Invoke();
     }
 
-    private void ThrowItem(Item item)
+    private void ThrowItem(ItemOld item)
     {
         item.transform.position = player.transform.position + new Vector3(0, 2, 2);
         item.gameObject.SetActive(true);

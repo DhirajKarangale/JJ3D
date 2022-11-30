@@ -35,8 +35,8 @@ public class PlayerHealth : MonoBehaviour
 
     private GameManager gameManager;
     private EquipementManager equipementManager;
-    private Item helmet;
-    private Item vest;
+    private ItemOld helmet;
+    private ItemOld vest;
 
     private void Start()
     {
@@ -48,6 +48,14 @@ public class PlayerHealth : MonoBehaviour
 
         InvokeRepeating("HungerReducer", 120, 45);
         InvokeRepeating("AutoHealthIncrease", 60, 15);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            TakeDamage(10);
+        }
     }
 
     public void TakeDamage(float damage)
@@ -84,7 +92,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    private void OnEquipmentChanged(Item newItem, Item oldItem)
+    private void OnEquipmentChanged(ItemOld newItem, ItemOld oldItem)
     {
         if (oldItem && oldItem.itemType == ItemType.Helmet) helmet = null;
         if (oldItem && oldItem.itemType == ItemType.Vest) vest = null;
@@ -93,7 +101,7 @@ public class PlayerHealth : MonoBehaviour
         if (newItem && newItem.itemType == ItemType.Vest) vest = newItem;
     }
 
-    private float Armor(Item item, float damage)
+    private float Armor(ItemOld item, float damage)
     {
         if (item.currHealth > 0)
         {
@@ -125,7 +133,8 @@ public class PlayerHealth : MonoBehaviour
 
     public void IncreaseHealth(float modifier)
     {
-        currHealth = Mathf.Clamp(0, mxHealth, currHealth + modifier);
+        // currHealth = Mathf.Clamp(0, mxHealth, currHealth + modifier); // Problem in this code
+        currHealth += modifier; // This is temp Substitue Replace it with valid code
         currHunger = Mathf.Clamp(0, mxHunger, currHunger + (modifier * 1.5f));
         UpdateSliders();
     }

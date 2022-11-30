@@ -7,9 +7,9 @@ public class InventorySlotOld : MonoBehaviour
     public Button buttonRemove;
     public Button buttonUse;
     [SerializeField] InventoryOld inventory;
-    [HideInInspector] public Item item;
+    [HideInInspector] public ItemOld item;
 
-    public void AddItem(Item newItem)
+    public void AddItem(ItemOld newItem)
     {
         item = newItem;
 

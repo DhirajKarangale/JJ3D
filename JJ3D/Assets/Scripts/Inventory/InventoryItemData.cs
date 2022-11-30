@@ -1,15 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
-public class InventoryItemData : ScriptableObject
+public abstract class InventoryItemData : ScriptableObject
 {
     [field: SerializeField]
     public int MxStackSize { get; set; } = 1;
-
-    [field: SerializeField]
-    public int Count { get; set; }
 
     [field: SerializeField]
     public string Name { get; set; }
@@ -22,5 +19,19 @@ public class InventoryItemData : ScriptableObject
 
     public int id => GetInstanceID();
 
+    [field: SerializeField]
+    public List<ItemParameter> DefaultParameterList { get; set; }
+}
 
+
+[Serializable]
+public struct ItemParameter : IEquatable<ItemParameter>
+{
+    public ItemParameterData itemParameter;
+    public float value;
+
+    public bool Equals(ItemParameter other)
+    {
+        return other.itemParameter == itemParameter;
+    }
 }

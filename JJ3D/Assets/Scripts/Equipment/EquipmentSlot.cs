@@ -12,7 +12,7 @@ public class EquipmentSlot : MonoBehaviour
     [SerializeField] Button buttonRemove;
     [SerializeField] Button buttonUpgrade;
 
-    [HideInInspector] public Item equipedItem;
+    [HideInInspector] public ItemOld equipedItem;
     private EquipementManager equipementManager;
     private GameManager gameManager;
     private float upgradeCost;
@@ -30,7 +30,7 @@ public class EquipmentSlot : MonoBehaviour
         else RemoveItem(true);
     }
 
-    public void EquipItem(Item item)
+    public void EquipItem(ItemOld item)
     {
         equipedItem = item;
 

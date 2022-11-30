@@ -31,7 +31,7 @@ public class PlayerAttack : MonoBehaviour
     private AnimatorOverrideController overrideController;
     private EquipementManager equipementManager;
     private float coolDownTime;
-    private Item item;
+    private ItemOld item;
     private GameManager gameManager;
 
     private bool isSwardNormalActive;
