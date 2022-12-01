@@ -4,18 +4,23 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class InventoryItem : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDropHandler, IDragHandler
+public class InventorySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDropHandler, IDragHandler
 {
+    internal GameObject objItem;
     [SerializeField] Image imgItem;
     [SerializeField] TMP_Text txtCount;
-    [SerializeField] Outline outline;
+    [SerializeField] internal Outline outline;
+    [SerializeField] GameObject objSelect;
+    [SerializeField] TMP_Text txtActionName;
 
     internal bool isEmpty;
 
-    public event Action<InventoryItem> OnClicked;
-    public event Action<InventoryItem> OnItemBeginDrag;
-    public event Action<InventoryItem> OnItemEndDrag;
-    public event Action<InventoryItem> OnItemDrop;
+    public event Action<InventorySlot> OnClicked;
+    public event Action<InventorySlot> OnDragStart;
+    public event Action<InventorySlot> OnDragEnd;
+    public event Action<InventorySlot> OnDropped;
+    public event Action<InventorySlot> OnUseButton;
+    public event Action<InventorySlot> OnDropButton;
 
     private void Awake()
     {
@@ -31,18 +36,18 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler, IBeginDragHand
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        OnItemEndDrag?.Invoke(this);
+        OnDragEnd?.Invoke(this);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (isEmpty) return;
-        OnItemBeginDrag?.Invoke(this);
+        OnDragStart?.Invoke(this);
     }
 
     public void OnDrop(PointerEventData eventData)
     {
-        OnItemDrop?.Invoke(this);
+        OnDropped?.Invoke(this);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -52,12 +57,13 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler, IBeginDragHand
 
 
 
-    public void SetData(Sprite sprite, int count)
+    public void SetData(Sprite sprite, int count, string actionName = "")
     {
         imgItem.gameObject.SetActive(true);
         imgItem.sprite = sprite;
         txtCount.gameObject.SetActive(true);
         txtCount.text = count.ToString();
+        txtActionName.text = actionName;
         isEmpty = false;
     }
 
@@ -65,17 +71,30 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler, IBeginDragHand
     {
         imgItem.gameObject.SetActive(false);
         txtCount.gameObject.SetActive(false);
-        outline.enabled = false;
+        Deselect();
         isEmpty = true;
     }
 
     public void Select()
     {
         outline.enabled = true;
+        objSelect.SetActive(true);
     }
 
     public void Deselect()
     {
         outline.enabled = false;
+        objSelect.SetActive(false);
+    }
+
+
+    public void ButtonDrop()
+    {
+        OnDropButton?.Invoke(this);
+    }
+
+    public void ButtonUse()
+    {
+        OnUseButton?.Invoke(this);
     }
 }

@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class MouseFollower : MonoBehaviour
+public class DragItem : MonoBehaviour
 {
     [SerializeField] Canvas canvas;
-    [SerializeField] InventoryItem inventoryItem;
+    [SerializeField] InventorySlot inventoryItem;
 
     private void Update()
     {

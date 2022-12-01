@@ -6,7 +6,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] Camera cam;
     public Animator animator;
     [SerializeField] CapsuleCollider capsuleCollider;
-    [SerializeField] EquipmentSlot equipmentSlot;
+    [SerializeField] EquipmentSlotOld equipmentSlot;
     [SerializeField] PlayerMovement playerMovement;
 
     [Header("Sward")]
@@ -29,7 +29,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] AudioClip clipArrow;
 
     private AnimatorOverrideController overrideController;
-    private EquipementManager equipementManager;
+    private EquipementManagerOld equipementManager;
     private float coolDownTime;
     private ItemOld item;
     private GameManager gameManager;

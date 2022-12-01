@@ -6,87 +6,124 @@ public class Inventory : MonoBehaviour
 {
     [SerializeField] GameObject obj;
     [SerializeField] InventoryData inventoryData;
-    [SerializeField] InventoryItem itemPrefab;
+    [SerializeField] InventorySlot itemPrefab;
     [SerializeField] RectTransform itemContent;
-    [SerializeField] MouseFollower mouseFollower;
-    [SerializeField] ItemActionPanel actionPanel;
+    [SerializeField] DragItem dragItem;
 
-    public List<InventoryItemObj> initialItems = new List<InventoryItemObj>();
-
-    private List<InventoryItem> items;
+    private List<InventorySlot> inventorySlots;
     private int currDraggedItemIdx;
-
-    public event Action<int> OnActionRequired;
-    public event Action<int> OnBeginDragging;
-    public event Action<int, int> OnSwapItems;
 
     public bool isActive { get { return obj.activeInHierarchy; } }
 
     private void Start()
     {
-        actionPanel.Toggle(false);
         currDraggedItemIdx = -1;
-        mouseFollower.Active(false);
-        items = new List<InventoryItem>();
-        PrepareItems(inventoryData.size);
-        SetActions();
+        dragItem.Active(false);
+        inventorySlots = new List<InventorySlot>();
+        PrepareSlots(inventoryData.size);
         PrepareInventoryData();
     }
 
 
-    private void PerformAction(int index)
+    private void OnInventoryChange(Dictionary<int, InventoryItem> inventoryState)
     {
-        InventoryItemObj inventoryItem = inventoryData.GetItemAt(index);
-        if (inventoryItem.isEmpty) return;
-
-        IDestroyableItem destroyableItem = inventoryItem.item as IDestroyableItem;
-        if (destroyableItem != null)
+        ResetAllItems();
+        foreach (var item in inventoryState)
         {
-            inventoryData.RemoveItem(index, 1);
-        }
-
-        IItemAction itemAction = inventoryItem.item as IItemAction;
-        if (itemAction != null)
-        {
-            itemAction.PerformAction(GameManager.instance.playerHealth.gameObject, inventoryItem.itemState);
-            // Action Sound (Item CLick Sound)    
-            if (inventoryData.GetItemAt(index).isEmpty) ResetAllItems();
+            UpdateItem(item.Key, item.Value.item.itemData.sprite, item.Value.count, item.Value.item.itemData.actionName);
         }
     }
 
-    // PerformAction Rename from
-    public void ActionRequired(int index)
+    private void OnClicked(InventorySlot item)
     {
-        InventoryItemObj inventoryItem = inventoryData.GetItemAt(index);
+        int index = inventorySlots.IndexOf(item);
+        DeselectAllItems(index);
+        if ((index == -1) || inventorySlots[index].isEmpty) return;
+
+        if (inventorySlots[index].outline.enabled) inventorySlots[index].Deselect();
+        else inventorySlots[index].Select();
+    }
+
+    private void OnDragStart(InventorySlot item)
+    {
+        int index = inventorySlots.IndexOf(item);
+        if (index == -1) return;
+
+        InventoryItem itemObj = inventoryData.GetItemAt(index);
+        if (itemObj.isEmpty) return;
+
+        currDraggedItemIdx = index;
+        DeselectAllItems();
+        CreateDragItem(itemObj.item.itemData.sprite, itemObj.count);
+    }
+
+    private void OnDragEnd(InventorySlot item)
+    {
+        ResetDragedItem();
+    }
+
+    private void OnDropped(InventorySlot item)
+    {
+        int index = inventorySlots.IndexOf(item);
+        if (currDraggedItemIdx == -1) return;
+        SwapItems(currDraggedItemIdx, index);
+    }
+
+    private void OnDropButton(InventorySlot item)
+    {
+        int index = inventorySlots.IndexOf(item);
+        if (index == -1) return;
+
+        InventoryItem inventoryItem = inventoryData.GetItemAt(index);
         if (inventoryItem.isEmpty) return;
 
-        IItemAction itemAction = inventoryItem.item as IItemAction;
-        if (itemAction != null)
-        {
-            ShowItemAction(index);
-            AddAction(itemAction.ActionName, () => PerformAction(index));
-        }
+        DropItem(index, inventoryItem.count);
+    }
 
-        IDestroyableItem destroyableItem = inventoryItem.item as IDestroyableItem;
-        if (destroyableItem != null)
+    private void OnUseButton(InventorySlot item)
+    {
+        int index = inventorySlots.IndexOf(item);
+        if (index == -1) return;
+
+        InventoryItem inventoryItem = inventoryData.GetItemAt(index);
+        if (inventoryItem.isEmpty) return;
+        inventoryData.RemoveItem(index, 1, null);
+
+        inventoryItem.item.itemData.PerformAction(GameManager.instance.playerStat);
+        UpdateUI();
+    }
+
+
+    private void PrepareSlots(int size)
+    {
+        for (int i = 0; i < size; i++)
         {
-            AddAction("Drop", () => DropItem(index, inventoryItem.count));
+            InventorySlot item = Instantiate(itemPrefab);
+            item.transform.SetParent(itemContent);
+            item.transform.localScale = Vector3.one;
+            inventorySlots.Add(item);
+
+            item.OnClicked += OnClicked;
+            item.OnDragStart += OnDragStart;
+            item.OnDragEnd += OnDragEnd;
+            item.OnDropped += OnDropped;
+            item.OnDropButton += OnDropButton;
+            item.OnUseButton += OnUseButton;
         }
+    }
+
+    private void PrepareInventoryData()
+    {
+        inventoryData.Initialize();
+        inventoryData.OnInventoryChange += OnInventoryChange;
     }
 
     private void DropItem(int index, int amount)
     {
-        inventoryData.RemoveItem(index, amount);
+        inventoryData.RemoveItem(index, amount, GameManager.instance.playerStat);
         ResetAllItems();
         // Drop Sound
-        UpdateItemUI();
-    }
-
-    private void BeginDragging(int itemIndex)
-    {
-        InventoryItemObj itemObj = inventoryData.GetItemAt(itemIndex);
-        if (itemObj.isEmpty) return;
-        CreateDragItem(itemObj.item.Sprite, itemObj.count);
+        UpdateUI();
     }
 
     private void SwapItems(int itemIndex1, int itemIndex2)
@@ -94,150 +131,56 @@ public class Inventory : MonoBehaviour
         inventoryData.SwapItems(itemIndex1, itemIndex2);
     }
 
-    private void InventoryUpdate(Dictionary<int, InventoryItemObj> inventoryState)
-    {
-        ResetAllItems();
-        foreach (var item in inventoryState)
-        {
-            UpdateData(item.Key, item.Value.item.Sprite, item.Value.count);
-        }
-    }
-
-    private void OnClicked(InventoryItem item)
-    {
-        int index = items.IndexOf(item);
-        if (index == -1) return;
-        DeselectItems();
-        if (items[index].isEmpty) return;
-        items[index].Select();
-
-        OnActionRequired?.Invoke(index);
-    }
-
-    private void OnBeginDrag(InventoryItem item)
-    {
-        int index = items.IndexOf(item);
-        if (index == -1) return;
-        currDraggedItemIdx = index;
-        OnClicked(item);
-        OnBeginDragging?.Invoke(index);
-    }
-
-    private void OnEndDrag(InventoryItem item)
-    {
-        ResetDragedItem();
-    }
-
-    private void OnDrop(InventoryItem item)
-    {
-        int index = items.IndexOf(item);
-        if (currDraggedItemIdx == -1) return;
-        OnSwapItems?.Invoke(currDraggedItemIdx, index);
-    }
-
-
-    private void PrepareItems(int size)
-    {
-        for (int i = 0; i < size; i++)
-        {
-            InventoryItem item = Instantiate(itemPrefab);
-            item.transform.SetParent(itemContent);
-            item.transform.localScale = Vector3.one;
-            items.Add(item);
-
-            item.OnItemDrop += OnDrop;
-            item.OnClicked += OnClicked;
-            item.OnItemBeginDrag += OnBeginDrag;
-            item.OnItemEndDrag += OnEndDrag;
-        }
-    }
-
-    private void PrepareInventoryData()
-    {
-        inventoryData.Initialize();
-        foreach (InventoryItemObj item in initialItems)
-        {
-            if (item.isEmpty) continue;
-            inventoryData.AddItem(item);
-        }
-    }
-
     private void ResetAllItems()
     {
-        foreach (var item in items)
+        foreach (var item in inventorySlots)
         {
             item.Reset();
         }
-        DeselectItems();
     }
 
-    private void SetActions()
+    private void DeselectAllItems(int leftindex = -1)
     {
-        OnBeginDragging += BeginDragging;
-        OnSwapItems += SwapItems;
-        OnActionRequired += ActionRequired;
-        inventoryData.OnInventoryUpdate += InventoryUpdate;
-    }
-
-    private void DeselectItems()
-    {
-        foreach (InventoryItem item in items)
+        for (int i = 0; i < inventorySlots.Count; i++)
         {
-            item.Deselect();
+            if (i != leftindex) inventorySlots[i].Deselect();
         }
-        actionPanel.Toggle(false);
+    }
+
+    private void CreateDragItem(Sprite sprite, int count)
+    {
+        dragItem.Active(true);
+        dragItem.SetData(sprite, count);
     }
 
     private void ResetDragedItem()
     {
         currDraggedItemIdx = -1;
-        mouseFollower.Active(false);
+        dragItem.Active(false);
     }
 
-    public void AddAction(string actionName, Action performAction)
+    public void UpdateItem(int index, Sprite sprite, int count, string actionName)
     {
-        actionPanel.AddButon(actionName, performAction);
-    }
-
-    public void ShowItemAction(int index)
-    {
-        actionPanel.Toggle(true);
-        actionPanel.transform.position = items[index].transform.position;
-    }
-
-
-
-    public void CreateDragItem(Sprite sprite, int count)
-    {
-        mouseFollower.Active(true);
-        mouseFollower.SetData(sprite, count);
-    }
-
-    public void UpdateData(int index, Sprite sprite, int count)
-    {
-        if (items.Count > index)
+        if (inventorySlots.Count > index)
         {
-            items[index].SetData(sprite, count);
+            inventorySlots[index].SetData(sprite, count, actionName);
         }
     }
 
-
-    private void UpdateItemUI()
+    private void UpdateUI()
     {
         ResetDragedItem();
-        DeselectItems();
+        DeselectAllItems();
         foreach (var item in inventoryData.GetCurrInventoryState())
         {
-            UpdateData(item.Key, item.Value.item.Sprite, item.Value.count);
+            UpdateItem(item.Key, item.Value.item.itemData.sprite, item.Value.count, item.Value.item.itemData.actionName);
         }
     }
 
     public void ButtonActive(bool isActive)
     {
         obj.SetActive(isActive);
-
         if (!isActive) return;
-
-        UpdateItemUI();
+        UpdateUI();
     }
 }

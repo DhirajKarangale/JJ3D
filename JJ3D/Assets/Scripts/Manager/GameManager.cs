@@ -3,17 +3,18 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     [Header("Refrence")]
-    [SerializeField] internal EquipementManager equipementManager;
+    [SerializeField] internal EquipementManagerOld equipementManager;
     [SerializeField] internal ForestGenerator forestGenerator;
+    [SerializeField] internal PlayerStat playerStat;
     [SerializeField] internal PlayerAttack playerAttack;
     [SerializeField] internal PlayerHealth playerHealth;
-    [SerializeField] internal PlayerInteract playerInteract;
+    // [SerializeField] internal PlayerInteract playerInteract;
     [SerializeField] internal PlayerMovement playerMovement;
     [SerializeField] internal InventoryOld inventory;
-    [SerializeField] internal EquipmentSlot helmetSlot;
-    [SerializeField] internal EquipmentSlot vestSlot;
-    [SerializeField] internal EquipmentSlot shoesSlot;
-    [SerializeField] internal EquipmentSlot weaponSlot;
+    [SerializeField] internal EquipmentSlotOld helmetSlot;
+    [SerializeField] internal EquipmentSlotOld vestSlot;
+    [SerializeField] internal EquipmentSlotOld shoesSlot;
+    [SerializeField] internal EquipmentSlotOld weaponSlot;
     [SerializeField] GameObject mainCanvas;
 
     [Header("Effect")]
@@ -139,7 +140,7 @@ public class GameManager : Singleton<GameManager>
         }
         playerAttack.enabled = false;
         playerHealth.enabled = false;
-        playerInteract.enabled = false;
+        // playerInteract.enabled = false;
         playerMovement.enabled = false;
     }
 }

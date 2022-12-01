@@ -6,7 +6,7 @@ public class PlayerWeapon : MonoBehaviour
     [SerializeField] IceSward iceSward;
     [HideInInspector] internal float damage;
     private GameManager gameManager;
-    private EquipmentSlot equipmentSlot;
+    private EquipmentSlotOld equipmentSlot;
 
     private void Start()
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EquipmentSlot : MonoBehaviour
+public class EquipmentSlotOld : MonoBehaviour
 {
     [SerializeField] Sprite defaultSprite;
     [SerializeField] Image icon;
@@ -13,7 +13,7 @@ public class EquipmentSlot : MonoBehaviour
     [SerializeField] Button buttonUpgrade;
 
     [HideInInspector] public ItemOld equipedItem;
-    private EquipementManager equipementManager;
+    private EquipementManagerOld equipementManager;
     private GameManager gameManager;
     private float upgradeCost;
 

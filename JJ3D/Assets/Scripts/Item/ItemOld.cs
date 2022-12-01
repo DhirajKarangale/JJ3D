@@ -20,8 +20,8 @@ public class ItemOld : MonoBehaviour
     public int level;
 
     private InventoryOld inventory;
-    private EquipmentSlot equipmentSlot;
-    private EquipementManager equipementManager;
+    private EquipmentSlotOld equipmentSlot;
+    private EquipementManagerOld equipementManager;
 
     private void Start()
     {

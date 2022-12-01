@@ -34,7 +34,7 @@ public class PlayerHealth : MonoBehaviour
     private float currHunger;
 
     private GameManager gameManager;
-    private EquipementManager equipementManager;
+    private EquipementManagerOld equipementManager;
     private ItemOld helmet;
     private ItemOld vest;
 

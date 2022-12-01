@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EquipementManager : MonoBehaviour
+public class EquipementManagerOld : MonoBehaviour
 {
     public delegate void OnEquipementChanged(ItemOld newItem, ItemOld oldItem);
     public OnEquipementChanged onEquipementChanged;
