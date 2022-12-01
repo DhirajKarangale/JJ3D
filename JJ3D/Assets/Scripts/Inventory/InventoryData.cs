@@ -6,70 +6,13 @@ using System.Collections.Generic;
 [CreateAssetMenu]
 public class InventoryData : ScriptableObject
 {
-    [SerializeField] List<InventoryItem> inventoryItems;
-
-    [field: SerializeField]
-    public int size { get; set; } = 10;
-
-    public event Action<Dictionary<int, InventoryItem>> OnInventoryChange;
+    [SerializeField] internal int size = 10;
+    private List<InventoryItem> inventoryItems;
+    public event Action<Dictionary<int, ItemData>> OnInventoryChange;
 
     private void ChangeInventory()
     {
         OnInventoryChange?.Invoke(GetCurrInventoryState());
-    }
-
-    // AddNonStackableItem Rename from
-    private int AddItemToFirstFreeSlot(Item item, GameObject objItem, int count)
-    {
-        InventoryItem newItem = new InventoryItem
-        {
-            item = item,
-            count = count
-        };
-
-        for (int i = 0; i < inventoryItems.Count; i++)
-        {
-            if (inventoryItems[i].isEmpty)
-            {
-                inventoryItems[i] = newItem;
-                return count;
-            }
-        }
-
-        return 0;
-    }
-
-    private int AddStackableItem(Item item, GameObject objItem, int count)
-    {
-        for (int i = 0; i < inventoryItems.Count; i++)
-        {
-            if (inventoryItems[i].isEmpty) continue;
-            if (inventoryItems[i].item.itemData.id == item.itemData.id)
-            {
-                int amountPossibleToTake = inventoryItems[i].item.itemData.mxStackSize - inventoryItems[i].count;
-
-                if (count > amountPossibleToTake)
-                {
-                    inventoryItems[i] = inventoryItems[i].ChangeQuantity(inventoryItems[i].item.itemData.mxStackSize);
-                    count -= amountPossibleToTake;
-                }
-                else
-                {
-                    inventoryItems[i] = inventoryItems[i].ChangeQuantity(inventoryItems[i].count + count);
-                    ChangeInventory();
-                    return 0;
-                }
-            }
-        }
-
-        while ((count > 0) && !IsInventoryFull())
-        {
-            int newCount = Mathf.Clamp(count, 0, item.itemData.mxStackSize);
-            count -= newCount;
-            AddItemToFirstFreeSlot(item, objItem, newCount);
-        }
-
-        return count;
     }
 
     private bool IsInventoryFull() => inventoryItems.Where(item => item.isEmpty).Any() == false;
@@ -83,32 +26,37 @@ public class InventoryData : ScriptableObject
         }
     }
 
-    public void AddItem(Item item, GameObject objItem, int count)
+    public void AddItem(Item item)
     {
-        if (!item.itemData.isStackable)
+        if (!IsInventoryFull())
         {
-            while ((count > 0) && !IsInventoryFull())
+            InventoryItem newItem = new InventoryItem
             {
-                count -= AddItemToFirstFreeSlot(item, objItem, 1);
+                item = item
+            };
+
+            for (int i = 0; i < inventoryItems.Count; i++)
+            {
+                if (inventoryItems[i].isEmpty)
+                {
+                    inventoryItems[i] = newItem;
+                    break;
+                }
             }
-            ChangeInventory();
-            // return count;
         }
-        count = AddStackableItem(item, objItem, count);
         ChangeInventory();
-        // return count;
     }
 
-    public Dictionary<int, InventoryItem> GetCurrInventoryState()
+    public Dictionary<int, ItemData> GetCurrInventoryState()
     {
-        Dictionary<int, InventoryItem> dictonary = new Dictionary<int, InventoryItem>();
+        Dictionary<int, ItemData> dictonary = new Dictionary<int, ItemData>();
         for (int i = 0; i < inventoryItems.Count; i++)
         {
             if (inventoryItems[i].isEmpty)
             {
                 continue;
             }
-            dictonary[i] = inventoryItems[i];
+            dictonary[i] = inventoryItems[i].item.itemData;
         }
         return dictonary;
     }
@@ -126,25 +74,16 @@ public class InventoryData : ScriptableObject
         ChangeInventory();
     }
 
-    public void RemoveItem(int index, int amount, PlayerStat playerStat)
+    public void RemoveItem(int index, Transform playerPos)
     {
         if (inventoryItems.Count > index)
         {
             if (inventoryItems[index].isEmpty) return;
-            int remainder = inventoryItems[index].count - amount;
-            if (remainder <= 0)
+            if (playerPos != null)
             {
-                if (playerStat)
-                {
-                    Debug.Log("name :  " + inventoryItems[index].item.name);
-                    inventoryItems[index].item.ThrowItem(playerStat.transform.position);
-                }
-                inventoryItems[index] = InventoryItem.GetEmptyItem();
+                inventoryItems[index].item.ThrowItem(playerPos.position + (playerPos.forward * 3));
             }
-            else
-            {
-                inventoryItems[index] = inventoryItems[index].ChangeQuantity(remainder);
-            }
+            inventoryItems[index] = InventoryItem.GetEmptyItem();
             ChangeInventory();
         }
     }
@@ -153,7 +92,6 @@ public class InventoryData : ScriptableObject
 [System.Serializable]
 public struct InventoryItem
 {
-    public int count;
     public Item item;
     public bool isEmpty => item == null;
 
@@ -162,7 +100,6 @@ public struct InventoryItem
         return new InventoryItem
         {
             item = this.item,
-            count = newCount
         };
     }
 
@@ -171,7 +108,6 @@ public struct InventoryItem
         return new InventoryItem
         {
             item = null,
-            count = 0,
         };
     }
 }

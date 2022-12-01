@@ -8,6 +8,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] internal PlayerStat playerStat;
     [SerializeField] internal PlayerAttack playerAttack;
     [SerializeField] internal PlayerHealth playerHealth;
+    [SerializeField] internal PickUpSystem pickUpSystem;
     // [SerializeField] internal PlayerInteract playerInteract;
     [SerializeField] internal PlayerMovement playerMovement;
     [SerializeField] internal InventoryOld inventory;
@@ -37,6 +38,8 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] AudioClip clipPlayerHurt;
     [SerializeField] AudioClip clipHit;
     [SerializeField] AudioClip clipCollect;
+
+    public Transform playerPos { get { return playerStat.transform; } }
 
     public bool isGameOver;
 

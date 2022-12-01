@@ -18,12 +18,12 @@ public class PickUpSystem : MonoBehaviour
         GetInput();
     }
 
-    private void PickUp(Item item)
+    public void PickUp(Item item)
     {
         if (item)
         {
             gameManager.PickEffect(item.transform.position);
-            inventoryData.AddItem(item, item.gameObject, 1);
+            inventoryData.AddItem(item);
             item.DesableItem();
         }
     }

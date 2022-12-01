@@ -12,9 +12,9 @@ public class DragItem : MonoBehaviour
         transform.position = canvas.transform.TransformPoint(position);
     }
 
-    public void SetData(Sprite sprite, int count)
+    public void SetData(Sprite sprite)
     {
-        inventoryItem.SetData(sprite, count);
+        inventoryItem.SetData(sprite);
     }
 
     public void Active(bool isActive)

@@ -15,7 +15,7 @@ public class PlayerStat : MonoBehaviour
         currhealth -= amount;
     }
 
-    internal void EquipWeapon(ItemData item, Category.WeaponType weaponType)
+    internal void EquipWeapon(Item item, Category.WeaponType weaponType)
     {
         equipmentManager.SetWeapon(item);
     }

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -25,12 +24,12 @@ public class Inventory : MonoBehaviour
     }
 
 
-    private void OnInventoryChange(Dictionary<int, InventoryItem> inventoryState)
+    private void OnInventoryChange(Dictionary<int, ItemData> inventoryState)
     {
         ResetAllItems();
         foreach (var item in inventoryState)
         {
-            UpdateItem(item.Key, item.Value.item.itemData.sprite, item.Value.count, item.Value.item.itemData.actionName);
+            UpdateItem(item.Key, item.Value.sprite, item.Value.actionName);
         }
     }
 
@@ -54,7 +53,7 @@ public class Inventory : MonoBehaviour
 
         currDraggedItemIdx = index;
         DeselectAllItems();
-        CreateDragItem(itemObj.item.itemData.sprite, itemObj.count);
+        CreateDragItem(itemObj.item.itemData.sprite, item.transform.position);
     }
 
     private void OnDragEnd(InventorySlot item)
@@ -77,7 +76,7 @@ public class Inventory : MonoBehaviour
         InventoryItem inventoryItem = inventoryData.GetItemAt(index);
         if (inventoryItem.isEmpty) return;
 
-        DropItem(index, inventoryItem.count);
+        DropItem(index);
     }
 
     private void OnUseButton(InventorySlot item)
@@ -87,9 +86,9 @@ public class Inventory : MonoBehaviour
 
         InventoryItem inventoryItem = inventoryData.GetItemAt(index);
         if (inventoryItem.isEmpty) return;
-        inventoryData.RemoveItem(index, 1, null);
+        inventoryData.RemoveItem(index, null);
 
-        inventoryItem.item.itemData.PerformAction(GameManager.instance.playerStat);
+        inventoryItem.item.itemData.PerformAction(GameManager.instance.playerStat, inventoryItem.item);
         UpdateUI();
     }
 
@@ -118,9 +117,9 @@ public class Inventory : MonoBehaviour
         inventoryData.OnInventoryChange += OnInventoryChange;
     }
 
-    private void DropItem(int index, int amount)
+    private void DropItem(int index)
     {
-        inventoryData.RemoveItem(index, amount, GameManager.instance.playerStat);
+        inventoryData.RemoveItem(index, GameManager.instance.playerStat.transform);
         ResetAllItems();
         // Drop Sound
         UpdateUI();
@@ -147,10 +146,11 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private void CreateDragItem(Sprite sprite, int count)
+    private void CreateDragItem(Sprite sprite, Vector3 pos)
     {
+        dragItem.transform.position = pos;
         dragItem.Active(true);
-        dragItem.SetData(sprite, count);
+        dragItem.SetData(sprite);
     }
 
     private void ResetDragedItem()
@@ -159,11 +159,11 @@ public class Inventory : MonoBehaviour
         dragItem.Active(false);
     }
 
-    public void UpdateItem(int index, Sprite sprite, int count, string actionName)
+    public void UpdateItem(int index, Sprite sprite, string actionName)
     {
         if (inventorySlots.Count > index)
         {
-            inventorySlots[index].SetData(sprite, count, actionName);
+            inventorySlots[index].SetData(sprite, actionName);
         }
     }
 
@@ -173,7 +173,7 @@ public class Inventory : MonoBehaviour
         DeselectAllItems();
         foreach (var item in inventoryData.GetCurrInventoryState())
         {
-            UpdateItem(item.Key, item.Value.item.itemData.sprite, item.Value.count, item.Value.item.itemData.actionName);
+            UpdateItem(item.Key, item.Value.sprite, item.Value.actionName);
         }
     }
 

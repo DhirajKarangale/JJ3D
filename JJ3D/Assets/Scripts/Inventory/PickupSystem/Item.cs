@@ -4,8 +4,15 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     public ItemData itemData;
+    [SerializeField] GameObject obj;
+    [SerializeField] Rigidbody rigidBody;
     private Vector3 startScale;
     private float duration = 0.3f;
+
+    private void Start()
+    {
+        itemData.currHealth = itemData.mxHealth;
+    }
 
     private IEnumerator AnimateItemPickup()
     {
@@ -19,7 +26,8 @@ public class Item : MonoBehaviour
             yield return null;
         }
         transform.localScale = endScale;
-        // this.gameObject.SetActive(false);
+        obj.SetActive(false);
+        rigidBody.isKinematic = true;
     }
 
     internal void DesableItem()
@@ -29,10 +37,10 @@ public class Item : MonoBehaviour
 
     internal void ThrowItem(Vector3 pos)
     {
+        obj.SetActive(true);
+        rigidBody.isKinematic = false;
         transform.localScale = startScale;
-        transform.position = pos + new Vector3(5, 5, 5);
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
-        rigidbody.velocity = Vector3.zero;
-        rigidbody.AddForce(Vector3.up * 10);
+        transform.position = pos + new Vector3(0, 5, 0);
+        rigidBody.velocity = Vector3.zero;
     }
 }

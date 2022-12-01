@@ -6,9 +6,7 @@ using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDropHandler, IDragHandler
 {
-    internal GameObject objItem;
     [SerializeField] Image imgItem;
-    [SerializeField] TMP_Text txtCount;
     [SerializeField] internal Outline outline;
     [SerializeField] GameObject objSelect;
     [SerializeField] TMP_Text txtActionName;
@@ -57,12 +55,10 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHand
 
 
 
-    public void SetData(Sprite sprite, int count, string actionName = "")
+    public void SetData(Sprite sprite, string actionName = "")
     {
         imgItem.gameObject.SetActive(true);
         imgItem.sprite = sprite;
-        txtCount.gameObject.SetActive(true);
-        txtCount.text = count.ToString();
         txtActionName.text = actionName;
         isEmpty = false;
     }
@@ -70,7 +66,6 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHand
     public void Reset()
     {
         imgItem.gameObject.SetActive(false);
-        txtCount.gameObject.SetActive(false);
         Deselect();
         isEmpty = true;
     }
