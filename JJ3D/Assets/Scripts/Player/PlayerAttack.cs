@@ -1,12 +1,12 @@
+using System;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
     [Header("Refrence")]
     [SerializeField] Camera cam;
-    public Animator animator;
+    [SerializeField] Animator animator;
     [SerializeField] CapsuleCollider capsuleCollider;
-    [SerializeField] EquipmentSlotOld equipmentSlot;
     [SerializeField] PlayerMovement playerMovement;
 
     [Header("Sward")]
@@ -21,7 +21,6 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] float force;
     internal bool isAming;
     internal bool isShoothing;
-    private bool isBowDestroyed;
 
     [Header("Sound")]
     [SerializeField] AudioSource audioSource;
@@ -29,21 +28,14 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] AudioClip clipArrow;
 
     private AnimatorOverrideController overrideController;
-    private EquipementManagerOld equipementManager;
-    private float coolDownTime;
-    private ItemOld item;
     private GameManager gameManager;
-
-    private bool isSwardNormalActive;
-    private bool isSwardIceActive;
-    private bool isSwardLightningActive;
-
-    private bool isBowNormalActive;
-    private bool isBowThreeActive;
-    private bool isBowFireActive;
+    private EquipmentManager equipementManager;
+    private float coolDownTime;
 
     private float requiredView;
     [SerializeField] float camSpeed;
+
+    public event Action OnAttack;
 
     private void Start()
     {
@@ -66,21 +58,8 @@ public class PlayerAttack : MonoBehaviour
         }
 
         Attack();
-
-        if (equipementManager.isBowActive)
-        {
-            BowAttack();
-            BowPunch();
-        }
-        else
-        {
-            animator.SetBool("isAming", false);
-            animator.SetBool("isShoothing", false);
-            ReSetRotation();
-        }
-
+        ShootBow();
         coolDownTime -= Time.deltaTime;
-
         Scope();
     }
 
@@ -97,37 +76,31 @@ public class PlayerAttack : MonoBehaviour
 
     private void SwardAttack()
     {
-        item = equipmentSlot.equipedItem;
-        if (item.currHealth > 0)
-        {
-            item.currHealth -= 1;
-        }
-        else
-        {
-            item.DestroyItem();
-            return;
-        }
-
         coolDownTime = 1.1f;
         animator.Play("SwardAttack");
-        overrideController[swardClips[0].name] = swardClips[Random.Range(0, swardClips.Length)];
+        overrideController[swardClips[0].name] = swardClips[UnityEngine.Random.Range(0, swardClips.Length)];
+        OnAttack?.Invoke();
     }
 
     private void BowPunch()
     {
-        item = equipmentSlot.equipedItem;
-        if (item.currHealth > 0)
+        animator.Play("BowPunch");
+        coolDownTime = 1.1f;
+        OnAttack?.Invoke();
+    }
+
+    private void ShootBow()
+    {
+        if (equipementManager.isBowActive)
         {
-            item.currHealth -= 1;
+            BowAttack();
         }
         else
         {
-            item.DestroyItem();
-            return;
+            animator.SetBool("isAming", false);
+            animator.SetBool("isShoothing", false);
+            ReSetRotation();
         }
-
-        animator.Play("BowPunch");
-        coolDownTime = 1.1f;
     }
 
     private void BowAttack()
@@ -137,9 +110,6 @@ public class PlayerAttack : MonoBehaviour
         //(!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
         if (Input.GetMouseButtonDown(0) && (coolDownTime <= 0))
         {
-            item = equipmentSlot.equipedItem;
-            if (item.currHealth <= 0) return;
-
             isShoothing = false;
             isAming = true;
 
@@ -155,7 +125,6 @@ public class PlayerAttack : MonoBehaviour
         if (isAming)
         {
             transform.localRotation = Quaternion.Euler(0, 65, 0);
-            isBowDestroyed = false;
             animator.SetBool("isShoothing", isShoothing);
         }
         animator.SetBool("isAming", isAming);
@@ -200,14 +169,14 @@ public class PlayerAttack : MonoBehaviour
             GameObject currArrow = Instantiate(fireArrowPrefab, firePos.position, Quaternion.identity);
             currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<FireArrow>().damage = equipmentSlot.equipedItem.modifire;
+            currArrow.GetComponent<FireArrow>().damage = equipementManager.slotWeapon.item.itemData.modifier;
         }
         else
         {
             GameObject currArrow = Instantiate(arrowPrefab, firePos.position, Quaternion.identity);
             currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.modifire;
+            currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.item.itemData.modifier;
         }
 
         if (equipementManager.objBowThree.activeInHierarchy)
@@ -215,67 +184,35 @@ public class PlayerAttack : MonoBehaviour
             GameObject currArrow = Instantiate(arrowPrefab, firePos1.position, Quaternion.identity);
             currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.modifire;
+            currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.item.itemData.modifier;
 
             currArrow = Instantiate(arrowPrefab, firePos2.position, Quaternion.identity);
             currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<PlayerWeapon>().damage = equipmentSlot.equipedItem.modifire;
+            currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.item.itemData.modifier;
         }
 
-        item.currHealth -= 1;
+        // item.currHealth -= 1;
         Invoke("ReSetRotation", 0.6f);
         coolDownTime = 1.1f;
         isAming = false;
         isShoothing = false;
 
         audioSource.PlayOneShot(clipArrow);
+        OnAttack?.Invoke();
     }
 
     private void DestroyBow()
     {
-        item.DestroyItem();
         animator.SetBool("isAming", false);
         animator.SetBool("isShoothing", false);
         isAming = false;
         isShoothing = false;
-        isBowDestroyed = true;
     }
 
     private void ReSetRotation()
     {
         transform.localRotation = Quaternion.Euler(0, 0, 0);
-        if (!isBowDestroyed && item && item.currHealth <= 0) DestroyBow();
-    }
-
-    public void DesableWeapon()
-    {
-        isSwardNormalActive = equipementManager.objSwardNormal.activeInHierarchy;
-        isSwardIceActive = equipementManager.objSwardIce.activeInHierarchy;
-        isSwardLightningActive = equipementManager.objSwardLightning.activeInHierarchy;
-
-        isBowNormalActive = equipementManager.objBowNormal.activeInHierarchy;
-        isBowThreeActive = equipementManager.objBowThree.activeInHierarchy;
-        isBowFireActive = equipementManager.objBowFire.activeInHierarchy;
-
-        equipementManager.objSwardNormal.SetActive(false);
-        equipementManager.objSwardIce.SetActive(false);
-        equipementManager.objSwardLightning.SetActive(false);
-
-        equipementManager.objBowNormal.SetActive(false);
-        equipementManager.objBowThree.SetActive(false);
-        equipementManager.objBowFire.SetActive(false);
-    }
-
-    public void EnableWeapon()
-    {
-        equipementManager.objSwardNormal.SetActive(isSwardNormalActive);
-        equipementManager.objSwardIce.SetActive(isSwardIceActive);
-        equipementManager.objSwardLightning.SetActive(isSwardLightningActive);
-
-        equipementManager.objBowNormal.SetActive(isBowNormalActive);
-        equipementManager.objBowThree.SetActive(isBowThreeActive);
-        equipementManager.objBowFire.SetActive(isBowFireActive);
     }
 
     public void SwipeSound()

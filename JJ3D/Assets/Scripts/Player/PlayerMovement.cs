@@ -11,48 +11,47 @@ public class PlayerMovement : MonoBehaviour
         public EasyJoystick.Joystick lookJoystick;
 
         public Transform camParent;
-        public float XSensitivity = 2f;
-        public float YSensitivity = 2f;
+        public float sensitivity = 2f;
         public bool clampVerticalRotation = true;
-        public float MinimumX = -90F;
-        public float MaximumX = 90F;
+        private float MaximumX = 90F;
+        private float MinimumX = -90F;
         public bool smooth;
         public float smoothTime = 5f;
         public bool lockCursor = true;
 
-        private Quaternion m_CharacterTargetRot;
-        private Quaternion m_CameraTargetRot;
+        private Quaternion playerTargetRot;
+        private Quaternion camTargetRot;
         private bool m_cursorIsLocked = true;
         [HideInInspector] public Perspective perspective;
 
         public void Init(Transform character, Transform camera)
         {
-            m_CharacterTargetRot = character.localRotation;
-            m_CameraTargetRot = camera.localRotation;
+            playerTargetRot = character.localRotation;
+            camTargetRot = camera.localRotation;
         }
 
         public void LookRotation(Transform character, Transform camera)
         {
-            float yRot = Input.GetAxis("Mouse X") * XSensitivity;
-            float xRot = Input.GetAxis("Mouse Y") * YSensitivity;
+            float yRot = Input.GetAxis("Mouse X") * sensitivity;
+            float xRot = Input.GetAxis("Mouse Y") * sensitivity;
 
-            m_CharacterTargetRot *= Quaternion.Euler(0f, yRot, 0f);
-            m_CameraTargetRot *= Quaternion.Euler(-xRot, 0f, 0f);
+            playerTargetRot *= Quaternion.Euler(0f, yRot, 0f);
+            camTargetRot *= Quaternion.Euler(-xRot, 0f, 0f);
 
             if (clampVerticalRotation)
-                m_CameraTargetRot = ClampRotationAroundXAxis(m_CameraTargetRot);
+            {
+                camTargetRot = ClampRotationAroundXAxis(camTargetRot);
+            }
 
             if (smooth)
             {
-                character.localRotation = Quaternion.Slerp(character.localRotation, m_CharacterTargetRot,
-                    smoothTime * Time.deltaTime);
-                camera.localRotation = Quaternion.Slerp(camera.localRotation, m_CameraTargetRot,
-                    smoothTime * Time.deltaTime);
+                character.localRotation = Quaternion.Slerp(character.localRotation, playerTargetRot, smoothTime * Time.deltaTime);
+                camera.localRotation = Quaternion.Slerp(camera.localRotation, camTargetRot, smoothTime * Time.deltaTime);
             }
             else
             {
-                character.localRotation = m_CharacterTargetRot;
-                camera.localRotation = m_CameraTargetRot;
+                character.localRotation = playerTargetRot;
+                camera.localRotation = camTargetRot;
             }
 
             if (perspective == Perspective.TPP)
@@ -66,24 +65,24 @@ public class PlayerMovement : MonoBehaviour
 
         public void LookAround(Transform camera)
         {
-            float yRot = lookJoystick.Horizontal() * XSensitivity;
-            float xRot = lookJoystick.Vertical() * YSensitivity;
+            float yRot = lookJoystick.Horizontal() * sensitivity;
+            float xRot = lookJoystick.Vertical() * sensitivity;
 
-            m_CharacterTargetRot *= Quaternion.Euler(0f, yRot, 0f);
-            m_CameraTargetRot *= Quaternion.Euler(-xRot, 0f, 0f);
+            playerTargetRot *= Quaternion.Euler(0f, yRot, 0f);
+            camTargetRot *= Quaternion.Euler(-xRot, 0f, 0f);
 
             if (clampVerticalRotation)
             {
-                m_CameraTargetRot = ClampRotationAroundXAxis(m_CameraTargetRot);
+                camTargetRot = ClampRotationAroundXAxis(camTargetRot);
             }
 
             if (smooth)
             {
-                camParent.localRotation = Quaternion.Slerp(camParent.localRotation, m_CharacterTargetRot, smoothTime * Time.deltaTime);
+                camParent.localRotation = Quaternion.Slerp(camParent.localRotation, playerTargetRot, smoothTime * Time.deltaTime);
             }
             else
             {
-                camParent.localRotation = m_CharacterTargetRot;
+                camParent.localRotation = playerTargetRot;
             }
 
             camera.LookAt(camParent);
@@ -94,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
         {
             lockCursor = value;
             if (!lockCursor)
-            {//we force unlock the cursor if the user disable the cursor locking helper
+            {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
             }
@@ -102,9 +101,7 @@ public class PlayerMovement : MonoBehaviour
 
         public void UpdateCursorLock()
         {
-            //if the user set "lockCursor" we check & properly lock the cursos
-            if (lockCursor)
-                InternalLockUpdate();
+            if (lockCursor) InternalLockUpdate();
         }
 
         private void InternalLockUpdate()
@@ -150,7 +147,7 @@ public class PlayerMovement : MonoBehaviour
     [Serializable]
     public class Movement
     {
-        [SerializeField] PlayerAttack playerAttack;
+        // [SerializeField] PlayerAttack playerAttack;
         public float ForwardSpeed = 8.0f;   // Speed when walking forward
         public float BackwardSpeed = 4.0f;  // Speed when walking backwards
         public float StrafeSpeed = 4.0f;    // Speed when walking sideways
@@ -158,7 +155,7 @@ public class PlayerMovement : MonoBehaviour
         public AnimationCurve SlopeCurveModifier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
         private bool m_Running;
         [HideInInspector] public float CurrentTargetSpeed = 8f;
-        [HideInInspector] public ItemOld shoes;
+        // [HideInInspector] public ItemOld shoes;
 
         public void UpdateDesiredTargetSpeed(Vector2 input)
         {
@@ -175,27 +172,23 @@ public class PlayerMovement : MonoBehaviour
             }
             if (input.y > 0)
             {
-                //forwards
-                //handled last as if strafing and moving forward at the same time forwards speed should take precedence
-                // CurrentTargetSpeed = StrafeSpeed; - Original just Commented
-
                 // Added By DK
                 if (playerAttack.isAming || playerAttack.isShoothing) CurrentTargetSpeed = StrafeSpeed;
                 else CurrentTargetSpeed = ForwardSpeed;
             }
 
-            if (shoes)
-            {
-                if (shoes.currHealth > 0)
-                {
-                    CurrentTargetSpeed *= shoes.modifire;
-                    shoes.currHealth -= 0.1f;
-                }
-                else
-                {
-                    shoes.DestroyItem();
-                }
-            }
+            // if (shoes)
+            // {
+            //     if (shoes.currHealth > 0)
+            //     {
+            //         CurrentTargetSpeed *= shoes.modifire;
+            //         shoes.currHealth -= 0.1f;
+            //     }
+            //     else
+            //     {
+            //         shoes.DestroyItem();
+            //     }
+            // }
         }
 
         public bool Running
@@ -267,7 +260,7 @@ public class PlayerMovement : MonoBehaviour
         m_Capsule = GetComponent<CapsuleCollider>();
         look.Init(transform, cam.transform);
         PerspectiveButton();
-        GameManager.instance.equipementManager.onEquipementChanged += OnEquipmentChanged;
+        // GameManager.instance.equipementManager.onEquipementChanged += OnEquipmentChanged;
     }
 
     private void Update()
@@ -464,11 +457,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void OnEquipmentChanged(ItemOld newItem, ItemOld oldItem)
-    {
-        if (oldItem && oldItem.itemType == ItemType.Shoes) movement.shoes = null;
-        if (newItem && newItem.itemType == ItemType.Shoes) movement.shoes = newItem;
-    }
+    // private void OnEquipmentChanged(ItemOld newItem, ItemOld oldItem)
+    // {
+    //     if (oldItem && oldItem.itemType == ItemType.Shoes) movement.shoes = null;
+    //     if (newItem && newItem.itemType == ItemType.Shoes) movement.shoes = newItem;
+    // }
 
     public void WalkSound()
     {

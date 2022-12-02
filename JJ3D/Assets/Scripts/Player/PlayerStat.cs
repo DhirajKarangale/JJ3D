@@ -10,12 +10,12 @@ public class PlayerStat : MonoBehaviour
     private float defence;
     private float attack;
 
-    internal void ChangeHealth(float amount)
+    internal void ChangeHealth(Item item)
     {
-        currhealth -= amount;
+        equipmentManager.Eat(item);
     }
 
-    internal void EquipWeapon(Item item, Category.WeaponType weaponType)
+    internal void EquipWeapon(Item item)
     {
         equipmentManager.SetWeapon(item);
     }

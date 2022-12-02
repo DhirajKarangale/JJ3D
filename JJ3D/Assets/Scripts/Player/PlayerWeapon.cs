@@ -6,19 +6,19 @@ public class PlayerWeapon : MonoBehaviour
     [SerializeField] IceSward iceSward;
     [HideInInspector] internal float damage;
     private GameManager gameManager;
-    private EquipmentSlotOld equipmentSlot;
+    private Item itemWeapon;
 
     private void Start()
     {
         gameManager = GameManager.instance;
-        equipmentSlot = gameManager.weaponSlot;
+        itemWeapon = gameManager.equipementManager.slotWeapon.item;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (gameManager.isGameOver) return;
 
-        damage = (equipmentSlot.equipedItem) ? equipmentSlot.equipedItem.modifire : 10;
+        damage = (itemWeapon) ? itemWeapon.itemData.modifier : 10;
         Rigidbody rigidBody = collision.gameObject.GetComponent<Rigidbody>();
         if (rigidBody)
         {

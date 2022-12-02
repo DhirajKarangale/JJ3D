@@ -3,19 +3,13 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     [Header("Refrence")]
-    [SerializeField] internal EquipementManagerOld equipementManager;
+    [SerializeField] internal EquipmentManager equipementManager;
     [SerializeField] internal ForestGenerator forestGenerator;
     [SerializeField] internal PlayerStat playerStat;
     [SerializeField] internal PlayerAttack playerAttack;
     [SerializeField] internal PlayerHealth playerHealth;
     [SerializeField] internal PickUpSystem pickUpSystem;
-    // [SerializeField] internal PlayerInteract playerInteract;
     [SerializeField] internal PlayerMovement playerMovement;
-    [SerializeField] internal InventoryOld inventory;
-    [SerializeField] internal EquipmentSlotOld helmetSlot;
-    [SerializeField] internal EquipmentSlotOld vestSlot;
-    [SerializeField] internal EquipmentSlotOld shoesSlot;
-    [SerializeField] internal EquipmentSlotOld weaponSlot;
     [SerializeField] GameObject mainCanvas;
 
     [Header("Effect")]
@@ -136,11 +130,11 @@ public class GameManager : Singleton<GameManager>
     {
         isGameOver = true;
         mainCanvas.SetActive(false);
-        if (weaponSlot.equipedItem)
-        {
-            inventory.Remove(weaponSlot.equipedItem, true);
-            weaponSlot.equipedItem.RemoveItem();
-        }
+        // if (weaponSlot.equipedItem)
+        // {
+        //     inventory.Remove(weaponSlot.equipedItem, true);
+        //     weaponSlot.equipedItem.RemoveItem();
+        // }
         playerAttack.enabled = false;
         playerHealth.enabled = false;
         // playerInteract.enabled = false;

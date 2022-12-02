@@ -27,6 +27,11 @@ public class EquipmentSlot : MonoBehaviour
         outline.enabled = true;
         objCloseButton.SetActive(true);
         image.sprite = item.itemData.sprite;
+        UpdateSlider();
+    }
+
+    public void UpdateSlider()
+    {
         slider.value = item.itemData.currHealth / item.itemData.mxHealth;
     }
 

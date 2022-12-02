@@ -43,4 +43,9 @@ public class Item : MonoBehaviour
         transform.position = pos + new Vector3(0, 5, 0);
         rigidBody.velocity = Vector3.zero;
     }
+
+    internal void DestoryItem()
+    {
+        Destroy(this.gameObject);
+    }
 }
