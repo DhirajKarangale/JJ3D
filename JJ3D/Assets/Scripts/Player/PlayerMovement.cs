@@ -241,7 +241,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector3 desiredMove = transform.forward * input.y + cam.transform.right * input.x;
             desiredMove = Vector3.ProjectOnPlane(desiredMove, m_GroundContactNormal).normalized;
-
             desiredMove.x = desiredMove.x * movement.currSpeed;
             desiredMove.z = desiredMove.z * movement.currSpeed;
             desiredMove.y = desiredMove.y * movement.currSpeed;
@@ -250,6 +249,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 rigidBody.AddForce(desiredMove * SlopeMultiplier(), ForceMode.Impulse);
             }
+            
+            player.ChangeShoesHealth();
         }
 
         // Slip Effect

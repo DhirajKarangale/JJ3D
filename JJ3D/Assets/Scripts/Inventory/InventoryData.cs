@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "InventoryData", menuName = "Data Object/Inventory Data")]
 public class InventoryData : ScriptableObject
 {
     [SerializeField] internal int size = 10;

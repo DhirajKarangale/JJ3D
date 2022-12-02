@@ -4,10 +4,16 @@ using System.Collections;
 public class EquipmentManager : MonoBehaviour
 {
     [Header("Equipment Slots")]
-    [SerializeField] EquipmentSlot slotHelmet;
-    [SerializeField] EquipmentSlot slotVest;
+    [SerializeField] internal EquipmentSlot slotVest;
+    [SerializeField] internal EquipmentSlot slotHelmet;
     [SerializeField] internal EquipmentSlot slotWeapon;
-    [SerializeField] EquipmentSlot slotShoes;
+    [SerializeField] internal EquipmentSlot slotShoes;
+
+    [Header("Equipment")]
+    [SerializeField] GameObject objHelmet;
+    [SerializeField] GameObject objVest;
+    [SerializeField] GameObject objShoesLeft;
+    [SerializeField] GameObject objShoesRight;
 
     [Header("Weapons")]
     [SerializeField] internal GameObject objSwardNormal;
@@ -61,7 +67,10 @@ public class EquipmentManager : MonoBehaviour
         slotWeapon.Reset();
         slotShoes.Reset();
 
-        slotWeapon.OnRemove += OnWeaponRemove;
+        slotWeapon.OnRemove += OnRemoveWeapon;
+        slotHelmet.OnRemove += OnRemoveHelmet;
+        slotVest.OnRemove += OnRemoveVest;
+        slotShoes.OnRemove += OnRemoveShoes;
     }
 
 
@@ -98,11 +107,34 @@ public class EquipmentManager : MonoBehaviour
     }
 
 
-    private void OnWeaponRemove()
+    private void OnRemoveWeapon()
     {
         slotWeapon.item.ThrowItem(gameManager.playerPos.position + (gameManager.playerPos.forward * 3));
         slotWeapon.Reset();
         ActiveWeapon("None");
+    }
+
+    private void OnRemoveHelmet()
+    {
+        slotHelmet.item.ThrowItem(gameManager.playerPos.position + (gameManager.playerPos.forward * 3));
+        slotHelmet.Reset();
+        objHelmet.SetActive(false);
+    }
+
+    private void OnRemoveVest()
+    {
+        slotVest.item.ThrowItem(gameManager.playerPos.position + (gameManager.playerPos.forward * 3));
+        slotVest.Reset();
+        objVest.SetActive(false);
+    }
+
+    private void OnRemoveShoes()
+    {
+        slotShoes.item.ThrowItem(gameManager.playerPos.position + (gameManager.playerPos.forward * 3));
+        slotShoes.Reset();
+        player.ResetSpeed();
+        objShoesLeft.SetActive(false);
+        objShoesRight.SetActive(false);
     }
 
     private void OnPlayerAttack()
@@ -130,7 +162,9 @@ public class EquipmentManager : MonoBehaviour
         objBowFire.SetActive(name.Contains("BowFire"));
     }
 
-    public void DesableWeapon()
+
+
+    internal void DesableWeapon()
     {
         objSwardNormal.SetActive(false);
         objSwardIce.SetActive(false);
@@ -141,21 +175,60 @@ public class EquipmentManager : MonoBehaviour
         objBowThree.SetActive(false);
     }
 
+    internal void DestroyHelmet()
+    {
+        slotHelmet.item.DestoryItem();
+        slotHelmet.Reset();
+        gameManager.effects.DestroyEffect(objHelmet.transform.position);
+        objHelmet.SetActive(false);
+    }
 
+    internal void DestroyVest()
+    {
+        slotVest.item.DestoryItem();
+        slotVest.Reset();
+        gameManager.effects.DestroyEffect(objVest.transform.position);
+        objVest.SetActive(false);
+    }
 
+    internal void DestroyShoes()
+    {
+        slotShoes.item.DestoryItem();
+        slotShoes.Reset();
+        player.ResetSpeed();
+        gameManager.effects.DestroyEffect(objShoesRight.transform.position);
+        objShoesLeft.SetActive(false);
+        objShoesRight.SetActive(false);
+    }
 
-    public void Eat(Item item)
+    internal void Eat(Item item)
     {
         StartCoroutine(IEEat(item.itemData.modifier, item.name));
         Destroy(item.gameObject);
     }
 
-    public void SetDefence(ItemData itemData)
+    internal void EquipDefence(Item item)
     {
-
+        if (item.itemData.name.Contains("Helmet"))
+        {
+            slotHelmet.SetData(item);
+            objHelmet.SetActive(true);
+        }
+        else if (item.itemData.name.Contains("Vest"))
+        {
+            slotVest.SetData(item);
+            objVest.SetActive(true);
+        }
+        else if (item.itemData.name.Contains("Shoes"))
+        {
+            slotShoes.SetData(item);
+            objShoesLeft.SetActive(true);
+            objShoesRight.SetActive(true);
+            player.ChangeSpeed(slotShoes.item.itemData.modifier);
+        }
     }
 
-    public void SetWeapon(Item item)
+    internal void SetWeapon(Item item)
     {
         if (slotWeapon.item) pickUpSystem.PickUp(slotWeapon.item);
         slotWeapon.SetData(item);

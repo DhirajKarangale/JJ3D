@@ -52,7 +52,7 @@ public class PickUpSystem : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Item item = collision.gameObject.GetComponent<Item>();
-        PickUp(item);
+        // Item item = collision.gameObject.GetComponent<Item>();
+        // PickUp(item);
     }
 }

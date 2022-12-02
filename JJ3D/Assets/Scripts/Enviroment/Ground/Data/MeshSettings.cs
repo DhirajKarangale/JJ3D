@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(fileName = "MeshSettings", menuName = "Data Object/MeshSettings")]
 public class MeshSettings : UpdatableData {
 
 	public const int numSupportedLODs = 5;

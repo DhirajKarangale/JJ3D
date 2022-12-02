@@ -37,6 +37,7 @@ public class EquipmentSlot : MonoBehaviour
 
     public void ButtonRemove()
     {
+        GameManager.instance.effects.ButtonSound();
         OnRemove?.Invoke();
     }
 }

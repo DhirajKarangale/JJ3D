@@ -29,6 +29,7 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHand
 
     public void OnPointerClick(PointerEventData pointerData)
     {
+        GameManager.instance.effects.ButtonSound();
         OnClicked?.Invoke(this);
     }
 
@@ -85,11 +86,13 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHand
 
     public void ButtonDrop()
     {
+        GameManager.instance.effects.ButtonSound();
         OnDropButton?.Invoke(this);
     }
 
     public void ButtonUse()
     {
+        GameManager.instance.effects.ButtonSound();
         OnUseButton?.Invoke(this);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(fileName = "HeightMapSettings", menuName = "Data Object/HeightMapSettings")]
 public class HeightMapSettings : UpdatableData {
 
 	public NoiseSettings noiseSettings;

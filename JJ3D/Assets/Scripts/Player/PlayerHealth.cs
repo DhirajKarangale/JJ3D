@@ -83,9 +83,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        // damage = vest ? Armor(vest, damage) : damage;
-        // damage = helmet ? Armor(helmet, damage) : damage;
-
+        damage -= player.DamageReducer();
         currHealth -= damage;
         UpdateSliders();
 

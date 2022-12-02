@@ -32,8 +32,6 @@ public class Player : MonoBehaviour
         orgForwardSpeed = playerMovement.movement.forwardSpeed;
         orgBackSpeed = playerMovement.movement.backwardSpeed;
         orgSideSpeed = playerMovement.movement.sideSpeed;
-
-        // Make Shoes Increase Speed here and reduce its health by -1
     }
 
 
@@ -43,9 +41,59 @@ public class Player : MonoBehaviour
         audioSource.PlayOneShot(clip);
     }
 
+    internal float DamageReducer()
+    {
+        float damage = 0;
+        if (equipmentManager.slotHelmet.item)
+        {
+            if (equipmentManager.slotHelmet.item.itemData.currHealth <= 0)
+            {
+                equipmentManager.DestroyHelmet();
+                return damage;
+            }
+            damage += equipmentManager.slotHelmet.item.itemData.modifier;
+            equipmentManager.slotHelmet.item.itemData.currHealth -= equipmentManager.slotHelmet.item.itemData.modifier;
+            equipmentManager.slotHelmet.UpdateSlider();
+        }
+
+        if (equipmentManager.slotVest.item)
+        {
+            if (equipmentManager.slotVest.item.itemData.currHealth <= 0)
+            {
+                equipmentManager.DestroyVest();
+                return damage;
+            }
+            damage += equipmentManager.slotVest.item.itemData.modifier;
+            equipmentManager.slotVest.item.itemData.currHealth -= equipmentManager.slotVest.item.itemData.modifier;
+            equipmentManager.slotVest.UpdateSlider();
+        }
+
+        return damage;
+    }
+
+    internal void ChangeShoesHealth()
+    {
+        if (equipmentManager.slotShoes.item)
+        {
+            if (equipmentManager.slotShoes.item.itemData.currHealth <= 0)
+            {
+                equipmentManager.DestroyShoes();
+                return;
+            }
+
+            equipmentManager.slotShoes.item.itemData.currHealth--;
+            equipmentManager.slotShoes.UpdateSlider();
+        }
+    }
+
     internal void Eat(Item item)
     {
         equipmentManager.Eat(item);
+    }
+
+    internal void EquipDefence(Item item)
+    {
+        equipmentManager.EquipDefence(item);
     }
 
     internal void EquipWeapon(Item item)
