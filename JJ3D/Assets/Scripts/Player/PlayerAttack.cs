@@ -4,10 +4,9 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     [Header("Refrence")]
-    [SerializeField] Camera cam;
-    [SerializeField] Animator animator;
-    [SerializeField] CapsuleCollider capsuleCollider;
-    [SerializeField] PlayerMovement playerMovement;
+    [SerializeField] Player player;
+    private Camera cam;
+    private Animator animator;
 
     [Header("Sward")]
     [SerializeField] AnimationClip[] swardClips;
@@ -22,8 +21,7 @@ public class PlayerAttack : MonoBehaviour
     internal bool isAming;
     internal bool isShoothing;
 
-    [Header("Sound")]
-    [SerializeField] AudioSource audioSource;
+    [Header("Audio Clips")]
     [SerializeField] AudioClip clipSwipe;
     [SerializeField] AudioClip clipArrow;
 
@@ -39,19 +37,21 @@ public class PlayerAttack : MonoBehaviour
 
     private void Start()
     {
-        overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
-        animator.runtimeAnimatorController = overrideController;
-        coolDownTime = 0;
+        cam = player.cam;
+        animator = player.animator;
         gameManager = GameManager.instance;
         equipementManager = gameManager.equipementManager;
+        overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
+        animator.runtimeAnimatorController = overrideController;
 
+        coolDownTime = 1.1f;
         requiredView = 60;
         cam.fieldOfView = 60;
     }
 
     private void Update()
     {
-        if (gameManager.isGameOver)
+        if (gameManager.isGameOver || (Time.timeScale == 0))
         {
             cam.fieldOfView = 60;
             return;
@@ -59,14 +59,12 @@ public class PlayerAttack : MonoBehaviour
 
         Attack();
         ShootBow();
-        coolDownTime -= Time.deltaTime;
         Scope();
+        coolDownTime -= Time.deltaTime;
     }
 
     private void Attack()
     {
-        if (Time.timeScale == 0) return;
-
         if (Input.GetKeyDown(KeyCode.F) && (coolDownTime <= 0))
         {
             if (equipementManager.isSwardActive) SwardAttack();
@@ -76,22 +74,22 @@ public class PlayerAttack : MonoBehaviour
 
     private void SwardAttack()
     {
-        coolDownTime = 1.1f;
         animator.Play("SwardAttack");
         overrideController[swardClips[0].name] = swardClips[UnityEngine.Random.Range(0, swardClips.Length)];
         OnAttack?.Invoke();
+        coolDownTime = 1.1f;
     }
 
     private void BowPunch()
     {
         animator.Play("BowPunch");
-        coolDownTime = 1.1f;
         OnAttack?.Invoke();
+        coolDownTime = 1.1f;
     }
 
     private void ShootBow()
     {
-        if (equipementManager.isBowActive)
+        if (equipementManager.isBowActive && (Time.timeScale != 0))
         {
             BowAttack();
         }
@@ -100,6 +98,7 @@ public class PlayerAttack : MonoBehaviour
             animator.SetBool("isAming", false);
             animator.SetBool("isShoothing", false);
             ReSetRotation();
+            ResetView();
         }
     }
 
@@ -107,18 +106,17 @@ public class PlayerAttack : MonoBehaviour
     {
         if (Time.timeScale == 0) return;
 
-        //(!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+        // (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
         if (Input.GetMouseButtonDown(0) && (coolDownTime <= 0))
         {
             isShoothing = false;
             isAming = true;
-
+            player.ChangeSpeed(0.5f);
             Invoke("GetView", 0.3f);
         }
         if (Input.GetMouseButtonUp(0))
         {
             isShoothing = true;
-
             Invoke("ResetView", 1);
         }
 
@@ -156,10 +154,14 @@ public class PlayerAttack : MonoBehaviour
         requiredView = 20;
     }
 
+    private void ReSetRotation()
+    {
+        transform.localRotation = Quaternion.Euler(0, 0, 0);
+    }
+
+    // Accessed by Anim Event
     public void ShootArrow()
     {
-        if (Time.timeScale == 0) return;
-
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
         Vector3 targetPoint = ray.GetPoint(1000);
         Vector3 shootDir = (targetPoint - firePos.transform.position).normalized;
@@ -192,42 +194,25 @@ public class PlayerAttack : MonoBehaviour
             currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.item.itemData.modifier;
         }
 
-        // item.currHealth -= 1;
         Invoke("ReSetRotation", 0.6f);
         coolDownTime = 1.1f;
         isAming = false;
         isShoothing = false;
 
-        audioSource.PlayOneShot(clipArrow);
+        player.PlayAudio(clipArrow, 0.5f);
         OnAttack?.Invoke();
+        player.ResetSpeed();
     }
 
-    private void DestroyBow()
-    {
-        animator.SetBool("isAming", false);
-        animator.SetBool("isShoothing", false);
-        isAming = false;
-        isShoothing = false;
-    }
-
-    private void ReSetRotation()
-    {
-        transform.localRotation = Quaternion.Euler(0, 0, 0);
-    }
-
-    public void SwipeSound()
-    {
-        audioSource.PlayOneShot(clipSwipe);
-    }
-
+    // Accessed by Anim Event
     public void WalkSound()
     {
-        playerMovement.WalkSound();
+        player.playerMovement.WalkSound();
     }
 
-    public void ReduceCollider()
+    // Accessed by Anim Event
+    public void SwipeSound()
     {
-        capsuleCollider.height = 0.2f;
-        capsuleCollider.material = null;
+        player.PlayAudio(clipSwipe);
     }
 }

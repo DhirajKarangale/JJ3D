@@ -32,8 +32,8 @@ public class PlayerWeapon : MonoBehaviour
         if (npcHealth)
         {
             if (npcHealth.health <= 0 && iceSward) iceSward.DeFreez();
-            if(!npcHealth.isDestroyBody) gameManager.EnemyBloodEffect(collision.GetContact(0).point);
-            else gameManager.DestroyEffect(collision.GetContact(0).point);
+            if(!npcHealth.isDestroyBody) gameManager.effects.EnemyBloodEffect(collision.GetContact(0).point);
+            else gameManager.effects.DestroyEffect(collision.GetContact(0).point);
             npcHealth.TakeDamage(damage);
         }
     }

@@ -36,7 +36,7 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            GameManager.instance.HitSound(transform.position);
+            GameManager.instance.effects.HitSound(transform.position);
         }
     }
 
@@ -44,11 +44,11 @@ public class Projectile : MonoBehaviour
     {
         if (destroyEffect == DestroyEffect.Object)
         {
-            GameManager.instance.DestroyEffect(transform.position);
+            GameManager.instance.effects.DestroyEffect(transform.position);
         }
         else
         {
-            GameManager.instance.FireballDestroyEffect(transform.position);
+            GameManager.instance.effects.FireballDestroyEffect(transform.position);
         }
         Destroy(this.gameObject);
     }

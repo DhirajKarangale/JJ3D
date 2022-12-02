@@ -148,143 +148,87 @@ public class PlayerMovement : MonoBehaviour
     public class Movement
     {
         // [SerializeField] PlayerAttack playerAttack;
-        public float ForwardSpeed = 8.0f;   // Speed when walking forward
-        public float BackwardSpeed = 4.0f;  // Speed when walking backwards
-        public float StrafeSpeed = 4.0f;    // Speed when walking sideways
-        public float JumpForce = 30f;
-        public AnimationCurve SlopeCurveModifier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
-        private bool m_Running;
-        [HideInInspector] public float CurrentTargetSpeed = 8f;
-        // [HideInInspector] public ItemOld shoes;
+        public float forwardSpeed = 8.0f;
+        public float backwardSpeed = 4.0f;
+        public float sideSpeed = 4.0f;
+        public float jumpForce = 30f;
+        [HideInInspector] public float currSpeed = 8f;
+        [HideInInspector] public bool isRunning;
+        public AnimationCurve slopeCurveModifier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
 
         public void UpdateDesiredTargetSpeed(Vector2 input)
         {
             if (input == Vector2.zero) return;
-            if (input.x > 0 || input.x < 0)
-            {
-                //strafe
-                CurrentTargetSpeed = StrafeSpeed;
-            }
-            if (input.y < 0)
-            {
-                //backwards
-                CurrentTargetSpeed = BackwardSpeed;
-            }
-            if (input.y > 0)
-            {
-                // Added By DK
-                if (playerAttack.isAming || playerAttack.isShoothing) CurrentTargetSpeed = StrafeSpeed;
-                else CurrentTargetSpeed = ForwardSpeed;
-            }
 
-            // if (shoes)
-            // {
-            //     if (shoes.currHealth > 0)
-            //     {
-            //         CurrentTargetSpeed *= shoes.modifire;
-            //         shoes.currHealth -= 0.1f;
-            //     }
-            //     else
-            //     {
-            //         shoes.DestroyItem();
-            //     }
-            // }
-        }
-
-        public bool Running
-        {
-            get { return m_Running; }
+            if (input.x > 0 || input.x < 0) currSpeed = sideSpeed;
+            if (input.y < 0) currSpeed = backwardSpeed;
+            if (input.y > 0) currSpeed = forwardSpeed;
         }
     }
 
     [Serializable]
     public class Advanced
     {
-        public float groundCheckDistance = 0.01f; // distance for checking if the controller is grounded ( 0.01f seems to work best for this )
-        public float stickToGroundHelperDistance = 0.5f; // stops the character
-        public float slowDownRate = 20f; // rate at which the controller comes to a stop when there is no input
-        public bool airControl; // can the user control the direction that is being moved in the air
-        [Tooltip("set it to 0.1 or more if you get stuck in wall")]
-        public float shellOffset; //reduce the radius by that ratio to avoid getting stuck in wall (a value of 0.1f is nice)
+        public float groundCheckDistance = 0.01f;
+        public float stickToGroundHelperDistance = 0.5f;
+        public float slowDownRate = 20f;
+        public bool airControl;
+        public float shellOffset; //set it to 0.1 or more if you get stuck in wall
     }
 
-    [SerializeField] Animator animator;
+    [SerializeField] Player player;
+    [SerializeField] Look look = new Look();
+    [SerializeField] internal Movement movement = new Movement();
+    [SerializeField] Advanced advanced = new Advanced();
 
-    public Camera cam;
-    public Look look = new Look();
-    public Movement movement = new Movement();
-    public Advanced advanced = new Advanced();
-
-    [Header("Effect")]
-    [SerializeField] ParticleSystem psFall;
-
-    [Header("Sound")]
-    [SerializeField] AudioSource audioSource;
+    [Header("Audio Clip")]
     [SerializeField] AudioClip clipJump;
     [SerializeField] AudioClip clipWalk;
     [SerializeField] AudioClip clipFall;
     [SerializeField] AudioClip clipSilp;
 
-    private Rigidbody m_RigidBody;
-    private CapsuleCollider m_Capsule;
-    private float m_YRotation;
+    [Header("Effect")]
+    [SerializeField] ParticleSystem psFall;
+
+    private Camera cam;
+    private Animator animator;
+    private Rigidbody rigidBody;
+    private CapsuleCollider capsuleCollider;
     private Vector3 m_GroundContactNormal;
-    private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
+    private float m_YRotation;
+    private bool isJump, isPreviouslyGrounded, isJumping, isGrounded;
 
     public Vector3 Velocity
     {
-        get { return m_RigidBody.velocity; }
-    }
-
-    public bool Grounded
-    {
-        get { return m_IsGrounded; }
-    }
-
-    public bool Jumping
-    {
-        get { return m_Jumping; }
-    }
-
-    public bool Running
-    {
-        get
-        {
-            return movement.Running;
-        }
+        get { return rigidBody.velocity; }
     }
 
     private void Start()
     {
-        m_RigidBody = GetComponent<Rigidbody>();
-        m_Capsule = GetComponent<CapsuleCollider>();
+        cam = player.cam;
+        animator = player.animator;
+        rigidBody = player.rigidBody;
+        capsuleCollider = player.capsuleCollider;
         look.Init(transform, cam.transform);
         PerspectiveButton();
-        // GameManager.instance.equipementManager.onEquipementChanged += OnEquipmentChanged;
     }
 
     private void Update()
     {
         animator.SetFloat("vertical", GetInput().y);
         animator.SetFloat("horrizontal", GetInput().x);
+        animator.SetBool("isJump", isJumping);
 
-        animator.SetBool("isJump", m_Jumping);
+        RotateView();
 
-        // if (Input.GetKeyDown(KeyCode.Escape))
-        // {
-        //     Debug.Break();
-        // }
-
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P)) // Move on a Button
         {
             PerspectiveButton();
         }
 
-        RotateView();
-
-        if (Input.GetButtonDown("Jump") && !m_Jump)
+        if (Input.GetButtonDown("Jump") && !isJump) // Move on a Button
         {
-            m_Jump = true;
+            isJump = true;
         }
     }
 
@@ -293,84 +237,81 @@ public class PlayerMovement : MonoBehaviour
         GroundCheck();
         Vector2 input = GetInput();
 
-        if ((Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon) && (advanced.airControl || m_IsGrounded))
+        if ((Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon) && (advanced.airControl || isGrounded))
         {
-            // always move along the camera forward as it is the direction that it being aimed at
             Vector3 desiredMove = transform.forward * input.y + cam.transform.right * input.x;
-            // Vector3 desiredMove = cam.transform.forward * input.y + cam.transform.right * input.x;
             desiredMove = Vector3.ProjectOnPlane(desiredMove, m_GroundContactNormal).normalized;
 
-            desiredMove.x = desiredMove.x * movement.CurrentTargetSpeed;
-            desiredMove.z = desiredMove.z * movement.CurrentTargetSpeed;
-            desiredMove.y = desiredMove.y * movement.CurrentTargetSpeed;
-            if (m_RigidBody.velocity.sqrMagnitude < (movement.CurrentTargetSpeed * movement.CurrentTargetSpeed))
+            desiredMove.x = desiredMove.x * movement.currSpeed;
+            desiredMove.z = desiredMove.z * movement.currSpeed;
+            desiredMove.y = desiredMove.y * movement.currSpeed;
+
+            if (rigidBody.velocity.sqrMagnitude < (movement.currSpeed * movement.currSpeed))
             {
-                m_RigidBody.AddForce(desiredMove * SlopeMultiplier(), ForceMode.Impulse);
+                rigidBody.AddForce(desiredMove * SlopeMultiplier(), ForceMode.Impulse);
             }
         }
 
-        if (m_IsGrounded && (input == Vector2.zero) && (Mathf.Abs(m_RigidBody.velocity.magnitude) > 6))
+        // Slip Effect
+        // if (isGrounded && (input == Vector2.zero) && (Mathf.Abs(rigidBody.velocity.magnitude) > 6))
+        // {
+        //     if (!audioSource.isPlaying)
+        //     {
+        //         audioSource.volume = 0.08f;
+        //         audioSource.loop = true;
+        //         audioSource.clip = clipSilp;
+        //         audioSource.Play();
+        //         psFall.Play();
+        //     }
+        // }
+        // else
+        // {
+        //     audioSource.loop = false;
+        // }
+
+        if (isGrounded)
         {
-            if (!audioSource.isPlaying)
+            rigidBody.drag = 5f;
+
+            if (isJump)
             {
-                audioSource.volume = 0.08f;
-                audioSource.loop = true;
-                audioSource.clip = clipSilp;
-                audioSource.Play();
-                psFall.Play();
+                rigidBody.drag = 0f;
+                rigidBody.velocity = new Vector3(rigidBody.velocity.x, 0f, rigidBody.velocity.z);
+                rigidBody.AddForce(new Vector3(0f, movement.jumpForce, 0f), ForceMode.Impulse);
+                isJumping = true;
+                player.PlayAudio(clipJump);
+            }
+
+            if (!isJumping && Mathf.Abs(input.x) < float.Epsilon && Mathf.Abs(input.y) < float.Epsilon && rigidBody.velocity.magnitude < 1f)
+            {
+                rigidBody.Sleep();
             }
         }
         else
         {
-            audioSource.loop = false;
-        }
-
-        if (m_IsGrounded)
-        {
-            m_RigidBody.drag = 5f;
-
-            if (m_Jump)
-            {
-                m_RigidBody.drag = 0f;
-                m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, 0f, m_RigidBody.velocity.z);
-                m_RigidBody.AddForce(new Vector3(0f, movement.JumpForce, 0f), ForceMode.Impulse);
-                m_Jumping = true;
-                audioSource.volume = 1;
-                audioSource.PlayOneShot(clipJump);
-            }
-
-            if (!m_Jumping && Mathf.Abs(input.x) < float.Epsilon && Mathf.Abs(input.y) < float.Epsilon && m_RigidBody.velocity.magnitude < 1f)
-            {
-                m_RigidBody.Sleep();
-            }
-        }
-        else
-        {
-            m_RigidBody.drag = 0f;
-            if (m_PreviouslyGrounded && !m_Jumping)
+            rigidBody.drag = 0f;
+            if (isPreviouslyGrounded && !isJumping)
             {
                 StickToGroundHelper();
             }
         }
-        m_Jump = false;
+        isJump = false;
     }
 
     private float SlopeMultiplier()
     {
         float angle = Vector3.Angle(m_GroundContactNormal, Vector3.up);
-        return movement.SlopeCurveModifier.Evaluate(angle);
+        return movement.slopeCurveModifier.Evaluate(angle);
     }
 
     private void StickToGroundHelper()
     {
         RaycastHit hitInfo;
-        if (Physics.SphereCast(transform.position, m_Capsule.radius * (1.0f - advanced.shellOffset), Vector3.down, out hitInfo,
-                               ((m_Capsule.height / 2f) - m_Capsule.radius) +
-                               advanced.stickToGroundHelperDistance, ~0, QueryTriggerInteraction.Ignore))
+        if (Physics.SphereCast(transform.position, capsuleCollider.radius * (1.0f - advanced.shellOffset), Vector3.down, out hitInfo, ((capsuleCollider.height / 2f) - capsuleCollider.radius) + advanced.stickToGroundHelperDistance, ~0, QueryTriggerInteraction.Ignore))
         {
             if (Mathf.Abs(Vector3.Angle(hitInfo.normal, Vector3.up)) < 85f)
             {
-                m_RigidBody.velocity = Vector3.ProjectOnPlane(m_RigidBody.velocity, hitInfo.normal);
+                rigidBody.velocity = Vector3.ProjectOnPlane(rigidBody.velocity, hitInfo.normal);
             }
         }
     }
@@ -389,10 +330,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void RotateView()
     {
-        //avoids the mouse looking if the game is effectively paused
         if (Mathf.Abs(Time.timeScale) < float.Epsilon) return;
 
-        // get the rotation before it's changed
         float oldYRotation = transform.eulerAngles.y;
 
         if (look.lookJoystick.Vertical() == 0 && look.lookJoystick.Horizontal() == 0)
@@ -404,37 +343,35 @@ public class PlayerMovement : MonoBehaviour
             look.LookAround(cam.transform);
         }
 
-        if (m_IsGrounded || advanced.airControl)
+        if (isGrounded || advanced.airControl)
         {
-            // Rotate the rigidbody velocity to match the new direction that the character is looking
             Quaternion velRotation = Quaternion.AngleAxis(transform.eulerAngles.y - oldYRotation, Vector3.up);
-            m_RigidBody.velocity = velRotation * m_RigidBody.velocity;
+            rigidBody.velocity = velRotation * rigidBody.velocity;
         }
     }
 
-    /// sphere cast down just beyond the bottom of the capsule to see if the capsule is colliding round the bottom
     private void GroundCheck()
     {
-        m_PreviouslyGrounded = m_IsGrounded;
+        isPreviouslyGrounded = isGrounded;
         RaycastHit hitInfo;
-        if (Physics.SphereCast(transform.position, m_Capsule.radius * (1.0f - advanced.shellOffset) / 4, Vector3.down, out hitInfo, ((m_Capsule.height / 2f) - m_Capsule.radius) + advanced.groundCheckDistance, ~0, QueryTriggerInteraction.Ignore))
+        if (Physics.SphereCast(transform.position, capsuleCollider.radius * (1.0f - advanced.shellOffset) / 4, Vector3.down, out hitInfo, ((capsuleCollider.height / 2f) - capsuleCollider.radius) + advanced.groundCheckDistance, ~0, QueryTriggerInteraction.Ignore))
         {
-            if (!m_IsGrounded)
+            if (!isGrounded)
             {
                 psFall.Play();
-                audioSource.PlayOneShot(clipFall);
+                player.PlayAudio(clipFall);
             }
-            m_IsGrounded = true;
+            isGrounded = true;
             m_GroundContactNormal = hitInfo.normal;
         }
         else
         {
-            m_IsGrounded = false;
+            isGrounded = false;
             m_GroundContactNormal = Vector3.up;
         }
-        if (!m_PreviouslyGrounded && m_IsGrounded && m_Jumping)
+        if (!isPreviouslyGrounded && isGrounded && isJumping)
         {
-            m_Jumping = false;
+            isJumping = false;
         }
     }
 
@@ -457,16 +394,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // private void OnEquipmentChanged(ItemOld newItem, ItemOld oldItem)
-    // {
-    //     if (oldItem && oldItem.itemType == ItemType.Shoes) movement.shoes = null;
-    //     if (newItem && newItem.itemType == ItemType.Shoes) movement.shoes = newItem;
-    // }
-
     public void WalkSound()
     {
-        if (!m_IsGrounded) return;
-        audioSource.volume = 0.1f;
-        audioSource.PlayOneShot(clipWalk);
+        if (!isGrounded) return;
+        player.PlayAudio(clipWalk, 0.1f);
     }
 }

@@ -51,7 +51,7 @@ public class EyeMounster : SmallEnemy
             float playerDist = 11 * Mathf.Abs(Vector3.Distance(transform.position, player.position + new Vector3(0, 1, 0)));
             // Debug.Log("Player Dist : " + playerDist);
             laser.EndPos = new Vector3(0, 0, playerDist);
-            gameManager.PlayerBloodEffect(player.position);
+            gameManager.effects.PlayerBloodEffect(player.position);
             playerHealth.TakeDamage(0.04f);
         }
     }

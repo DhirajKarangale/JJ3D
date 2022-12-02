@@ -88,7 +88,7 @@ public class Inventory : MonoBehaviour
         if (inventoryItem.isEmpty) return;
         inventoryData.RemoveItem(index, null);
 
-        inventoryItem.item.itemData.PerformAction(GameManager.instance.playerStat, inventoryItem.item);
+        inventoryItem.item.itemData.PerformAction(GameManager.instance.player, inventoryItem.item);
         UpdateUI();
     }
 
@@ -119,7 +119,7 @@ public class Inventory : MonoBehaviour
 
     private void DropItem(int index)
     {
-        inventoryData.RemoveItem(index, GameManager.instance.playerStat.transform);
+        inventoryData.RemoveItem(index, GameManager.instance.player.transform);
         ResetAllItems();
         // Drop Sound
         UpdateUI();

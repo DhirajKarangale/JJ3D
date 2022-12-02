@@ -1,15 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Refrence")]
-    public Rigidbody rigidBody;
-    [SerializeField] PlayerAttack playerAttack;
-    [SerializeField] AudioSource audioSource;
-
-    [Header("Effect")]
+    [SerializeField] Player player;
     [SerializeField] AudioClip clipHunger;
 
     [Header("Health")]
@@ -26,15 +21,12 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] float mxHunger;
     private float currHunger;
 
-    private GameManager gameManager;
-
     private void Start()
     {
         currHunger = mxHunger;
         currHealth = mxHealth;
-        gameManager = GameManager.instance;
 
-        InvokeRepeating("HungerReducer", 120, 45);
+        InvokeRepeating("HungerReducer", 60, 30);
         InvokeRepeating("AutoHealthIncrease", 60, 15);
     }
 
@@ -43,20 +35,6 @@ public class PlayerHealth : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             TakeDamage(10);
-        }
-    }
-
-    public void TakeDamage(float damage)
-    {
-        // damage = vest ? Armor(vest, damage) : damage;
-        // damage = helmet ? Armor(helmet, damage) : damage;
-
-        currHealth -= damage;
-        UpdateSliders();
-
-        if (currHealth <= 0)
-        {
-            PlayerDye();
         }
     }
 
@@ -71,38 +49,14 @@ public class PlayerHealth : MonoBehaviour
 
     private void HungerReducer()
     {
-        currHunger -= 1;
+        currHunger -= 4;
         UpdateSliders();
         if (currHunger <= 0)
         {
-            audioSource.PlayOneShot(clipHunger);
-            TakeDamage(3);
+            player.PlayAudio(clipHunger);
+            TakeDamage(4);
         }
     }
-
-    // private void OnEquipmentChanged(ItemOld newItem, ItemOld oldItem)
-    // {
-    //     if (oldItem && oldItem.itemType == ItemType.Helmet) helmet = null;
-    //     if (oldItem && oldItem.itemType == ItemType.Vest) vest = null;
-
-    //     if (newItem && newItem.itemType == ItemType.Helmet) helmet = newItem;
-    //     if (newItem && newItem.itemType == ItemType.Vest) vest = newItem;
-    // }
-
-    // private float Armor(ItemOld item, float damage)
-    // {
-    //     if (item.currHealth > 0)
-    //     {
-    //         damage -= item.modifire;
-    //         item.currHealth -= item.modifire;
-    //     }
-    //     else
-    //     {
-    //         item.DestroyItem();
-    //     }
-
-    //     return damage;
-    // }
 
     private void UpdateSliders()
     {
@@ -114,9 +68,9 @@ public class PlayerHealth : MonoBehaviour
 
     private void PlayerDye()
     {
-        playerAttack.animator.Play("Dye");
-        rigidBody.mass = 2000;
-        gameManager.GameOver();
+        player.animator.Play("Dye");
+        player.rigidBody.mass = 2000;
+        GameManager.instance.GameOver();
     }
 
     public void IncreaseHealth(float modifier)
@@ -125,5 +79,19 @@ public class PlayerHealth : MonoBehaviour
         currHealth += modifier; // This is temp Substitue Replace it with valid code
         currHunger = Mathf.Clamp(0, mxHunger, currHunger + (modifier * 1.5f));
         UpdateSliders();
+    }
+
+    public void TakeDamage(float damage)
+    {
+        // damage = vest ? Armor(vest, damage) : damage;
+        // damage = helmet ? Armor(helmet, damage) : damage;
+
+        currHealth -= damage;
+        UpdateSliders();
+
+        if (currHealth <= 0)
+        {
+            PlayerDye();
+        }
     }
 }

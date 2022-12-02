@@ -14,7 +14,7 @@ public class EnemyMovement : NPC
     protected override void Start()
     {
         gameManager = GameManager.instance;
-        playerHealth = gameManager.playerHealth;
+        playerHealth = gameManager.player.playerHealth;
         player = playerHealth.transform;
         targetPos = player.position;
         isHurt = false;

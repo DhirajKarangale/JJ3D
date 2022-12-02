@@ -31,7 +31,7 @@ public class NPCHealth : MonoBehaviour
 
     private void DestroyBody()
     {
-        GameManager.instance.DestroyBodyEffect(transform.position);
+        GameManager.instance.effects.DestroyBodyEffect(transform.position);
         SpwanItem();
     }
 

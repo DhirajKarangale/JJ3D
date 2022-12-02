@@ -27,10 +27,9 @@ public class EquipmentManager : MonoBehaviour
     [SerializeField] AudioClip clipEat;
     [SerializeField] ParticleSystem psEat;
 
+    private Player player;
     private GameManager gameManager;
     private PickUpSystem pickUpSystem;
-    private PlayerAttack playerAttack;
-    private PlayerHealth playerHealth;
 
     public bool isSwardActive
     {
@@ -52,11 +51,10 @@ public class EquipmentManager : MonoBehaviour
     private void Start()
     {
         gameManager = GameManager.instance;
+        player = gameManager.player;
         pickUpSystem = gameManager.pickUpSystem;
-        playerAttack = gameManager.playerAttack;
-        playerHealth = gameManager.playerHealth;
 
-        playerAttack.OnAttack += OnPlayerAttack;
+        player.playerAttack.OnAttack += OnPlayerAttack;
 
         slotHelmet.Reset();
         slotVest.Reset();
@@ -66,9 +64,15 @@ public class EquipmentManager : MonoBehaviour
         slotWeapon.OnRemove += OnWeaponRemove;
     }
 
+
     private IEnumerator IEEat(float modifier, string name)
     {
-        playerAttack.animator.SetBool("isEating", true);
+        while (Time.timeScale < 1)
+        {
+            yield return null;
+        }
+
+        player.animator.SetBool("isEating", true);
 
         audioSourcePlayer.volume = 0.4f;
         audioSourcePlayer.PlayOneShot(clipEat);
@@ -86,9 +90,9 @@ public class EquipmentManager : MonoBehaviour
         objApple.SetActive(false);
         objMango.SetActive(false);
         psEat.Stop();
-        playerHealth.IncreaseHealth(modifier);
+        player.playerHealth.IncreaseHealth(modifier);
 
-        playerAttack.animator.SetBool("isEating", false);
+        player.animator.SetBool("isEating", false);
 
         if (slotWeapon.item) ActiveWeapon(slotWeapon.item.itemData.name);
     }
@@ -107,7 +111,7 @@ public class EquipmentManager : MonoBehaviour
         slotWeapon.UpdateSlider();
         if (slotWeapon.item.itemData.currHealth <= 0)
         {
-            gameManager.DestroyEffect(objSwardIce.transform.position);
+            gameManager.effects.DestroyEffect(objSwardIce.transform.position);
             slotWeapon.item.DestoryItem();
             ActiveWeapon("None");
             slotWeapon.Reset();
@@ -126,7 +130,7 @@ public class EquipmentManager : MonoBehaviour
         objBowFire.SetActive(name.Contains("BowFire"));
     }
 
-    private void DesableWeapon()
+    public void DesableWeapon()
     {
         objSwardNormal.SetActive(false);
         objSwardIce.SetActive(false);

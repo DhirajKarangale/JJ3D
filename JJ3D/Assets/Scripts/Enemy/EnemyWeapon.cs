@@ -15,13 +15,13 @@ public class EnemyWeapon : MonoBehaviour
     {
         if (gameManager.isGameOver) return;
 
-        PlayerHealth player = collision.gameObject.GetComponent<PlayerHealth>();
+        Player player = collision.gameObject.GetComponent<Player>();
         if (player)
         {
             Vector3 direction = player.transform.position - transform.position;
             player.rigidBody.AddForce(direction.normalized * throwForce);
-            gameManager.PlayerBloodEffect(collision.GetContact(0).point);
-            player.TakeDamage(damage);
+            gameManager.effects.PlayerBloodEffect(collision.GetContact(0).point);
+            player.playerHealth.TakeDamage(damage);
         }
     }
 }

@@ -22,7 +22,7 @@ public class PickUpSystem : MonoBehaviour
     {
         if (item)
         {
-            gameManager.PickEffect(item.transform.position);
+            gameManager.effects.PickEffect(item.transform.position);
             inventoryData.AddItem(item);
             item.DesableItem();
         }

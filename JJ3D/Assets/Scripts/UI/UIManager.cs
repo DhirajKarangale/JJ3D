@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour
 
     public void DefaultUI()
     {
-        gameManager.ButtonSound();
+        gameManager.effects.ButtonSound();
         Time.timeScale = 1;
         pauseObj.SetActive(false);
         controlObj.SetActive(true);
@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour
 
     public void PauseButton()
     {
-        gameManager.ButtonSound();
+        gameManager.effects.ButtonSound();
         Time.timeScale = 0;
         pauseObj.SetActive(true);
         controlObj.SetActive(false);
@@ -43,9 +43,9 @@ public class UIManager : MonoBehaviour
 
     public void InventoryButton()
     {
-        gameManager.ButtonSound();
+        gameManager.effects.ButtonSound();
         Time.timeScale = 0;
-        gameManager.ButtonSound();
+        gameManager.effects.ButtonSound();
         pauseObj.SetActive(false);
         controlObj.SetActive(false);
         inventory.ButtonActive(true);

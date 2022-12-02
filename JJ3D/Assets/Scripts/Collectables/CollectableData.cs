@@ -16,7 +16,7 @@ public class CollectableData : Singleton<CollectableData>
 
     public void UpdateCoin(int amount, Vector3 pos)
     {
-        if (amount > 0) gameManager.CollectEffect(pos);
+        if (amount > 0) gameManager.effects.CollectEffect(pos);
 
         coins += amount;
         txtCoin.text = coins.ToString();
@@ -24,7 +24,7 @@ public class CollectableData : Singleton<CollectableData>
 
     public void UpdateKey(byte amount, Vector3 pos)
     {
-        if (amount > 0) gameManager.CollectEffect(pos);
+        if (amount > 0) gameManager.effects.CollectEffect(pos);
 
         keys += amount;
         txtKey.text = keys.ToString();

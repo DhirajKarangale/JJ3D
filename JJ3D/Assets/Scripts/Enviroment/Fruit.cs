@@ -15,7 +15,7 @@ public class Fruit : MonoBehaviour
 
     private void RemoveFruit()
     {
-        GameManager.instance.HitSound(transform.position);
+        GameManager.instance.effects.HitSound(transform.position);
         if (fruitGenerator)
         {
             rigidBody.isKinematic = false;

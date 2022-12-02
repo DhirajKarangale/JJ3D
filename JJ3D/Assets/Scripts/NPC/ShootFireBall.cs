@@ -9,7 +9,7 @@ public class ShootFireBall : MonoBehaviour
 
     private void Start()
     {
-        player = GameManager.instance.playerAttack.transform;
+        player = GameManager.instance.playerPos;
     }
 
     public void Shoot()

@@ -14,7 +14,7 @@ public class FireArrow : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (GameManager.instance.isGameOver) return;
-        GameManager.instance.BombExplosionEffect(transform.position);
+        GameManager.instance.effects.BombExplosionEffect(transform.position);
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
         foreach (Collider nearByObj in colliders)
@@ -37,7 +37,7 @@ public class FireArrow : MonoBehaviour
 
     private void DestroyArrow()
     {
-        GameManager.instance.DestroyEffect(transform.position);
+        GameManager.instance.effects.DestroyEffect(transform.position);
         Destroy(this.gameObject);
     }
 }

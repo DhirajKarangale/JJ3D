@@ -9,5 +9,5 @@ public class ItemData : ScriptableObject
     [SerializeField] internal float mxHealth;
     internal float currHealth;
 
-    internal virtual void PerformAction(PlayerStat playerStat, Item item) { }
+    internal virtual void PerformAction(Player playerStat, Item item) { }
 }
