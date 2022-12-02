@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -14,6 +15,8 @@ public class Player : MonoBehaviour
     [SerializeField] internal PlayerAttack playerAttack;
     [SerializeField] internal PlayerHealth playerHealth;
     private EquipmentManager equipmentManager;
+
+    internal event Action OnDetailsChanged;
 
     private float mxHealth;
     private float currhealth;
@@ -34,6 +37,13 @@ public class Player : MonoBehaviour
         orgSideSpeed = playerMovement.movement.sideSpeed;
     }
 
+    private float GetDefence()
+    {
+        float defence = 0;
+        if (equipmentManager.slotHelmet.item) defence += equipmentManager.slotHelmet.item.itemData.modifier;
+        if (equipmentManager.slotVest.item) defence += equipmentManager.slotVest.item.itemData.modifier;
+        return defence;
+    }
 
     internal void PlayAudio(AudioClip clip, float volume = 1)
     {
@@ -71,6 +81,20 @@ public class Player : MonoBehaviour
         return damage;
     }
 
+    internal DetailsData GetDetails()
+    {
+        DetailsData detailsData = new DetailsData();
+
+        detailsData.mxHealth = playerHealth.mxHealth;
+        detailsData.health = playerHealth.currHealth;
+        detailsData.speed = playerMovement.movement.forwardSpeed;
+        detailsData.hunger = playerHealth.currHunger;
+        detailsData.attack = equipmentManager.slotWeapon.item ? equipmentManager.slotWeapon.item.itemData.modifier : 0;
+        detailsData.defence = GetDefence();
+
+        return detailsData;
+    }
+
     internal void ChangeShoesHealth()
     {
         if (equipmentManager.slotShoes.item)
@@ -94,11 +118,18 @@ public class Player : MonoBehaviour
     internal void EquipDefence(Item item)
     {
         equipmentManager.EquipDefence(item);
+        ChangeDetails();
     }
 
     internal void EquipWeapon(Item item)
     {
         equipmentManager.SetWeapon(item);
+        ChangeDetails();
+    }
+
+    internal void ChangeDetails()
+    {
+        OnDetailsChanged?.Invoke();
     }
 
     internal void ChangeSpeed(float modifier)

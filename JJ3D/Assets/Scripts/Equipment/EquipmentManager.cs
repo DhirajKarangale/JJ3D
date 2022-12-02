@@ -112,6 +112,7 @@ public class EquipmentManager : MonoBehaviour
         slotWeapon.item.ThrowItem(gameManager.playerPos.position + (gameManager.playerPos.forward * 3));
         slotWeapon.Reset();
         ActiveWeapon("None");
+        player.ChangeDetails();
     }
 
     private void OnRemoveHelmet()
@@ -119,6 +120,7 @@ public class EquipmentManager : MonoBehaviour
         slotHelmet.item.ThrowItem(gameManager.playerPos.position + (gameManager.playerPos.forward * 3));
         slotHelmet.Reset();
         objHelmet.SetActive(false);
+        player.ChangeDetails();
     }
 
     private void OnRemoveVest()
@@ -126,6 +128,7 @@ public class EquipmentManager : MonoBehaviour
         slotVest.item.ThrowItem(gameManager.playerPos.position + (gameManager.playerPos.forward * 3));
         slotVest.Reset();
         objVest.SetActive(false);
+        player.ChangeDetails();
     }
 
     private void OnRemoveShoes()
@@ -135,6 +138,7 @@ public class EquipmentManager : MonoBehaviour
         player.ResetSpeed();
         objShoesLeft.SetActive(false);
         objShoesRight.SetActive(false);
+        player.ChangeDetails();
     }
 
     private void OnPlayerAttack()
@@ -181,6 +185,7 @@ public class EquipmentManager : MonoBehaviour
         slotHelmet.Reset();
         gameManager.effects.DestroyEffect(objHelmet.transform.position);
         objHelmet.SetActive(false);
+        player.ChangeDetails();
     }
 
     internal void DestroyVest()
@@ -189,6 +194,7 @@ public class EquipmentManager : MonoBehaviour
         slotVest.Reset();
         gameManager.effects.DestroyEffect(objVest.transform.position);
         objVest.SetActive(false);
+        player.ChangeDetails();
     }
 
     internal void DestroyShoes()
@@ -199,6 +205,7 @@ public class EquipmentManager : MonoBehaviour
         gameManager.effects.DestroyEffect(objShoesRight.transform.position);
         objShoesLeft.SetActive(false);
         objShoesRight.SetActive(false);
+        player.ChangeDetails();
     }
 
     internal void Eat(Item item)

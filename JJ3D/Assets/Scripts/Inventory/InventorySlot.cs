@@ -29,8 +29,8 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHand
 
     public void OnPointerClick(PointerEventData pointerData)
     {
-        GameManager.instance.effects.ButtonSound();
         OnClicked?.Invoke(this);
+        if(!isEmpty) GameManager.instance.effects.ButtonSound();
     }
 
     public void OnEndDrag(PointerEventData eventData)

@@ -11,15 +11,15 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] Slider sliderHealth;
     [SerializeField] Image healthFillImage;
     [SerializeField] Gradient healthGradient;
-    [SerializeField] float mxHealth;
-    private float currHealth;
+    [SerializeField] internal float mxHealth;
+    internal float currHealth;
 
     [Header("Hunger")]
     [SerializeField] Slider sliderHunger;
     [SerializeField] Image hungerFillImage;
     [SerializeField] Gradient hungerGradient;
     [SerializeField] float mxHunger;
-    private float currHunger;
+    internal float currHunger;
 
     private void Start()
     {

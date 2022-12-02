@@ -11,7 +11,6 @@ public class FruitGenerator : MonoBehaviour
     private void Start()
     {
         fruits = new Rigidbody[spwanPoints.Length];
-        // Debug.Log("Fruits : " + fruits.Length);
         currFruits = 0;
         Invoke("SpwanFruits", 2);
     }
