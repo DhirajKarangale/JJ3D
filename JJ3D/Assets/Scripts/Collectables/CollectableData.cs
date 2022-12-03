@@ -1,17 +1,29 @@
-using UnityEngine.UI;
+using TMPro;
 using UnityEngine;
+using System.Collections;
 
 public class CollectableData : Singleton<CollectableData>
 {
-    [SerializeField] Text txtCoin;
-    [SerializeField] Text txtKey;
+    [SerializeField] TMP_Text txtCoin;
+    [SerializeField] TMP_Text txtKey;
     private GameManager gameManager;
-    private int coins;
-    private byte keys;
+    internal int coins;
+    internal byte keys;
 
     private void Start()
     {
         gameManager = GameManager.instance;
+    }
+
+    private IEnumerator IEShakeCoins()
+    {
+        txtCoin.transform.position += new Vector3(10, 0, 0);
+        yield return new WaitForSecondsRealtime(0.1f);
+        txtCoin.transform.position += new Vector3(0, 0, 0);
+        yield return new WaitForSecondsRealtime(0.1f);
+        txtCoin.transform.position += new Vector3(-10, 0, 0);
+        yield return new WaitForSecondsRealtime(0.1f);
+        txtCoin.transform.position += new Vector3(0, 0, 0);
     }
 
     public void UpdateCoin(int amount, Vector3 pos)
@@ -28,5 +40,11 @@ public class CollectableData : Singleton<CollectableData>
 
         keys += amount;
         txtKey.text = keys.ToString();
+    }
+
+    public void ShakeCoins()
+    {
+        StartCoroutine(IEShakeCoins());
+        gameManager.effects.CollectEffect(Vector3.zero);
     }
 }

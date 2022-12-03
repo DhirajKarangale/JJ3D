@@ -22,6 +22,7 @@ public class Effects : MonoBehaviour
     [SerializeField] AudioClip clipPlayerHurt;
     [SerializeField] AudioClip clipHit;
     [SerializeField] AudioClip clipCollect;
+    [SerializeField] AudioClip clipChest;
 
     public void DestroyEffect(Vector3 pos)
     {
@@ -92,6 +93,15 @@ public class Effects : MonoBehaviour
         psBombExplosion.Play();
         audioSource.transform.position = pos;
         audioSource.PlayOneShot(clipDestroyItem);
+    }
+
+    public void ChestEffect(Vector3 pos)
+    {
+        audioSource.volume = 1f;
+        psEnemyDye.transform.position = pos;
+        psEnemyDye.Play();
+        audioSource.transform.position = pos;
+        audioSource.PlayOneShot(clipChest);
     }
 
     public void HitSound(Vector3 pos)

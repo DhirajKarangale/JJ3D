@@ -7,6 +7,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] internal Effects effects;
     [SerializeField] internal PickUpSystem pickUpSystem;
     [SerializeField] internal ForestGenerator forestGenerator;
+    [SerializeField] internal CollectableData collectableData;
     [SerializeField] internal EquipmentManager equipementManager;
     [SerializeField] GameObject mainCanvas;
 

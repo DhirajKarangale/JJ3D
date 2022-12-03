@@ -13,7 +13,7 @@ public class Collectables : MonoBehaviour
             switch (collectableType)
             {
                 case CollectableType.Coin:
-                    CollectableData.instance.UpdateCoin(1, transform.position);
+                    CollectableData.instance.UpdateCoin(5, transform.position);
                     break;
                 case CollectableType.Key:
                     CollectableData.instance.UpdateKey(1, transform.position);

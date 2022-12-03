@@ -1,11 +1,9 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
 public class Msg : Singleton<Msg>
 {
-    [SerializeField] Text txtMsg;
-    public int coin;
+    [SerializeField] TMPro.TMP_Text txtMsg;
 
     private void Start()
     {

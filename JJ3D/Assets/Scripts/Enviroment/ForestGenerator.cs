@@ -21,6 +21,7 @@ public class ForestGenerator : MonoBehaviour
     [SerializeField] ForestItem[] dinasours;
     [SerializeField] ForestItem[] smallEnemies;
     [SerializeField] ForestItem[] midEnemies;
+    [SerializeField] ForestItem[] chests;
     [SerializeField] ForestItem eyeMounster;
     [SerializeField] GameObject testObj;
     int testCount = 0;
@@ -212,7 +213,7 @@ public class ForestGenerator : MonoBehaviour
             }
 
             // Small Enemis
-            if (Random.value > 0.99994f)
+            if (Random.value > 0.99991f)
             {
                 ForestItem smallEnemy = smallEnemies[Random.Range(0, smallEnemies.Length)];
                 if (smallEnemy.currCount < smallEnemy.itemCount)
@@ -226,7 +227,7 @@ public class ForestGenerator : MonoBehaviour
             }
 
             // Eye Mounster
-            if (Random.value > 0.9997f && currHeight < 14)
+            if (Random.value > 0.9994f && currHeight < 14)
             {
                 ForestItem currEyeMounster = eyeMounster;
                 if (currEyeMounster.currCount < currEyeMounster.itemCount)
@@ -240,7 +241,7 @@ public class ForestGenerator : MonoBehaviour
             }
 
             // Mid Enemis
-            if (Random.value > 0.99997f)
+            if (Random.value > 0.99994f)
             {
                 ForestItem midEnemy = midEnemies[Random.Range(0, midEnemies.Length)];
                 if (midEnemy.currCount < midEnemy.itemCount)
@@ -250,6 +251,18 @@ public class ForestGenerator : MonoBehaviour
                     currMidEnemy.StartPos(vertices, itemParent);
                     currMidEnemy.transform.SetParent(itemParent.transform);
                     midEnemy.currCount++;
+                }
+            }
+
+            // Chest
+            if (Random.value > 0.9999f)
+            {
+                ForestItem chest = chests[Random.Range(0, chests.Length)];
+                if (chest.currCount < chest.itemCount)
+                {
+                    Vector3 chestPos = new Vector3(vertices[i].x + itemParent.position.x, vertices[i].y + 4, vertices[i].z + itemParent.position.z);
+                    Instantiate(chest.item, chestPos, Quaternion.identity).transform.SetParent(itemParent.transform);
+                    chest.currCount++;
                 }
             }
 

@@ -91,7 +91,9 @@ public class EquipmentManager : MonoBehaviour
         psEat.Play();
         DesableWeapon();
 
+        if (gameManager.isGameOver) yield break;
         yield return new WaitForSeconds(3);
+        if (gameManager.isGameOver) yield break;
 
         audioSourcePlayer.volume = 1;
         audioSourcePlayer.Stop();
