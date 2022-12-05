@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+using System.Threading.Tasks;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -19,6 +21,13 @@ public class GameManager : Singleton<GameManager>
     {
         isGameOver = false;
         mainCanvas.SetActive(true);
+        // InvokeRepeating("ClearGarbage", 60, 60);
+    }
+
+    private void ClearGarbage()
+    {
+        System.GC.Collect();
+        Resources.UnloadUnusedAssets();
     }
 
     public void GameOver()

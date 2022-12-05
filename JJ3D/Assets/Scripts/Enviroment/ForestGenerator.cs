@@ -22,7 +22,6 @@ public class ForestGenerator : MonoBehaviour
     [SerializeField] ForestItem[] smallEnemies;
     [SerializeField] ForestItem[] midEnemies;
     [SerializeField] ForestItem[] chests;
-    [SerializeField] ForestItem eyeMounster;
     [SerializeField] GameObject testObj;
     int testCount = 0;
 
@@ -49,6 +48,7 @@ public class ForestGenerator : MonoBehaviour
                 GameObject currGrass = grass[Random.Range(0, grass.Length)];
                 GameObject obj = Instantiate(currGrass, grassPos, Quaternion.identity);
                 obj.transform.SetParent(itemParent.transform);
+                obj.isStatic = true;
                 RaycastHit hit;
                 Ray ray = new Ray(obj.transform.position, Vector3.down);
                 if (Physics.Raycast(ray, out hit))
@@ -59,6 +59,7 @@ public class ForestGenerator : MonoBehaviour
                 grassPos += new Vector3(1, 0, 0);
                 obj = Instantiate(currGrass, grassPos, Quaternion.identity);
                 obj.transform.SetParent(itemParent.transform);
+                obj.isStatic = true;
                 ray = new Ray(obj.transform.position, Vector3.down);
                 if (Physics.Raycast(ray, out hit))
                 {
@@ -68,6 +69,7 @@ public class ForestGenerator : MonoBehaviour
                 grassPos += new Vector3(1, 0, 1);
                 obj = Instantiate(currGrass, grassPos, Quaternion.identity);
                 obj.transform.SetParent(itemParent.transform);
+                obj.isStatic = true;
                 ray = new Ray(obj.transform.position, Vector3.down);
                 if (Physics.Raycast(ray, out hit))
                 {
@@ -77,6 +79,7 @@ public class ForestGenerator : MonoBehaviour
                 grassPos += new Vector3(1, 0, -1);
                 obj = Instantiate(currGrass, grassPos, Quaternion.identity);
                 obj.transform.SetParent(itemParent.transform);
+                obj.isStatic = true;
                 ray = new Ray(obj.transform.position, Vector3.down);
                 if (Physics.Raycast(ray, out hit))
                 {
@@ -86,6 +89,7 @@ public class ForestGenerator : MonoBehaviour
                 grassPos += new Vector3(-1, 0, 0);
                 obj = Instantiate(currGrass, grassPos, Quaternion.identity);
                 obj.transform.SetParent(itemParent.transform);
+                obj.isStatic = true;
                 ray = new Ray(obj.transform.position, Vector3.down);
                 if (Physics.Raycast(ray, out hit))
                 {
@@ -95,6 +99,7 @@ public class ForestGenerator : MonoBehaviour
                 grassPos += new Vector3(-1, 0, 1);
                 obj = Instantiate(currGrass, grassPos, Quaternion.identity);
                 obj.transform.SetParent(itemParent.transform);
+                obj.isStatic = true;
                 ray = new Ray(obj.transform.position, Vector3.down);
                 if (Physics.Raycast(ray, out hit))
                 {
@@ -104,6 +109,7 @@ public class ForestGenerator : MonoBehaviour
                 grassPos += new Vector3(-1, 0, -1);
                 obj = Instantiate(currGrass, grassPos, Quaternion.identity);
                 obj.transform.SetParent(itemParent.transform);
+                obj.isStatic = true;
                 ray = new Ray(obj.transform.position, Vector3.down);
                 if (Physics.Raycast(ray, out hit))
                 {
@@ -122,7 +128,9 @@ public class ForestGenerator : MonoBehaviour
                     if (deadTree.currCount < deadTree.itemCount)
                     {
                         Vector3 deadTreePos = new Vector3(vertices[i].x + itemParent.position.x, vertices[i].y - 1, vertices[i].z + itemParent.position.z);
-                        Instantiate(deadTree.item, deadTreePos, Quaternion.identity).transform.SetParent(itemParent.transform);
+                        GameObject obj = Instantiate(deadTree.item, deadTreePos, Quaternion.identity);
+                        obj.transform.SetParent(itemParent.transform);
+                        obj.isStatic = true;
                         deadTree.currCount++;
                         // Debug.Log("Dead Tree");
                     }
@@ -133,7 +141,9 @@ public class ForestGenerator : MonoBehaviour
                     if (yellowTree.currCount < yellowTree.itemCount)
                     {
                         Vector3 yellowTreePos = new Vector3(vertices[i].x + itemParent.position.x, vertices[i].y - 1, vertices[i].z + itemParent.position.z);
-                        Instantiate(yellowTree.item, yellowTreePos, Quaternion.identity).transform.SetParent(itemParent.transform);
+                        GameObject obj = Instantiate(yellowTree.item, yellowTreePos, Quaternion.identity);
+                        obj.transform.SetParent(itemParent.transform);
+                        obj.isStatic = true;
                         yellowTree.currCount++;
                         // Debug.Log("Yellow Tree");
                     }
@@ -144,7 +154,9 @@ public class ForestGenerator : MonoBehaviour
                     if (pinkTree.currCount < pinkTree.itemCount)
                     {
                         Vector3 pinkTreePos = new Vector3(vertices[i].x + itemParent.position.x, vertices[i].y - 1, vertices[i].z + itemParent.position.z);
-                        Instantiate(pinkTree.item, pinkTreePos, Quaternion.identity).transform.SetParent(itemParent.transform);
+                        GameObject obj = Instantiate(pinkTree.item, pinkTreePos, Quaternion.identity);
+                        obj.transform.SetParent(itemParent.transform);
+                        obj.isStatic = true;
                         pinkTree.currCount++;
                         // Debug.Log("Pink Tree");
                     }
@@ -155,7 +167,9 @@ public class ForestGenerator : MonoBehaviour
                     if (greenTree.currCount < greenTree.itemCount)
                     {
                         Vector3 greenTreePos = new Vector3(vertices[i].x + itemParent.position.x, vertices[i].y - 1, vertices[i].z + itemParent.position.z);
-                        Instantiate(greenTree.item, greenTreePos, Quaternion.identity).transform.SetParent(itemParent.transform);
+                        GameObject obj = Instantiate(greenTree.item, greenTreePos, Quaternion.identity);
+                        obj.transform.SetParent(itemParent.transform);
+                        obj.isStatic = true;
                         greenTree.currCount++;
                         // Debug.Log("Green Tree");
                     }
@@ -166,7 +180,9 @@ public class ForestGenerator : MonoBehaviour
                     if (flower.currCount < flower.itemCount)
                     {
                         Vector3 greenTreePos = new Vector3(vertices[i].x + itemParent.position.x, vertices[i].y, vertices[i].z + itemParent.position.z);
-                        Instantiate(flower.item, greenTreePos, Quaternion.identity).transform.SetParent(itemParent.transform);
+                        GameObject obj = Instantiate(flower.item, greenTreePos, Quaternion.identity);
+                        obj.transform.SetParent(itemParent.transform);
+                        obj.isStatic = true;
                         flower.currCount++;
                         // Debug.Log("Flowers");
                     }
@@ -177,7 +193,9 @@ public class ForestGenerator : MonoBehaviour
                     if (rock.currCount < rock.itemCount)
                     {
                         Vector3 rockPos = new Vector3(vertices[i].x + itemParent.position.x, vertices[i].y, vertices[i].z + itemParent.position.z);
-                        Instantiate(rock.item, rockPos, Quaternion.identity).transform.SetParent(itemParent.transform);
+                        GameObject obj = Instantiate(rock.item, rockPos, Quaternion.identity);
+                        obj.transform.SetParent(itemParent.transform);
+                        obj.isStatic = true;
                         rock.currCount++;
                         // Debug.Log("Rock");
                     }
@@ -185,7 +203,7 @@ public class ForestGenerator : MonoBehaviour
             }
 
             // Farm Animals
-            if (Random.value > 0.9998)
+            if (Random.value > 0.9999)
             {
                 ForestItem farmAnimal = farmAnimals[Random.Range(0, farmAnimals.Length)];
                 if (farmAnimal.currCount < farmAnimal.itemCount)
@@ -199,7 +217,7 @@ public class ForestGenerator : MonoBehaviour
             }
 
             // Dinasours
-            if (Random.value > 0.9999f)
+            if (Random.value > 0.99997f)
             {
                 ForestItem dinasour = dinasours[Random.Range(0, dinasours.Length)];
                 if (dinasour.currCount < dinasour.itemCount)
@@ -226,22 +244,8 @@ public class ForestGenerator : MonoBehaviour
                 }
             }
 
-            // Eye Mounster
-            if (Random.value > 0.9994f && currHeight < 14)
-            {
-                ForestItem currEyeMounster = eyeMounster;
-                if (currEyeMounster.currCount < currEyeMounster.itemCount)
-                {
-                    Vector3 eyeMounsterPos = new Vector3(vertices[i].x + itemParent.position.x, vertices[i].y + 2, vertices[i].z + itemParent.position.z);
-                    EnemyMovement currSmallEnemy = Instantiate(currEyeMounster.item, eyeMounsterPos, Quaternion.identity).GetComponent<EnemyMovement>();
-                    currSmallEnemy.StartPos(vertices, itemParent);
-                    currSmallEnemy.transform.SetParent(itemParent.transform);
-                    currEyeMounster.currCount++;
-                }
-            }
-
             // Mid Enemis
-            if (Random.value > 0.99994f)
+            if (Random.value > 0.99992f)
             {
                 ForestItem midEnemy = midEnemies[Random.Range(0, midEnemies.Length)];
                 if (midEnemy.currCount < midEnemy.itemCount)
@@ -255,13 +259,15 @@ public class ForestGenerator : MonoBehaviour
             }
 
             // Chest
-            if (Random.value > 0.9999f)
+            if (Random.value > 0.9995f)
             {
                 ForestItem chest = chests[Random.Range(0, chests.Length)];
                 if (chest.currCount < chest.itemCount)
                 {
                     Vector3 chestPos = new Vector3(vertices[i].x + itemParent.position.x, vertices[i].y + 4, vertices[i].z + itemParent.position.z);
-                    Instantiate(chest.item, chestPos, Quaternion.identity).transform.SetParent(itemParent.transform);
+                    GameObject obj = Instantiate(chest.item, chestPos, Quaternion.identity);
+                    obj.transform.SetParent(itemParent.transform);
+                    obj.isStatic = true;
                     chest.currCount++;
                 }
             }
@@ -288,6 +294,10 @@ public class ForestGenerator : MonoBehaviour
         ResetCount(pinkTrees);
         ResetCount(deadTrees);
         ResetCount(farmAnimals);
+        ResetCount(dinasours);
+        ResetCount(smallEnemies);
+        ResetCount(midEnemies);
+        ResetCount(chests);
     }
 
     private void ResetCount(ForestItem[] items)

@@ -2,18 +2,28 @@ using UnityEngine;
 
 public class EquipmentChest : MonoBehaviour
 {
+    [SerializeField] string itemName;
     [SerializeField] GameObject objCanvas;
     [SerializeField] Animator animator;
     [SerializeField] TMPro.TMP_Text txtCost;
     [SerializeField] Rigidbody[] items;
+    private Transform cam;
 
     private int cost;
 
     private void Start()
     {
+        cam = Camera.main.transform;
         cost = Random.Range(80, 400);
-        txtCost.text = $"Get Item with {cost} coins";
+        txtCost.text = $"Get {itemName} with {cost} coins";
     }
+
+    private void LateUpdate()
+    {
+        objCanvas.transform.LookAt(transform.position - cam.forward);
+    }
+
+
 
     private void OnTriggerEnter(Collider collider)
     {

@@ -8,14 +8,23 @@ public class GrandChest : MonoBehaviour
     [SerializeField] Rigidbody coin;
     [SerializeField] Rigidbody[] food;
     [SerializeField] Rigidbody[] items;
+    private Transform cam;
 
     private int cost;
 
     private void Start()
     {
+        cam = Camera.main.transform;
         cost = Random.Range(100, 600);
         txtCost.text = $"Get Grand Reward with {cost} coins";
     }
+
+    private void LateUpdate()
+    {
+        objCanvas.transform.LookAt(transform.position - cam.forward);
+    }
+
+
 
     private void OnTriggerEnter(Collider collider)
     {

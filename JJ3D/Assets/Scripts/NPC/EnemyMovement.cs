@@ -36,11 +36,18 @@ public class EnemyMovement : NPC
         }
         else
         {
-            if (!isAttack && playerDist < attackDist) Attack();
-            else if (isAttack && playerDist > (attackDist + 1.7f) && playerDist < followDist) FollowPlayer();
-            // else if (isAttack && playerDist > (attackDist + 3f) && playerDist < followDist) FollowPlayer();
-            else if (!isAttack && ((playerDist < followDist) || isHurt)) FollowPlayer();
-            else if (!isAttack && playerDist > followDist && !isWalk && !isIdle) StartCoroutine(IEWalkIdle());
+            if (TimeController.isDay)
+            {
+                if (!isAttack && playerDist < attackDist) Attack();
+                else if (isAttack && playerDist > (attackDist + 1.7f) && playerDist < followDist) FollowPlayer();
+                else if (!isAttack && ((playerDist < followDist) || isHurt)) FollowPlayer();
+                else if (!isAttack && playerDist > followDist && !isWalk && !isIdle) StartCoroutine(IEWalkIdle());
+            }
+            else
+            {
+                if (isAttack && playerDist > (attackDist + 1.7f) && playerDist < (3 * followDist)) FollowPlayer();
+                else if (!isAttack && ((playerDist < (6 * followDist)) || isHurt)) FollowPlayer();
+            }
         }
         base.Update();
     }

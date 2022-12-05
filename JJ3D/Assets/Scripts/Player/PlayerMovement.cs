@@ -249,7 +249,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 rigidBody.AddForce(desiredMove * SlopeMultiplier(), ForceMode.Impulse);
             }
-            
+
             player.ChangeShoesHealth();
         }
 
@@ -361,6 +361,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 psFall.Play();
                 player.PlayAudio(clipFall);
+                CamController.instance.Shake(0.2f);
             }
             isGrounded = true;
             m_GroundContactNormal = hitInfo.normal;

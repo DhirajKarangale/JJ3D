@@ -6,14 +6,23 @@ public class CoinChest : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] TMPro.TMP_Text txtCost;
     [SerializeField] Rigidbody coins;
+    private Transform cam;
 
     private int cost;
 
     private void Start()
     {
+        cam = Camera.main.transform;
         cost = Random.Range(5, 100);
         txtCost.text = $"Get Coins with {cost} coins";
     }
+
+    private void LateUpdate()
+    {
+        objCanvas.transform.LookAt(transform.position - cam.forward);
+    }
+
+
 
     private void OnTriggerEnter(Collider collider)
     {
@@ -49,8 +58,8 @@ public class CoinChest : MonoBehaviour
     public void ChestOpen()
     {
         if (cost > 15) cost /= 5;
-        int reward = Random.Range(1, 7) * cost;
-        if (cost > 15) reward = Random.Range(1, 2) * cost;
+        int reward = Random.Range(1, 10) * cost;
+        if (cost > 15) reward = Random.Range(1, 5) * cost;
 
         for (int i = 0; i < reward; i++)
         {

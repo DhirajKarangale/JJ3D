@@ -7,6 +7,7 @@ public class NPCHealth : MonoBehaviour
     [SerializeField] NPC npc;
     [SerializeField] HealthBar healthBar;
     [SerializeField] GameObject item;
+    [SerializeField] int itemCount;
     [HideInInspector] public float health;
 
     private void Start()
@@ -37,7 +38,7 @@ public class NPCHealth : MonoBehaviour
 
     private void SpwanItem()
     {
-        int count = item.name.Contains("Coin") ? Random.Range(7, 15) : 1;
+        int count = itemCount == -1 ? Random.Range(7, 15) : itemCount;
         for (int i = 0; i < count; i++)
         {
             Vector3 spwanPos = transform.position + new Vector3(Random.Range(-3f, 3f), Random.Range(0.5f, 3f), Random.Range(-3f, 3f));

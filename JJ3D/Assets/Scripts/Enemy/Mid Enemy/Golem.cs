@@ -62,6 +62,11 @@ public class Golem : EnemyMovement
             attackState = 3;
             attackDist = rockShower;
         }
+        else
+        {
+            attackState = Random.Range(0, 2);
+            attackDist = originalAttackDist;
+        }
     }
 
 

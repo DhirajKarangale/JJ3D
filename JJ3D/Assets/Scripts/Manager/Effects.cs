@@ -15,6 +15,8 @@ public class Effects : MonoBehaviour
     [Header("Audio")]
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip clipDestroyItem;
+    [SerializeField] AudioClip clipFireballDestroy;
+    [SerializeField] AudioClip clipBombExplosion;
     [SerializeField] AudioClip clipEnemyDye;
     [SerializeField] AudioClip clipButton;
     [SerializeField] AudioClip clipPick;
@@ -24,9 +26,17 @@ public class Effects : MonoBehaviour
     [SerializeField] AudioClip clipCollect;
     [SerializeField] AudioClip clipChest;
 
+    private CamController camController;
+
+
+    private void Start()
+    {
+        camController = CamController.instance;
+    }
+
     public void DestroyEffect(Vector3 pos)
     {
-        audioSource.volume = 0.5f;
+        audioSource.volume = 0.02f;
         psDestroyItem.transform.position = pos;
         psDestroyItem.Play();
         audioSource.PlayOneShot(clipDestroyItem);
@@ -59,6 +69,15 @@ public class Effects : MonoBehaviour
         audioSource.PlayOneShot(clipNPCHurt);
     }
 
+    public void RockEnemyEffect(Vector3 pos)
+    {
+        audioSource.volume = 0.2f;
+        psDestroyItem.transform.position = pos;
+        psDestroyItem.Play();
+        audioSource.transform.position = pos;
+        audioSource.PlayOneShot(clipNPCHurt);
+    }
+
     public void PlayerBloodEffect(Vector3 pos)
     {
         audioSource.volume = 0.2f;
@@ -70,7 +89,7 @@ public class Effects : MonoBehaviour
 
     public void DestroyBodyEffect(Vector3 pos)
     {
-        audioSource.volume = 0.4f;
+        audioSource.volume = 0.3f;
         psEnemyDye.transform.position = pos;
         psEnemyDye.Play();
         audioSource.transform.position = pos;
@@ -83,16 +102,17 @@ public class Effects : MonoBehaviour
         psFireballDestroy.transform.position = pos;
         psFireballDestroy.Play();
         audioSource.transform.position = pos;
-        audioSource.PlayOneShot(clipDestroyItem);
+        audioSource.PlayOneShot(clipFireballDestroy);
     }
 
     public void BombExplosionEffect(Vector3 pos)
     {
-        audioSource.volume = 0.5f;
+        camController.Shake(0.7f);
+        audioSource.volume = 0.7f;
         psBombExplosion.transform.position = pos;
         psBombExplosion.Play();
         audioSource.transform.position = pos;
-        audioSource.PlayOneShot(clipDestroyItem);
+        audioSource.PlayOneShot(clipBombExplosion);
     }
 
     public void ChestEffect(Vector3 pos)
@@ -113,7 +133,7 @@ public class Effects : MonoBehaviour
 
     public void ButtonSound()
     {
-        audioSource.volume = 1;
+        audioSource.volume = 0.6f;
         audioSource.PlayOneShot(clipButton);
     }
 

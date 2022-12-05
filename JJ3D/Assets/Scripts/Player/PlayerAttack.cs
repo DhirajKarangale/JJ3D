@@ -24,11 +24,12 @@ public class PlayerAttack : MonoBehaviour
     [Header("Audio Clips")]
     [SerializeField] AudioClip clipSwipe;
     [SerializeField] AudioClip clipArrow;
+    [SerializeField] float coolDownTime = 0.8f;
 
     private AnimatorOverrideController overrideController;
     private GameManager gameManager;
     private EquipmentManager equipementManager;
-    private float coolDownTime;
+    private float currCoolDownTime;
 
     private float requiredView;
     [SerializeField] float camSpeed;
@@ -44,7 +45,7 @@ public class PlayerAttack : MonoBehaviour
         overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = overrideController;
 
-        coolDownTime = 1.1f;
+        currCoolDownTime = coolDownTime;
         requiredView = 60;
         cam.fieldOfView = 60;
     }
@@ -60,12 +61,12 @@ public class PlayerAttack : MonoBehaviour
         Attack();
         ShootBow();
         Scope();
-        coolDownTime -= Time.deltaTime;
+        currCoolDownTime -= Time.deltaTime;
     }
 
     private void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.F) && (coolDownTime <= 0))
+        if (Input.GetKeyDown(KeyCode.F) && (currCoolDownTime <= 0))
         {
             if (equipementManager.isSwardActive) SwardAttack();
             else if (equipementManager.isBowActive) BowPunch();
@@ -77,14 +78,14 @@ public class PlayerAttack : MonoBehaviour
         animator.Play("SwardAttack");
         overrideController[swardClips[0].name] = swardClips[UnityEngine.Random.Range(0, swardClips.Length)];
         OnAttack?.Invoke();
-        coolDownTime = 1.1f;
+        currCoolDownTime = coolDownTime;
     }
 
     private void BowPunch()
     {
         animator.Play("BowPunch");
         OnAttack?.Invoke();
-        coolDownTime = 1.1f;
+        currCoolDownTime = coolDownTime;
     }
 
     private void ShootBow()
@@ -107,7 +108,7 @@ public class PlayerAttack : MonoBehaviour
         if (Time.timeScale == 0) return;
 
         // (!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
-        if (Input.GetMouseButtonDown(0) && (coolDownTime <= 0))
+        if (Input.GetMouseButtonDown(0) && (currCoolDownTime <= 0))
         {
             isShoothing = false;
             isAming = true;
@@ -195,7 +196,7 @@ public class PlayerAttack : MonoBehaviour
         }
 
         Invoke("ReSetRotation", 0.6f);
-        coolDownTime = 1.1f;
+        currCoolDownTime = coolDownTime;
         isAming = false;
         isShoothing = false;
 

@@ -27,6 +27,11 @@ public class Collectables : MonoBehaviour
     {
         if (collider.CompareTag("Player"))
         {
+            if (GameManager.instance.isGameOver)
+            {
+                this.enabled = false;
+                return;
+            }
             transform.position = Vector3.MoveTowards(transform.position, collider.transform.position + new Vector3(0, 0.5f, 0), Time.deltaTime * speed);
         }
     }
