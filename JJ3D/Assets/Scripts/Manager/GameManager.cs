@@ -21,13 +21,13 @@ public class GameManager : Singleton<GameManager>
     {
         isGameOver = false;
         mainCanvas.SetActive(true);
-        // InvokeRepeating("ClearGarbage", 60, 60);
+        InvokeRepeating("ClearGarbage", 60, 60);
     }
 
     private void ClearGarbage()
     {
         System.GC.Collect();
-        Resources.UnloadUnusedAssets();
+        // Resources.UnloadUnusedAssets();
     }
 
     public void GameOver()

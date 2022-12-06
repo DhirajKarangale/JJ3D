@@ -7,10 +7,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] Inventory inventory;
 
     private GameManager gameManager;
+    private PlayerMovement playerMovement;
+    private PlayerAttack playerAttack;
 
     private void Start()
     {
         gameManager = GameManager.instance;
+        playerMovement = gameManager.player.playerMovement;
+        playerAttack = gameManager.player.playerAttack;
         DefaultUI();
     }
 
@@ -49,5 +53,15 @@ public class UIManager : MonoBehaviour
         pauseObj.SetActive(false);
         controlObj.SetActive(false);
         inventory.ButtonActive(true);
+    }
+
+    public void ButtonJump()
+    {
+        playerMovement.Jump();
+    }
+
+    public void ButtonAttack()
+    {
+        playerAttack.Attack();
     }
 }

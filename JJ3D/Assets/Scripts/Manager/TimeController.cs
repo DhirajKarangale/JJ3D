@@ -21,7 +21,6 @@ public class TimeController : MonoBehaviour
     private TimeSpan sunSetTime;
 
     [Header("Extra")]
-    [SerializeField] GameObject extraLight;
     [SerializeField] TMP_Text txtTime;
     [SerializeField] AnimationCurve curveLightChange;
     [SerializeField] float startHour;
@@ -80,7 +79,6 @@ public class TimeController : MonoBehaviour
             RenderSettings.skybox = skyBoxDay;
 
             timeMultiplier = 144;
-            extraLight.SetActive(false);
         }
         else
         {
@@ -95,7 +93,6 @@ public class TimeController : MonoBehaviour
             RenderSettings.skybox = skyBoxNight;
 
             timeMultiplier = (720) / (currDay + 1);
-            extraLight.SetActive(true);
         }
 
         dayLight.transform.rotation = Quaternion.AngleAxis(lightRotation, Vector3.right);

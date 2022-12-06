@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "HeightMapSettings", menuName = "Data Object/HeightMapSettings")]
-public class HeightMapSettings : UpdatableData {
+public class HeightMapSettings : ScriptableObject {
 
 	public NoiseSettings noiseSettings;
 
@@ -24,10 +24,10 @@ public class HeightMapSettings : UpdatableData {
 
 	#if UNITY_EDITOR
 
-	protected override void OnValidate() {
-		noiseSettings.ValidateValues ();
-		base.OnValidate ();
-	}
+	// protected override void OnValidate() {
+	// 	noiseSettings.ValidateValues ();
+	// 	base.OnValidate ();
+	// }
 	#endif
 
 }

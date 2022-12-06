@@ -13,8 +13,8 @@ public class CheckPos : MonoBehaviour
     {
         if (transform.position.y < -100)
         {
-            transform.position = new Vector3(transform.position.x, 20, transform.position.z);
             rigidBody.velocity = Vector3.zero;
+            transform.position = new Vector3(transform.position.x, 20, transform.position.z);
         }
     }
 }

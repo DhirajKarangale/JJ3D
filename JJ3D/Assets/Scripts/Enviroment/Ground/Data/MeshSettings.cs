@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "MeshSettings", menuName = "Data Object/MeshSettings")]
-public class MeshSettings : UpdatableData {
+public class MeshSettings : ScriptableObject {
 
 	public const int numSupportedLODs = 5;
 	public const int numSupportedChunkSizes = 9;

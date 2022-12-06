@@ -25,6 +25,7 @@ public class NPCHealth : MonoBehaviour
 
     private void Dye()
     {
+        CamController.instance.Shake(0.9f);
         if (IsInvoking("DestroyBody")) return;
         npc.Dye();
         Invoke("DestroyBody", 5);

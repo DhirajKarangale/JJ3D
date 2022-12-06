@@ -70,21 +70,21 @@ public class MapPreview : MonoBehaviour {
 		textureData.ApplyToMaterial (terrainMaterial);
 	}
 
-	void OnValidate() {
+	// void OnValidate() {
 
-		if (meshSettings != null) {
-			meshSettings.OnValuesUpdated -= OnValuesUpdated;
-			meshSettings.OnValuesUpdated += OnValuesUpdated;
-		}
-		if (heightMapSettings != null) {
-			heightMapSettings.OnValuesUpdated -= OnValuesUpdated;
-			heightMapSettings.OnValuesUpdated += OnValuesUpdated;
-		}
-		if (textureData != null) {
-			textureData.OnValuesUpdated -= OnTextureValuesUpdated;
-			textureData.OnValuesUpdated += OnTextureValuesUpdated;
-		}
+	// 	if (meshSettings != null) {
+	// 		meshSettings.OnValuesUpdated -= OnValuesUpdated;
+	// 		meshSettings.OnValuesUpdated += OnValuesUpdated;
+	// 	}
+	// 	if (heightMapSettings != null) {
+	// 		heightMapSettings.OnValuesUpdated -= OnValuesUpdated;
+	// 		heightMapSettings.OnValuesUpdated += OnValuesUpdated;
+	// 	}
+	// 	if (textureData != null) {
+	// 		textureData.OnValuesUpdated -= OnTextureValuesUpdated;
+	// 		textureData.OnValuesUpdated += OnTextureValuesUpdated;
+	// 	}
 
-	}
+	// }
 
 }

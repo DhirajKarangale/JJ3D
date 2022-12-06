@@ -30,10 +30,12 @@ public class PlayerMovement : MonoBehaviour
             camTargetRot = camera.localRotation;
         }
 
-        public void LookRotation(Transform character, Transform camera)
+        public void LookRotation(Transform character, Transform camera, Vector2 lookInput)
         {
             float yRot = Input.GetAxis("Mouse X") * sensitivity;
             float xRot = Input.GetAxis("Mouse Y") * sensitivity;
+            // float xRot = lookInput.y * sensitivity;
+            // float yRot = lookInput.x * sensitivity;
 
             playerTargetRot *= Quaternion.Euler(0f, yRot, 0f);
             camTargetRot *= Quaternion.Euler(-xRot, 0f, 0f);
@@ -176,6 +178,7 @@ public class PlayerMovement : MonoBehaviour
         public float shellOffset; //set it to 0.1 or more if you get stuck in wall
     }
 
+    [SerializeField] EasyJoystick.Joystick joystickMove;
     [SerializeField] Player player;
     [SerializeField] Look look = new Look();
     [SerializeField] internal Movement movement = new Movement();
@@ -211,6 +214,11 @@ public class PlayerMovement : MonoBehaviour
         capsuleCollider = player.capsuleCollider;
         look.Init(transform, cam.transform);
         PerspectiveButton();
+
+
+
+        rightFingerId = -1;
+        halfScreenWidth = Screen.width / 2;
     }
 
     private void Update()
@@ -219,7 +227,12 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("horrizontal", GetInput().x);
         animator.SetBool("isJump", isJumping);
 
+        GetTouchInput();
         RotateView();
+        // if (rightFingerId != -1)
+        // {
+        //     RotateView();
+        // }
 
         if (Input.GetKeyDown(KeyCode.P)) // Move on a Button
         {
@@ -230,6 +243,11 @@ public class PlayerMovement : MonoBehaviour
         {
             isJump = true;
         }
+    }
+
+    public void Jump()
+    {
+        if (!isJump) isJump = true;
     }
 
     private void FixedUpdate()
@@ -321,8 +339,10 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 input = new Vector2
         {
-            x = Input.GetAxis("Horizontal"),
-            y = Input.GetAxis("Vertical")
+            // x = Input.GetAxis("Horizontal"),
+            // y = Input.GetAxis("Vertical")
+            x = joystickMove.Horizontal(),
+            y = joystickMove.Vertical()
         };
 
         movement.UpdateDesiredTargetSpeed(input);
@@ -337,7 +357,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (look.lookJoystick.Vertical() == 0 && look.lookJoystick.Horizontal() == 0)
         {
-            look.LookRotation(transform, cam.transform);
+            look.LookRotation(transform, cam.transform, lookInput);
         }
         else
         {
@@ -401,4 +421,70 @@ public class PlayerMovement : MonoBehaviour
         if (!isGrounded) return;
         player.PlayAudio(clipWalk, 0.1f);
     }
+
+
+
+
+
+
+
+
+    private int rightFingerId;
+    private float halfScreenWidth;
+    private Vector2 lookInput;
+
+    private void GetTouchInput()
+    {
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+
+            Touch t = Input.GetTouch(i);
+
+            switch (t.phase)
+            {
+                case TouchPhase.Began:
+                    if (t.position.x > halfScreenWidth && rightFingerId == -1)
+                    {
+                        rightFingerId = t.fingerId;
+                    }
+                    break;
+                case TouchPhase.Ended:
+                case TouchPhase.Canceled:
+                    if (t.fingerId == rightFingerId)
+                    {
+                        rightFingerId = -1;
+                    }
+                    break;
+                case TouchPhase.Stationary:
+                    if (t.fingerId == rightFingerId)
+                    {
+                        lookInput = Vector2.zero;
+                    }
+                    break;
+            }
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+// void LookAround()
+// {
+
+//     // vertical (pitch) rotation
+//     cameraPitch = Mathf.Clamp(cameraPitch - lookInput.y, -90f, 90f);
+//     cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0, 0);
+
+//     // horizontal (yaw) rotation
+//     transform.Rotate(transform.up, lookInput.x);
+// }

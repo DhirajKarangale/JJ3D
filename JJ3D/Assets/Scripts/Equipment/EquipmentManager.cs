@@ -163,7 +163,7 @@ public class EquipmentManager : MonoBehaviour
         objSwardIce.SetActive(name.Contains("SwardIce"));
         objSwardLightning.SetActive(name.Contains("SwardLightning"));
 
-        objBow.SetActive(name.Contains("Bow"));
+        objBow.SetActive(name.Contains("BowNormal"));
         objBowThree.SetActive(name.Contains("BowThree"));
         objBowFire.SetActive(name.Contains("BowFire"));
     }
