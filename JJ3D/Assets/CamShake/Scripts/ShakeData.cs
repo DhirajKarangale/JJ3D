@@ -1,12 +1,11 @@
 ﻿using FirstGearGames.Utilities.Editors;
 using FirstGearGames.Utilities.Maths;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace FirstGearGames.SmoothCameraShaker
 {
 
-    [CreateAssetMenu(fileName = "NewCameraShake", menuName = "FirstGearGames/Smooth Camera Shaker/Shake Data", order = 1)]
+    [CreateAssetMenu(fileName = "CamShake", menuName = "Data Object/Cam Shake", order = 1)]
     public class ShakeData : ScriptableObject
     {
         public bool Instanced { get; private set; }
