@@ -149,7 +149,6 @@ public class PlayerMovement : MonoBehaviour
     [Serializable]
     public class Movement
     {
-        // [SerializeField] PlayerAttack playerAttack;
         public float forwardSpeed = 8.0f;
         public float backwardSpeed = 4.0f;
         public float sideSpeed = 4.0f;
@@ -229,10 +228,10 @@ public class PlayerMovement : MonoBehaviour
 
         GetTouchInput();
         RotateView();
-        // if (rightFingerId != -1)
-        // {
-        //     RotateView();
-        // }
+        if (rightFingerId != -1)
+        {
+            RotateView();
+        }
 
         if (Input.GetKeyDown(KeyCode.P)) // Move on a Button
         {
@@ -270,23 +269,6 @@ public class PlayerMovement : MonoBehaviour
 
             player.ChangeShoesHealth();
         }
-
-        // Slip Effect
-        // if (isGrounded && (input == Vector2.zero) && (Mathf.Abs(rigidBody.velocity.magnitude) > 6))
-        // {
-        //     if (!audioSource.isPlaying)
-        //     {
-        //         audioSource.volume = 0.08f;
-        //         audioSource.loop = true;
-        //         audioSource.clip = clipSilp;
-        //         audioSource.Play();
-        //         psFall.Play();
-        //     }
-        // }
-        // else
-        // {
-        //     audioSource.loop = false;
-        // }
 
         if (isGrounded)
         {
@@ -339,8 +321,6 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 input = new Vector2
         {
-            // x = Input.GetAxis("Horizontal"),
-            // y = Input.GetAxis("Vertical")
             x = joystickMove.Horizontal(),
             y = joystickMove.Vertical()
         };
@@ -377,7 +357,7 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit hitInfo;
         if (Physics.SphereCast(transform.position, capsuleCollider.radius * (1.0f - advanced.shellOffset) / 4, Vector3.down, out hitInfo, ((capsuleCollider.height / 2f) - capsuleCollider.radius) + advanced.groundCheckDistance, ~0, QueryTriggerInteraction.Ignore))
         {
-            if (!isGrounded)
+            if ((hitInfo.collider.gameObject.layer == 6) && !isGrounded)
             {
                 psFall.Play();
                 player.PlayAudio(clipFall);

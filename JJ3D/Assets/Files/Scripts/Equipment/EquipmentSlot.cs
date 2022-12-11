@@ -6,7 +6,7 @@ public class EquipmentSlot : MonoBehaviour
 {
     [SerializeField] Image image;
     [SerializeField] Slider slider;
-    [SerializeField] Outline outline;
+    [SerializeField] UnityEngine.UI.Outline outline;
     [SerializeField] GameObject objCloseButton;
     internal Item item;
 

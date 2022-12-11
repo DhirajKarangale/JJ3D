@@ -58,7 +58,7 @@ public class PlayerAttack : MonoBehaviour
             return;
         }
 
-        // Attack();
+        Attack();
         ShootBow();
         Scope();
         currCoolDownTime -= Time.deltaTime;
@@ -66,8 +66,8 @@ public class PlayerAttack : MonoBehaviour
 
     public void Attack()
     {
-        //if (Input.GetKeyDown(KeyCode.F) && (currCoolDownTime <= 0))
-        if ((currCoolDownTime <= 0))
+        // if ((currCoolDownTime <= 0))
+        if (Input.GetKeyDown(KeyCode.F) && (currCoolDownTime <= 0))
         {
             if (equipementManager.isSwardActive) SwardAttack();
             else if (equipementManager.isBowActive) BowPunch();

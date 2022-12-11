@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class InventorySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDropHandler, IDragHandler
 {
     [SerializeField] Image imgItem;
-    [SerializeField] internal Outline outline;
+    [SerializeField] internal UnityEngine.UI.Outline outline;
     [SerializeField] GameObject objSelect;
     [SerializeField] TMP_Text txtActionName;
 

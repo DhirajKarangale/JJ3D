@@ -54,7 +54,7 @@ public class TimeController : MonoBehaviour
     private void UpdateTime()
     {
         currTime = currTime.AddSeconds(Time.deltaTime * timeMultiplier);
-        txtTime.text = currTime.ToString("HH:mm");
+        txtTime.text = currTime.ToString("hh:mm");
     }
 
     private void RotateSun()

@@ -42,8 +42,8 @@ public class PlayerHealth : MonoBehaviour
     {
         if ((currHealth < mxHealth) && (currHunger > 1))
         {
-            currHealth += 3;
-            currHunger -= 6;
+            currHealth += 7;
+            currHunger -= 12;
         }
     }
 
