@@ -19,7 +19,7 @@ public class Collectables : MonoBehaviour
                     CollectableData.instance.UpdateKey(1, transform.position);
                     break;
             }
-            Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
         }
     }
 

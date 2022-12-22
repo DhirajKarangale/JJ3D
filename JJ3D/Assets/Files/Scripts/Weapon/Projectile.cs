@@ -27,7 +27,6 @@ public class Projectile : MonoBehaviour
                 {
                     // Debug.Log("Save NPC");
                     this.gameObject.SetActive(false);
-                    // Destroy(this.gameObject);
                 }
             }
             else
@@ -51,7 +50,6 @@ public class Projectile : MonoBehaviour
         {
             GameManager.instance.effects.FireballDestroyEffect(transform.position);
         }
-        // Destroy(this.gameObject);
         this.gameObject.SetActive(false);
     }
 }

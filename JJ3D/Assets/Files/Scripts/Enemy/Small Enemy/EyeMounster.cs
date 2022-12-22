@@ -10,8 +10,16 @@ public class EyeMounster : SmallEnemy
 
     [Header("Spike")]
     [SerializeField] float force;
-    [SerializeField] GameObject spikePrefab;
     [SerializeField] Transform[] attackPoints;
+
+    private Rigidbody spike;
+    private ObjectPooler objectPooler;
+
+    protected override void Start()
+    {
+        objectPooler = ObjectPooler.instance;
+        base.Start();
+    }
 
     protected override void Update()
     {
@@ -65,11 +73,11 @@ public class EyeMounster : SmallEnemy
     {
         Vector3 dir = player.position - attackPoints[0].position;
         dir = dir.normalized;
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 3; i++)
         {
-            GameObject spike = Instantiate(spikePrefab, attackPoints[i].position, Quaternion.identity);
-            spike.transform.rotation = Quaternion.LookRotation(player.position - transform.position);
-            spike.GetComponent<Rigidbody>().AddForce(dir * force, ForceMode.Impulse);
+            spike = objectPooler.SpwanObject("Spike", attackPoints[i].position);
+            spike.rotation = Quaternion.LookRotation(player.position - attackPoints[i].position);
+            spike.AddForce(dir * force, ForceMode.Impulse);
         }
     }
 }

@@ -26,7 +26,8 @@ public class Item : MonoBehaviour
             yield return null;
         }
         transform.localScale = endScale;
-        obj.SetActive(false);
+        // obj.SetActive(false);
+        gameObject.SetActive(false);
         rigidBody.isKinematic = true;
     }
 
@@ -37,7 +38,7 @@ public class Item : MonoBehaviour
 
     internal void ThrowItem(Vector3 pos)
     {
-        obj.SetActive(true);
+        gameObject.SetActive(true);
         rigidBody.isKinematic = false;
         transform.localScale = startScale;
         transform.position = pos + new Vector3(0, 5, 0);
@@ -46,6 +47,6 @@ public class Item : MonoBehaviour
 
     internal void DestoryItem()
     {
-        Destroy(this.gameObject);
+        gameObject.SetActive(false);
     }
 }

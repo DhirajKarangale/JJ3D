@@ -6,7 +6,7 @@ public class NPCHealth : MonoBehaviour
     [SerializeField] float mxHealth;
     [SerializeField] NPC npc;
     [SerializeField] HealthBar healthBar;
-    [SerializeField] GameObject item;
+    [SerializeField] string itemTag;
     [SerializeField] int itemCount;
     [HideInInspector] public float health;
 
@@ -40,10 +40,11 @@ public class NPCHealth : MonoBehaviour
     private void SpwanItem()
     {
         int count = itemCount == -1 ? Random.Range(7, 15) : itemCount;
+        ObjectPooler objectPooler = ObjectPooler.instance;
         for (int i = 0; i < count; i++)
         {
             Vector3 spwanPos = transform.position + new Vector3(Random.Range(-3f, 3f), Random.Range(0.5f, 3f), Random.Range(-3f, 3f));
-            Instantiate(item, spwanPos, Quaternion.identity);
+            objectPooler.SpwanObject(itemTag,spwanPos);
         }
         Destroy(this.gameObject);
     }

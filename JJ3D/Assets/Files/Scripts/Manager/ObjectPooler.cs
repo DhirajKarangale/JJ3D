@@ -5,6 +5,7 @@ public class ObjectPooler : Singleton<ObjectPooler>
 {
     public Dictionary<string, Queue<Rigidbody>> poolDictonary;
     public List<Pool> pools;
+    private Rigidbody obj;
 
     private void Start()
     {
@@ -16,7 +17,8 @@ public class ObjectPooler : Singleton<ObjectPooler>
 
             for (int i = 0; i < pool.size; i++)
             {
-                Rigidbody obj = Instantiate(pool.prefab);
+                obj = Instantiate(pool.prefab);
+                obj.transform.SetParent(this.transform);
                 obj.gameObject.SetActive(false);
                 objectPool.Enqueue(obj);
             }
@@ -26,18 +28,18 @@ public class ObjectPooler : Singleton<ObjectPooler>
     }
 
 
-    public GameObject SpwanObject(string tag, Vector3 pos)
+    public Rigidbody SpwanObject(string tag, Vector3 pos)
     {
-        Rigidbody spwanObj = poolDictonary[tag].Dequeue();
-        spwanObj.transform.position = pos;
-        spwanObj.velocity = Vector3.zero;
-        spwanObj.transform.rotation = Quaternion.identity;
-        spwanObj.gameObject.SetActive(true);
+        obj = poolDictonary[tag].Dequeue();
+        obj.transform.position = pos;
+        obj.velocity = Vector3.zero;
+        obj.transform.rotation = Quaternion.identity;
+        obj.gameObject.SetActive(true);
         // spwanObj.GetComponent<IPooledObject>()?.OnObjectSpwan();
 
-        poolDictonary[tag].Enqueue(spwanObj);
+        poolDictonary[tag].Enqueue(obj);
 
-        return spwanObj.gameObject;
+        return obj;
     }
 }
 
