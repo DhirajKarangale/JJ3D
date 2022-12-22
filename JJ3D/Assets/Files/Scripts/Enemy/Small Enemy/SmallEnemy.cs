@@ -21,7 +21,8 @@ public class SmallEnemy : EnemyMovement
     private void ChangeAttack()
     {
         if (attackClips.Length <= 0 || !overrideController) return;
-        attackState = Random.Range(0, attackClips.Length);
+        // attackState = Random.Range(0, attackClips.Length);
+        attackState = 1;
         overrideController[attackClips[0].name] = attackClips[attackState];
         attackDist = attackState == 0 ? originalAttackDist : originalAttackDist * attackDistMulti;
         isAttackChanged = true;

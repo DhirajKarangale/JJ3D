@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
 
     private void Start()
     {
-        Invoke("DestroyProjectile", 5);
+        Invoke("DestroyProjectile", 3);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -26,7 +26,8 @@ public class Projectile : MonoBehaviour
                 else
                 {
                     // Debug.Log("Save NPC");
-                    Destroy(this.gameObject);
+                    this.gameObject.SetActive(false);
+                    // Destroy(this.gameObject);
                 }
             }
             else
@@ -50,6 +51,7 @@ public class Projectile : MonoBehaviour
         {
             GameManager.instance.effects.FireballDestroyEffect(transform.position);
         }
-        Destroy(this.gameObject);
+        // Destroy(this.gameObject);
+        this.gameObject.SetActive(false);
     }
 }
