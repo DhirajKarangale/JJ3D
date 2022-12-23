@@ -36,6 +36,7 @@ public class EquipmentManager : MonoBehaviour
     private Player player;
     private GameManager gameManager;
     private PickUpSystem pickUpSystem;
+    [SerializeField] Inventory inventory;
 
     public bool isSwardActive
     {
@@ -105,13 +106,13 @@ public class EquipmentManager : MonoBehaviour
 
         player.animator.SetBool("isEating", false);
 
-        if (slotWeapon.item) ActiveWeapon(slotWeapon.item.itemData.name);
+        if (slotWeapon.itemData) ActiveWeapon(slotWeapon.itemData.name);
     }
 
 
     private void OnRemoveWeapon()
     {
-        slotWeapon.item.ThrowItem(gameManager.playerPos.position + (gameManager.playerPos.forward * 3));
+        inventory.ThrowItem(slotWeapon.itemData);
         slotWeapon.Reset();
         ActiveWeapon("None");
         player.ChangeDetails();
@@ -119,7 +120,7 @@ public class EquipmentManager : MonoBehaviour
 
     private void OnRemoveHelmet()
     {
-        slotHelmet.item.ThrowItem(gameManager.playerPos.position + (gameManager.playerPos.forward * 3));
+        inventory.ThrowItem(slotHelmet.itemData);
         slotHelmet.Reset();
         objHelmet.SetActive(false);
         player.ChangeDetails();
@@ -127,7 +128,7 @@ public class EquipmentManager : MonoBehaviour
 
     private void OnRemoveVest()
     {
-        slotVest.item.ThrowItem(gameManager.playerPos.position + (gameManager.playerPos.forward * 3));
+        inventory.ThrowItem(slotVest.itemData);
         slotVest.Reset();
         objVest.SetActive(false);
         player.ChangeDetails();
@@ -135,7 +136,7 @@ public class EquipmentManager : MonoBehaviour
 
     private void OnRemoveShoes()
     {
-        slotShoes.item.ThrowItem(gameManager.playerPos.position + (gameManager.playerPos.forward * 3));
+        inventory.ThrowItem(slotShoes.itemData);
         slotShoes.Reset();
         player.ResetSpeed();
         objShoesLeft.SetActive(false);
@@ -145,12 +146,12 @@ public class EquipmentManager : MonoBehaviour
 
     private void OnPlayerAttack()
     {
-        slotWeapon.item.itemData.currHealth--;
+        slotWeapon.itemData.currHealth--;
         slotWeapon.UpdateSlider();
-        if (slotWeapon.item.itemData.currHealth <= 0)
+        if (slotWeapon.itemData.currHealth <= 0)
         {
             gameManager.effects.DestroyEffect(objSwardIce.transform.position);
-            slotWeapon.item.DestoryItem();
+            // slotWeapon.item.DestoryItem(); // Desable Obj
             ActiveWeapon("None");
             slotWeapon.Reset();
         }
@@ -183,7 +184,7 @@ public class EquipmentManager : MonoBehaviour
 
     internal void DestroyHelmet()
     {
-        slotHelmet.item.DestoryItem();
+        // slotHelmet.item.DestoryItem();  // Desable Obj
         slotHelmet.Reset();
         gameManager.effects.DestroyEffect(objHelmet.transform.position);
         objHelmet.SetActive(false);
@@ -192,7 +193,7 @@ public class EquipmentManager : MonoBehaviour
 
     internal void DestroyVest()
     {
-        slotVest.item.DestoryItem();
+        // slotVest.item.DestoryItem(); // Desable Obj
         slotVest.Reset();
         gameManager.effects.DestroyEffect(objVest.transform.position);
         objVest.SetActive(false);
@@ -201,7 +202,7 @@ public class EquipmentManager : MonoBehaviour
 
     internal void DestroyShoes()
     {
-        slotShoes.item.DestoryItem();
+        // slotShoes.item.DestoryItem(); // Desable Obj
         slotShoes.Reset();
         player.ResetSpeed();
         gameManager.effects.DestroyEffect(objShoesRight.transform.position);
@@ -210,37 +211,37 @@ public class EquipmentManager : MonoBehaviour
         player.ChangeDetails();
     }
 
-    internal void Eat(Item item)
+    internal void Eat(ItemData itemData)
     {
-        StartCoroutine(IEEat(item.itemData.modifier, item.name));
-        Destroy(item.gameObject);
+        StartCoroutine(IEEat(itemData.modifier, itemData.name));
+        // Destroy(item.gameObject); // Desable Obj
     }
 
-    internal void EquipDefence(Item item)
+    internal void EquipDefence(ItemData itemData)
     {
-        if (item.itemData.name.Contains("Helmet"))
+        if (itemData.name.Contains("Helmet"))
         {
-            slotHelmet.SetData(item);
+            slotHelmet.SetData(itemData);
             objHelmet.SetActive(true);
         }
-        else if (item.itemData.name.Contains("Vest"))
+        else if (itemData.name.Contains("Vest"))
         {
-            slotVest.SetData(item);
+            slotVest.SetData(itemData);
             objVest.SetActive(true);
         }
-        else if (item.itemData.name.Contains("Shoes"))
+        else if (itemData.name.Contains("Shoes"))
         {
-            slotShoes.SetData(item);
+            slotShoes.SetData(itemData);
             objShoesLeft.SetActive(true);
             objShoesRight.SetActive(true);
-            player.ChangeSpeed(slotShoes.item.itemData.modifier);
+            player.ChangeSpeed(slotShoes.itemData.modifier);
         }
     }
 
-    internal void SetWeapon(Item item)
+    internal void SetWeapon(ItemData itemData)
     {
-        if (slotWeapon.item) pickUpSystem.PickUp(slotWeapon.item);
-        slotWeapon.SetData(item);
-        ActiveWeapon(item.itemData.name);
+        if (slotWeapon.itemData) pickUpSystem.PickUp(null, slotWeapon.itemData);
+        slotWeapon.SetData(itemData);
+        ActiveWeapon(itemData.name);
     }
 }

@@ -6,7 +6,8 @@ public class EquipmentChest : MonoBehaviour
     [SerializeField] GameObject objCanvas;
     [SerializeField] Animator animator;
     [SerializeField] TMPro.TMP_Text txtCost;
-    [SerializeField] Rigidbody[] items;
+    // [SerializeField] Rigidbody[] items;
+    [SerializeField] string[] itemsName;
     private Transform cam;
 
     private int cost;
@@ -58,7 +59,8 @@ public class EquipmentChest : MonoBehaviour
     // Acess by Anim Event
     public void ChestOpen()
     {
-        Rigidbody item = Instantiate(items[Random.Range(0, items.Length)], transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+        // Rigidbody item = Instantiate(items[Random.Range(0, items.Length)], transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+        Rigidbody item = ObjectPooler.instance.SpwanObject(itemsName[Random.Range(0, itemsName.Length)], transform.position + new Vector3(0, 1, 0));
         item.AddForce(Vector3.up * 50, ForceMode.Impulse);
         GameManager.instance.effects.ChestEffect(transform.position);
 

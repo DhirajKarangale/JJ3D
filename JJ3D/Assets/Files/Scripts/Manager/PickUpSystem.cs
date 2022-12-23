@@ -18,13 +18,17 @@ public class PickUpSystem : MonoBehaviour
         GetInput();
     }
 
-    public void PickUp(Item item)
+    public void PickUp(Item item, ItemData itemData)
     {
         if (item)
         {
             gameManager.effects.PickEffect(item.transform.position);
-            inventoryData.AddItem(item);
+            inventoryData.AddItem(item.itemData);
             item.DesableItem();
+        }
+        else if (itemData)
+        {
+            inventoryData.AddItem(itemData);
         }
     }
 
@@ -46,12 +50,13 @@ public class PickUpSystem : MonoBehaviour
         {
             Item item = hit.collider.GetComponent<Item>();
             if (item && Vector3.Distance(transform.position, item.transform.position) > interactRadius) return;
-            PickUp(item);
+            PickUp(item, null);
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        // Pick On Collide
         // Item item = collision.gameObject.GetComponent<Item>();
         // PickUp(item);
     }

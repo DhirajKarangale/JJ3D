@@ -177,7 +177,7 @@ public class PlayerAttack : MonoBehaviour
             currArrow = objectPooler.SpwanObject("FireArrow", firePos.position);
             currArrow.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<FireArrow>().damage = equipementManager.slotWeapon.item.itemData.modifier;
+            currArrow.GetComponent<FireArrow>().damage = equipementManager.slotWeapon.itemData.modifier;
         }
         else
         {
@@ -185,7 +185,7 @@ public class PlayerAttack : MonoBehaviour
             currArrow = objectPooler.SpwanObject("Arrow", firePos.position);
             currArrow.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.item.itemData.modifier;
+            currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.itemData.modifier;
         }
 
         if (equipementManager.objBowThree.activeInHierarchy)
@@ -194,12 +194,12 @@ public class PlayerAttack : MonoBehaviour
             currArrow = objectPooler.SpwanObject("Arrow", firePos1.position);
             currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.item.itemData.modifier;
+            currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.itemData.modifier;
 
             currArrow = objectPooler.SpwanObject("Arrow", firePos2.position);
             currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.item.itemData.modifier;
+            currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.itemData.modifier;
         }
 
         Invoke("ReSetRotation", 0.6f);

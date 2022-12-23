@@ -21,13 +21,19 @@ public class GameManager : Singleton<GameManager>
     {
         isGameOver = false;
         mainCanvas.SetActive(true);
-        InvokeRepeating("ClearGarbage", 60, 60);
+        Invoke("InitializeWeapon", 1);
+        // InvokeRepeating("ClearGarbage", 60, 60);
     }
 
     private void ClearGarbage()
     {
-        System.GC.Collect();
+        // System.GC.Collect();
         // Resources.UnloadUnusedAssets();
+    }
+
+    private void InitializeWeapon()
+    {
+        ObjectPooler.instance.SpwanObject("BowThree", playerPos.position + new Vector3(0, 11, 0));
     }
 
     public void GameOver()

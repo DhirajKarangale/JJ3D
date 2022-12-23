@@ -5,9 +5,11 @@ public class GrandChest : MonoBehaviour
     [SerializeField] GameObject objCanvas;
     [SerializeField] Animator animator;
     [SerializeField] TMPro.TMP_Text txtCost;
-    [SerializeField] Rigidbody coin;
-    [SerializeField] Rigidbody[] food;
-    [SerializeField] Rigidbody[] items;
+    // [SerializeField] Rigidbody coin;
+    // [SerializeField] Rigidbody[] food;
+    // [SerializeField] Rigidbody[] items;
+    [SerializeField] string[] foodNames;
+    [SerializeField] string[] itemsNames;
     private Transform cam;
 
     private int cost;
@@ -60,29 +62,32 @@ public class GrandChest : MonoBehaviour
     // Acess by Anim Event
     public void ChestOpen()
     {
+        Vector3 pos;
+        Rigidbody rewardItem;
+        ObjectPooler objectPooler = ObjectPooler.instance;
+
         switch (Random.Range(0, 15))
         {
             case > 10:
                 int coins = Random.Range(20, 60);
                 for (int i = 0; i < coins; i++)
                 {
-                    Vector3 pos = transform.position + new Vector3(Random.Range(-2, 2), 1, Random.Range(-2, 2));
-                    Rigidbody rewardCoin = Instantiate(coin, pos, Quaternion.identity);
-                    rewardCoin.AddForce(Vector3.up * 8, ForceMode.Impulse);
+                    pos = transform.position + new Vector3(Random.Range(-2, 2), 1, Random.Range(-2, 2));
+                    rewardItem = objectPooler.SpwanObject("Coin", pos);
+                    rewardItem.AddForce(Vector3.up * 8, ForceMode.Impulse);
                 }
                 break;
             case > 5:
                 int foodCount = Random.Range(1, 4);
-                int foodIndex = Random.Range(0, food.Length);
                 for (int i = 0; i < foodCount; i++)
                 {
-                    Vector3 pos = transform.position + new Vector3(Random.Range(-2, 2), 1, Random.Range(-2, 2));
-                    Rigidbody rewardFood = Instantiate(food[foodIndex], pos, Quaternion.identity);
-                    rewardFood.AddForce(Vector3.up * 10, ForceMode.Impulse);
+                    pos = transform.position + new Vector3(Random.Range(-2, 2), 1, Random.Range(-2, 2));
+                    rewardItem = objectPooler.SpwanObject(foodNames[Random.Range(0, foodNames.Length)], pos);
+                    rewardItem.AddForce(Vector3.up * 10, ForceMode.Impulse);
                 }
                 break;
             default:
-                Rigidbody rewardItem = Instantiate(items[Random.Range(0, items.Length)], transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+                rewardItem = objectPooler.SpwanObject(itemsNames[Random.Range(0, itemsNames.Length)], transform.position + new Vector3(0, 1, 0));
                 rewardItem.AddForce(Vector3.up * 50, ForceMode.Impulse);
                 break;
         }
