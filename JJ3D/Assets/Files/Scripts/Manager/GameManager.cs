@@ -25,8 +25,8 @@ public class GameManager : Singleton<GameManager>
 
     private void ClearGarbage()
     {
-        System.GC.Collect();
-        Resources.UnloadUnusedAssets();
+        // System.GC.Collect();
+        // Resources.UnloadUnusedAssets();
     }
 
     private void InitializeWeapon()
