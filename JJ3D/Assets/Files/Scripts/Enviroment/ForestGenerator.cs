@@ -68,201 +68,201 @@ public class ForestGenerator : MonoBehaviour
 
     public void Generate(Vector3[] vertices, Transform itemParent)
     {
-        ResetItemCount();
+        // ResetItemCount();
 
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            currHeight = transform.TransformPoint(vertices[i]).y;
+        // for (int i = 0; i < vertices.Length; i++)
+        // {
+        //     currHeight = transform.TransformPoint(vertices[i]).y;
 
-            itemPos.x = vertices[i].x + itemParent.position.x;
-            itemPos.y = vertices[i].y;
-            itemPos.z = vertices[i].z + itemParent.position.z;
+        //     itemPos.x = vertices[i].x + itemParent.position.x;
+        //     itemPos.y = vertices[i].y;
+        //     itemPos.z = vertices[i].z + itemParent.position.z;
 
-            //  Render Grass
-            if (currHeight >= 0.4f && Random.value > 0.998f && (Mathf.Abs(lastHeight - currHeight) < 2.5f) && currHeight <= 3f)
-            {
-                renderObject.AddGrass(itemPos);
-                // Debug.Log("Grass");
-            }
+        //     //  Render Grass
+        //     if (currHeight >= 0.4f && Random.value > 0.998f && (Mathf.Abs(lastHeight - currHeight) < 2.5f) && currHeight <= 3f)
+        //     {
+        //         renderObject.AddGrass(itemPos);
+        //         // Debug.Log("Grass");
+        //     }
 
-            //  Render Rock
-            if ((currRockCount < 6) && (currHeight >= 0.3f) && (currHeight < 4) && (Random.value > 0.9995f))
-            {
-                renderObject.AddRock(itemPos);
-                currRockCount++;
-            }
+        //     //  Render Rock
+        //     if ((currRockCount < 6) && (currHeight >= 0.3f) && (currHeight < 4) && (Random.value > 0.9995f))
+        //     {
+        //         renderObject.AddRock(itemPos);
+        //         currRockCount++;
+        //     }
 
-            // Render Plant
-            if ((currPlantCount < 6) && (currHeight >= 2.5) && (currHeight < 6.5f) && (Random.value > 0.999f))
-            {
-                renderObject.AddPlant(itemPos);
-                currPlantCount++;
-            }
+        //     // Render Plant
+        //     if ((currPlantCount < 6) && (currHeight >= 2.5) && (currHeight < 6.5f) && (Random.value > 0.999f))
+        //     {
+        //         renderObject.AddPlant(itemPos);
+        //         currPlantCount++;
+        //     }
 
-            // Render Wood
-            if ((currWoodCount < 6) && (currHeight >= 6.5f) && (Random.value > 0.999f))
-            {
-                renderObject.AddWood(itemPos);
-                currWoodCount++;
-            }
+        //     // Render Wood
+        //     if ((currWoodCount < 6) && (currHeight >= 6.5f) && (Random.value > 0.999f))
+        //     {
+        //         renderObject.AddWood(itemPos);
+        //         currWoodCount++;
+        //     }
 
-            if ((Mathf.Abs(lastHeight - currHeight) < 15) && (Random.value >= 0.9987f))
-            {
-                itemPos.y--; // Trees should spwan below ground at -1 height
+        //     if ((Mathf.Abs(lastHeight - currHeight) < 15) && (Random.value >= 0.9987f))
+        //     {
+        //         itemPos.y--; // Trees should spwan below ground at -1 height
 
-                if (currHeight > 7.9f)
-                {
-                    forestItem = deadTrees[Random.Range(0, deadTrees.Length)];
-                    if (forestItem.currCount < forestItem.itemCount)
-                    {
-                        obj = Instantiate(forestItem.item, itemPos, Quaternion.identity);
-                        obj.transform.SetParent(itemParent.transform);
-                        obj.isStatic = true;
-                        forestItem.currCount++;
-                        // Debug.Log("Dead Tree");
-                    }
-                }
-                else if (currHeight > 6f)
-                {
-                    forestItem = yellowTrees[Random.Range(0, yellowTrees.Length)];
-                    if (forestItem.currCount < forestItem.itemCount)
-                    {
-                        obj = Instantiate(forestItem.item, itemPos, Quaternion.identity);
-                        obj.transform.SetParent(itemParent.transform);
-                        obj.isStatic = true;
-                        forestItem.currCount++;
-                        // Debug.Log("Yellow Tree");
-                    }
-                }
-                else if (currHeight > 5f)
-                {
-                    forestItem = pinkTrees[Random.Range(0, pinkTrees.Length)];
-                    if (forestItem.currCount < forestItem.itemCount)
-                    {
-                        obj = Instantiate(forestItem.item, itemPos, Quaternion.identity);
-                        obj.transform.SetParent(itemParent.transform);
-                        obj.isStatic = true;
-                        forestItem.currCount++;
-                        // Debug.Log("Pink Tree");
-                    }
-                }
-                else if (currHeight > 4.4f)
-                {
-                    forestItem = greenTrees[Random.Range(0, greenTrees.Length)];
-                    if (forestItem.currCount < forestItem.itemCount)
-                    {
-                        obj = Instantiate(forestItem.item, itemPos, Quaternion.identity);
-                        obj.transform.SetParent(itemParent.transform);
-                        obj.isStatic = true;
-                        forestItem.currCount++;
-                        // Debug.Log("Green Tree");
-                    }
-                }
-                else if (currHeight > 3.9f)
-                {
-                    itemPos.y++; // Rocks should spwan on ground at 0 height
-                    forestItem = rocks[Random.Range(0, rocks.Length)];
-                    if (forestItem.currCount < forestItem.itemCount)
-                    {
-                        obj = Instantiate(forestItem.item, itemPos, Quaternion.identity);
-                        obj.transform.SetParent(itemParent.transform);
-                        obj.isStatic = true;
-                        forestItem.currCount++;
-                        // Debug.Log("Rock");
-                    }
-                }
-                else if (currHeight >= 1f)
-                {
-                    forestItem = flowers[Random.Range(0, flowers.Length)];
-                    if (forestItem.currCount < forestItem.itemCount)
-                    {
-                        itemPos.y++;
-                        obj = Instantiate(forestItem.item, itemPos, Quaternion.identity);
-                        obj.transform.SetParent(itemParent.transform);
-                        obj.isStatic = true;
-                        forestItem.currCount++;
-                        // Debug.Log("Flowers");
-                    }
-                }
-            }
+        //         if (currHeight > 7.9f)
+        //         {
+        //             forestItem = deadTrees[Random.Range(0, deadTrees.Length)];
+        //             if (forestItem.currCount < forestItem.itemCount)
+        //             {
+        //                 obj = Instantiate(forestItem.item, itemPos, Quaternion.identity);
+        //                 obj.transform.SetParent(itemParent.transform);
+        //                 obj.isStatic = true;
+        //                 forestItem.currCount++;
+        //                 // Debug.Log("Dead Tree");
+        //             }
+        //         }
+        //         else if (currHeight > 6f)
+        //         {
+        //             forestItem = yellowTrees[Random.Range(0, yellowTrees.Length)];
+        //             if (forestItem.currCount < forestItem.itemCount)
+        //             {
+        //                 obj = Instantiate(forestItem.item, itemPos, Quaternion.identity);
+        //                 obj.transform.SetParent(itemParent.transform);
+        //                 obj.isStatic = true;
+        //                 forestItem.currCount++;
+        //                 // Debug.Log("Yellow Tree");
+        //             }
+        //         }
+        //         else if (currHeight > 5f)
+        //         {
+        //             forestItem = pinkTrees[Random.Range(0, pinkTrees.Length)];
+        //             if (forestItem.currCount < forestItem.itemCount)
+        //             {
+        //                 obj = Instantiate(forestItem.item, itemPos, Quaternion.identity);
+        //                 obj.transform.SetParent(itemParent.transform);
+        //                 obj.isStatic = true;
+        //                 forestItem.currCount++;
+        //                 // Debug.Log("Pink Tree");
+        //             }
+        //         }
+        //         else if (currHeight > 4.4f)
+        //         {
+        //             forestItem = greenTrees[Random.Range(0, greenTrees.Length)];
+        //             if (forestItem.currCount < forestItem.itemCount)
+        //             {
+        //                 obj = Instantiate(forestItem.item, itemPos, Quaternion.identity);
+        //                 obj.transform.SetParent(itemParent.transform);
+        //                 obj.isStatic = true;
+        //                 forestItem.currCount++;
+        //                 // Debug.Log("Green Tree");
+        //             }
+        //         }
+        //         else if (currHeight > 3.9f)
+        //         {
+        //             itemPos.y++; // Rocks should spwan on ground at 0 height
+        //             forestItem = rocks[Random.Range(0, rocks.Length)];
+        //             if (forestItem.currCount < forestItem.itemCount)
+        //             {
+        //                 obj = Instantiate(forestItem.item, itemPos, Quaternion.identity);
+        //                 obj.transform.SetParent(itemParent.transform);
+        //                 obj.isStatic = true;
+        //                 forestItem.currCount++;
+        //                 // Debug.Log("Rock");
+        //             }
+        //         }
+        //         else if (currHeight >= 1f)
+        //         {
+        //             forestItem = flowers[Random.Range(0, flowers.Length)];
+        //             if (forestItem.currCount < forestItem.itemCount)
+        //             {
+        //                 itemPos.y++;
+        //                 obj = Instantiate(forestItem.item, itemPos, Quaternion.identity);
+        //                 obj.transform.SetParent(itemParent.transform);
+        //                 obj.isStatic = true;
+        //                 forestItem.currCount++;
+        //                 // Debug.Log("Flowers");
+        //             }
+        //         }
+        //     }
 
-            itemPos.y += 4; // animals should spwan above ground at +5 height
+        //     itemPos.y += 4; // animals should spwan above ground at +5 height
 
-            // Farm Animals
-            if (Random.value > 0.9999)
-            {
-                forestItem = farmAnimals[Random.Range(0, farmAnimals.Length)];
-                if (forestItem.currCount < forestItem.itemCount)
-                {
-                    animalMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<AnimalMovement>();
-                    animalMovement.StartPos(vertices, itemParent);
-                    animalMovement.transform.SetParent(itemParent.transform);
-                    forestItem.currCount++;
-                }
-            }
+        //     // Farm Animals
+        //     if (Random.value > 0.9999)
+        //     {
+        //         forestItem = farmAnimals[Random.Range(0, farmAnimals.Length)];
+        //         if (forestItem.currCount < forestItem.itemCount)
+        //         {
+        //             animalMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<AnimalMovement>();
+        //             animalMovement.StartPos(vertices, itemParent);
+        //             animalMovement.transform.SetParent(itemParent.transform);
+        //             forestItem.currCount++;
+        //         }
+        //     }
 
-            // Dinasours
-            if (Random.value > 0.99997f)
-            {
-                forestItem = dinasours[Random.Range(0, dinasours.Length)];
-                if (forestItem.currCount < forestItem.itemCount)
-                {
-                    enemyMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<EnemyMovement>();
-                    enemyMovement.StartPos(vertices, itemParent);
-                    enemyMovement.transform.SetParent(itemParent.transform);
-                    forestItem.currCount++;
-                }
-            }
+        //     // Dinasours
+        //     if (Random.value > 0.99997f)
+        //     {
+        //         forestItem = dinasours[Random.Range(0, dinasours.Length)];
+        //         if (forestItem.currCount < forestItem.itemCount)
+        //         {
+        //             enemyMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<EnemyMovement>();
+        //             enemyMovement.StartPos(vertices, itemParent);
+        //             enemyMovement.transform.SetParent(itemParent.transform);
+        //             forestItem.currCount++;
+        //         }
+        //     }
 
-            // Small Enemis
-            if (Random.value > 0.99991f)
-            {
-                forestItem = smallEnemies[Random.Range(0, smallEnemies.Length)];
-                if (forestItem.currCount < forestItem.itemCount)
-                {
-                    enemyMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<EnemyMovement>();
-                    enemyMovement.StartPos(vertices, itemParent);
-                    enemyMovement.transform.SetParent(itemParent.transform);
-                    forestItem.currCount++;
-                }
-            }
+        //     // Small Enemis
+        //     if (Random.value > 0.99991f)
+        //     {
+        //         forestItem = smallEnemies[Random.Range(0, smallEnemies.Length)];
+        //         if (forestItem.currCount < forestItem.itemCount)
+        //         {
+        //             enemyMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<EnemyMovement>();
+        //             enemyMovement.StartPos(vertices, itemParent);
+        //             enemyMovement.transform.SetParent(itemParent.transform);
+        //             forestItem.currCount++;
+        //         }
+        //     }
 
-            // Mid Enemis
-            if (Random.value > 0.99992f)
-            {
-                forestItem = midEnemies[Random.Range(0, midEnemies.Length)];
-                if (forestItem.currCount < forestItem.itemCount)
-                {
-                    enemyMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<EnemyMovement>();
-                    enemyMovement.StartPos(vertices, itemParent);
-                    enemyMovement.transform.SetParent(itemParent.transform);
-                    forestItem.currCount++;
-                }
-            }
+        //     // Mid Enemis
+        //     if (Random.value > 0.99992f)
+        //     {
+        //         forestItem = midEnemies[Random.Range(0, midEnemies.Length)];
+        //         if (forestItem.currCount < forestItem.itemCount)
+        //         {
+        //             enemyMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<EnemyMovement>();
+        //             enemyMovement.StartPos(vertices, itemParent);
+        //             enemyMovement.transform.SetParent(itemParent.transform);
+        //             forestItem.currCount++;
+        //         }
+        //     }
 
-            // Chest
-            if (Random.value > 0.9995f)
-            {
-                forestItem = chests[Random.Range(0, chests.Length)];
-                if (forestItem.currCount < forestItem.itemCount)
-                {
-                    obj = Instantiate(forestItem.item, itemPos, Quaternion.identity);
-                    obj.transform.SetParent(itemParent.transform);
-                    obj.isStatic = true;
-                    forestItem.currCount++;
-                }
-            }
+        //     // Chest
+        //     if (Random.value > 0.9995f)
+        //     {
+        //         forestItem = chests[Random.Range(0, chests.Length)];
+        //         if (forestItem.currCount < forestItem.itemCount)
+        //         {
+        //             obj = Instantiate(forestItem.item, itemPos, Quaternion.identity);
+        //             obj.transform.SetParent(itemParent.transform);
+        //             obj.isStatic = true;
+        //             forestItem.currCount++;
+        //         }
+        //     }
 
-            // Test Object
-            if (testObj && testCount < 1)
-            {
-                Vector3 testPos = new Vector3(0, 10, 0);
-                EnemyMovement currTestObj = Instantiate(testObj, testPos, Quaternion.identity).GetComponent<EnemyMovement>();
-                currTestObj.StartPos(vertices, itemParent);
-                testCount++;
-            }
+        //     // Test Object
+        //     if (testObj && testCount < 1)
+        //     {
+        //         Vector3 testPos = new Vector3(0, 10, 0);
+        //         EnemyMovement currTestObj = Instantiate(testObj, testPos, Quaternion.identity).GetComponent<EnemyMovement>();
+        //         currTestObj.StartPos(vertices, itemParent);
+        //         testCount++;
+        //     }
 
-            lastHeight = currHeight;
-        }
+        //     lastHeight = currHeight;
+        // }
     }
 }

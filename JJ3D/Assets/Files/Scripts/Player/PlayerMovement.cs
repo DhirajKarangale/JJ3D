@@ -19,6 +19,9 @@ public class PlayerMovement : MonoBehaviour
         public float smoothTime = 5f;
         public bool lockCursor = true;
 
+        private float xRot;
+        private float yRot;
+
         private Quaternion playerTargetRot;
         private Quaternion camTargetRot;
         private bool m_cursorIsLocked = true;
@@ -32,10 +35,17 @@ public class PlayerMovement : MonoBehaviour
 
         public void LookRotation(Transform character, Transform camera, Vector2 lookInput)
         {
-            float yRot = Input.GetAxis("Mouse X") * sensitivity;
-            float xRot = Input.GetAxis("Mouse Y") * sensitivity;
-            // float xRot = lookInput.y * sensitivity;
-            // float yRot = lookInput.x * sensitivity;
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                xRot = lookInput.y * sensitivity;
+                yRot = lookInput.x * sensitivity;
+
+            }
+            else if (Application.platform == RuntimePlatform.WindowsEditor)
+            {
+                yRot = Input.GetAxis("Mouse X") * sensitivity;
+                xRot = Input.GetAxis("Mouse Y") * sensitivity;
+            }
 
             playerTargetRot *= Quaternion.Euler(0f, yRot, 0f);
             camTargetRot *= Quaternion.Euler(-xRot, 0f, 0f);
@@ -226,21 +236,17 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("horrizontal", GetInput().x);
         animator.SetBool("isJump", isJumping);
 
-        GetTouchInput();
-        RotateView();
-        if (rightFingerId != -1)
+        if (Application.platform == RuntimePlatform.Android)
         {
+            GetTouchInput();
+            if (rightFingerId != -1) RotateView();
+
+        }
+        else if (Application.platform == RuntimePlatform.WindowsEditor)
+        {
+            if (Input.GetKeyDown(KeyCode.P)) PerspectiveButton(); // Move on a Button
+            if (Input.GetButtonDown("Jump") && !isJump) isJump = true; // Move on a Button
             RotateView();
-        }
-
-        if (Input.GetKeyDown(KeyCode.P)) // Move on a Button
-        {
-            PerspectiveButton();
-        }
-
-        if (Input.GetButtonDown("Jump") && !isJump) // Move on a Button
-        {
-            isJump = true;
         }
     }
 
@@ -417,9 +423,7 @@ public class PlayerMovement : MonoBehaviour
     {
         for (int i = 0; i < Input.touchCount; i++)
         {
-
             Touch t = Input.GetTouch(i);
-
             switch (t.phase)
             {
                 case TouchPhase.Began:
@@ -435,6 +439,12 @@ public class PlayerMovement : MonoBehaviour
                         rightFingerId = -1;
                     }
                     break;
+                case TouchPhase.Moved:
+                    if (t.fingerId == rightFingerId)
+                    {
+                        lookInput = t.deltaPosition * Time.deltaTime;
+                    }
+                    break;
                 case TouchPhase.Stationary:
                     if (t.fingerId == rightFingerId)
                     {
@@ -445,26 +455,3 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-// void LookAround()
-// {
-
-//     // vertical (pitch) rotation
-//     cameraPitch = Mathf.Clamp(cameraPitch - lookInput.y, -90f, 90f);
-//     cameraTransform.localRotation = Quaternion.Euler(cameraPitch, 0, 0);
-
-//     // horizontal (yaw) rotation
-//     transform.Rotate(transform.up, lookInput.x);
-// }

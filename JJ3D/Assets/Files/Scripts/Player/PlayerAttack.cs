@@ -62,7 +62,7 @@ public class PlayerAttack : MonoBehaviour
             return;
         }
 
-        Attack();
+        if (Input.GetKeyDown(KeyCode.F)) Attack();
         ShootBow();
         Scope();
         currCoolDownTime -= Time.deltaTime;
@@ -70,8 +70,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void Attack()
     {
-        // if ((currCoolDownTime <= 0))
-        if (Input.GetKeyDown(KeyCode.F) && (currCoolDownTime <= 0))
+        if ((currCoolDownTime <= 0))
         {
             if (equipementManager.isSwardActive) SwardAttack();
             else if (equipementManager.isBowActive) BowPunch();
@@ -117,7 +116,6 @@ public class PlayerAttack : MonoBehaviour
         {
             isShoothing = false;
             isAming = true;
-            player.ChangeSpeed(0.5f);
             Invoke("GetView", 0.3f);
         }
         if (Input.GetMouseButtonUp(0))

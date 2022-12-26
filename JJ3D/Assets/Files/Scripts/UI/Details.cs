@@ -14,7 +14,8 @@ public class Details : MonoBehaviour
 
     private void Start()
     {
-        GameManager.instance.player.OnDetailsChanged += OnDetailsChanged;
+        // GameManager.instance.player.OnDetailsChanged += OnDetailsChanged;
+        SetData(GameManager.instance.player.GetDetails());
     }
 
     private void OnDetailsChanged()
