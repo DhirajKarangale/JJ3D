@@ -12,8 +12,6 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] AnimationClip[] swardClips;
 
     [Header("Bow")]
-    [SerializeField] GameObject arrowPrefab;
-    [SerializeField] GameObject fireArrowPrefab;
     [SerializeField] Transform firePos;
     [SerializeField] Transform firePos1;
     [SerializeField] Transform firePos2;
@@ -28,8 +26,13 @@ public class PlayerAttack : MonoBehaviour
 
     private AnimatorOverrideController overrideController;
     private GameManager gameManager;
+    private ObjectPooler objectPooler;
     private EquipmentManager equipementManager;
+    private Rigidbody currArrow;
     private float currCoolDownTime;
+
+    private Ray ray;
+    private Vector3 shootDir;
 
     private float requiredView;
     [SerializeField] float camSpeed;
@@ -41,6 +44,7 @@ public class PlayerAttack : MonoBehaviour
         cam = player.cam;
         animator = player.animator;
         gameManager = GameManager.instance;
+        objectPooler = ObjectPooler.instance;
         equipementManager = gameManager.equipementManager;
         overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
         animator.runtimeAnimatorController = overrideController;
@@ -58,7 +62,7 @@ public class PlayerAttack : MonoBehaviour
             return;
         }
 
-        Attack();
+        if (Input.GetKeyDown(KeyCode.F)) Attack();
         ShootBow();
         Scope();
         currCoolDownTime -= Time.deltaTime;
@@ -66,8 +70,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void Attack()
     {
-        // if ((currCoolDownTime <= 0))
-        if (Input.GetKeyDown(KeyCode.F) && (currCoolDownTime <= 0))
+        if ((currCoolDownTime <= 0))
         {
             if (equipementManager.isSwardActive) SwardAttack();
             else if (equipementManager.isBowActive) BowPunch();
@@ -113,7 +116,6 @@ public class PlayerAttack : MonoBehaviour
         {
             isShoothing = false;
             isAming = true;
-            player.ChangeSpeed(0.5f);
             Invoke("GetView", 0.3f);
         }
         if (Input.GetMouseButtonUp(0))
@@ -164,36 +166,38 @@ public class PlayerAttack : MonoBehaviour
     // Accessed by Anim Event
     public void ShootArrow()
     {
-        Ray ray = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
-        Vector3 targetPoint = ray.GetPoint(1000);
-        Vector3 shootDir = (targetPoint - firePos.transform.position).normalized;
+        ray = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
+        shootDir = (ray.GetPoint(1000) - firePos.transform.position).normalized;
 
         if (equipementManager.objBowFire.activeInHierarchy)
         {
-            GameObject currArrow = Instantiate(fireArrowPrefab, firePos.position, Quaternion.identity);
-            currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
-            currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<FireArrow>().damage = equipementManager.slotWeapon.item.itemData.modifier;
+            // currArrow = Instantiate(fireArrowPrefab, firePos.position, Quaternion.identity);
+            currArrow = objectPooler.SpwanObject("FireArrow", firePos.position);
+            currArrow.rotation = Quaternion.LookRotation(firePos.forward);
+            currArrow.AddForce(shootDir * force, ForceMode.Impulse);
+            currArrow.GetComponent<FireArrow>().damage = equipementManager.slotWeapon.itemData.modifier;
         }
         else
         {
-            GameObject currArrow = Instantiate(arrowPrefab, firePos.position, Quaternion.identity);
-            currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
-            currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.item.itemData.modifier;
+            // GameObject currArrow = Instantiate(arrowPrefab, firePos.position, Quaternion.identity);
+            currArrow = objectPooler.SpwanObject("Arrow", firePos.position);
+            currArrow.rotation = Quaternion.LookRotation(firePos.forward);
+            currArrow.AddForce(shootDir * force, ForceMode.Impulse);
+            currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.itemData.modifier;
         }
 
         if (equipementManager.objBowThree.activeInHierarchy)
         {
-            GameObject currArrow = Instantiate(arrowPrefab, firePos1.position, Quaternion.identity);
+            // GameObject currArrow = Instantiate(arrowPrefab, firePos1.position, Quaternion.identity);
+            currArrow = objectPooler.SpwanObject("Arrow", firePos1.position);
             currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
-            currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.item.itemData.modifier;
+            currArrow.AddForce(shootDir * force, ForceMode.Impulse);
+            currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.itemData.modifier;
 
-            currArrow = Instantiate(arrowPrefab, firePos2.position, Quaternion.identity);
+            currArrow = objectPooler.SpwanObject("Arrow", firePos2.position);
             currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
-            currArrow.GetComponent<Rigidbody>().AddForce(shootDir * force, ForceMode.Impulse);
-            currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.item.itemData.modifier;
+            currArrow.AddForce(shootDir * force, ForceMode.Impulse);
+            currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.itemData.modifier;
         }
 
         Invoke("ReSetRotation", 0.6f);

@@ -3,8 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EquipmentData", menuName = "Data Object/Equipment Data")]
 public class EquipmentItemData : ItemData
 {
-    internal override void PerformAction(Player playerStat, Item item = null)
+    internal override void PerformAction(Player playerStat, ItemData itemData = null)
     {
-        playerStat.EquipDefence(item);
+        playerStat.EquipDefence(itemData);
     }
 }

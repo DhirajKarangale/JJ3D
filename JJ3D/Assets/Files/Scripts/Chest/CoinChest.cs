@@ -5,7 +5,7 @@ public class CoinChest : MonoBehaviour
     [SerializeField] GameObject objCanvas;
     [SerializeField] Animator animator;
     [SerializeField] TMPro.TMP_Text txtCost;
-    [SerializeField] Rigidbody coins;
+    // [SerializeField] Rigidbody coins;
     private Transform cam;
 
     private int cost;
@@ -57,14 +57,18 @@ public class CoinChest : MonoBehaviour
     // Acess by Anim Event
     public void ChestOpen()
     {
+        Vector3 pos;
+        Rigidbody item;
+        ObjectPooler objectPooler = ObjectPooler.instance;
+
         if (cost > 15) cost /= 5;
         int reward = Random.Range(1, 10) * cost;
         if (cost > 15) reward = Random.Range(1, 5) * cost;
 
         for (int i = 0; i < reward; i++)
         {
-            Vector3 pos = transform.position + new Vector3(Random.Range(-2, 2), 1, Random.Range(-2, 2));
-            Rigidbody item = Instantiate(coins, pos, Quaternion.identity);
+            pos = transform.position + new Vector3(Random.Range(-2, 2), 1, Random.Range(-2, 2));
+            item = objectPooler.SpwanObject("Coin", pos);
             item.AddForce(Vector3.up * 8, ForceMode.Impulse);
         }
         GameManager.instance.effects.ChestEffect(transform.position);

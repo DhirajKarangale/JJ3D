@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class InventorySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDropHandler, IDragHandler
+public class InventorySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDropHandler//, IDragHandler
 {
     [SerializeField] Image imgItem;
     [SerializeField] internal UnityEngine.UI.Outline outline;
@@ -49,10 +49,10 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHand
         OnDropped?.Invoke(this);
     }
 
-    public void OnDrag(PointerEventData eventData)
-    {
+    // public void OnDrag(PointerEventData eventData)
+    // {
 
-    }
+    // }
 
 
 

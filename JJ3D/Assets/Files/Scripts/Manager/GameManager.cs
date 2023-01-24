@@ -1,6 +1,4 @@
 using UnityEngine;
-using System;
-using System.Threading.Tasks;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -21,13 +19,22 @@ public class GameManager : Singleton<GameManager>
     {
         isGameOver = false;
         mainCanvas.SetActive(true);
-        InvokeRepeating("ClearGarbage", 60, 60);
+        Invoke("InitializeWeapon", 1);
+        // InvokeRepeating("ClearGarbage", 60, 60);
     }
 
     private void ClearGarbage()
     {
-        System.GC.Collect();
+        // System.GC.Collect();
         // Resources.UnloadUnusedAssets();
+    }
+
+    private void InitializeWeapon()
+    {
+        
+        // ObjectPooler.instance.SpwanObject("BowNormal", playerPos.position + new Vector3(0, 11, 0));
+        ObjectPooler.instance.SpwanObject("BowThree", playerPos.position + new Vector3(0, 11, 0));
+        ObjectPooler.instance.SpwanObject("BowFire", playerPos.position + new Vector3(0, 11, 0));
     }
 
     public void GameOver()

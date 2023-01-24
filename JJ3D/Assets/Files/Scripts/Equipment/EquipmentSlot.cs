@@ -8,31 +8,31 @@ public class EquipmentSlot : MonoBehaviour
     [SerializeField] Slider slider;
     [SerializeField] UnityEngine.UI.Outline outline;
     [SerializeField] GameObject objCloseButton;
-    internal Item item;
+    internal ItemData itemData;
 
     internal Action OnRemove;
 
     public void Reset()
     {
-        item = null;
+        itemData = null;
         outline.enabled = false;
         objCloseButton.SetActive(false);
         image.sprite = null;
         slider.value = 0;
     }
 
-    public void SetData(Item item)
+    public void SetData(ItemData itemData)
     {
-        this.item = item;
+        this.itemData = itemData;
         outline.enabled = true;
         objCloseButton.SetActive(true);
-        image.sprite = item.itemData.sprite;
+        image.sprite = itemData.sprite;
         UpdateSlider();
     }
 
     public void UpdateSlider()
     {
-        slider.value = item.itemData.currHealth / item.itemData.mxHealth;
+        slider.value = itemData.currHealth / itemData.mxHealth;
     }
 
     public void ButtonRemove()

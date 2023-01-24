@@ -32,12 +32,12 @@ public class FireArrow : MonoBehaviour
             }
         }
 
-        Destroy(this.gameObject);
+        this.gameObject.SetActive(false);
     }
 
     private void DestroyArrow()
     {
         GameManager.instance.effects.DestroyEffect(transform.position);
-        Destroy(this.gameObject);
+        this.gameObject.SetActive(false);
     }
 }

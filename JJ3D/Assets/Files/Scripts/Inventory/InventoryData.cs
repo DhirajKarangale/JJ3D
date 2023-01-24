@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class InventoryData : ScriptableObject
 {
     [SerializeField] internal int size = 10;
-    private List<InventoryItem> inventoryItems;
+    internal List<InventoryItem> inventoryItems;
     public event Action<Dictionary<int, ItemData>> OnInventoryChange;
 
     private void ChangeInventory()
@@ -16,7 +16,7 @@ public class InventoryData : ScriptableObject
     }
 
     private bool IsInventoryFull() => inventoryItems.Where(item => item.isEmpty).Any() == false;
-
+    
     public void Initialize()
     {
         inventoryItems = new List<InventoryItem>();
@@ -26,13 +26,13 @@ public class InventoryData : ScriptableObject
         }
     }
 
-    public void AddItem(Item item)
+    public void AddItem(ItemData itemData)
     {
         if (!IsInventoryFull())
         {
             InventoryItem newItem = new InventoryItem
             {
-                item = item
+                itemData = itemData
             };
 
             for (int i = 0; i < inventoryItems.Count; i++)
@@ -56,7 +56,7 @@ public class InventoryData : ScriptableObject
             {
                 continue;
             }
-            dictonary[i] = inventoryItems[i].item.itemData;
+            dictonary[i] = inventoryItems[i].itemData;
         }
         return dictonary;
     }
@@ -74,15 +74,11 @@ public class InventoryData : ScriptableObject
         ChangeInventory();
     }
 
-    public void RemoveItem(int index, Transform playerPos)
+    public void RemoveItem(int index)
     {
         if (inventoryItems.Count > index)
         {
             if (inventoryItems[index].isEmpty) return;
-            if (playerPos != null)
-            {
-                inventoryItems[index].item.ThrowItem(playerPos.position + (playerPos.forward * 3));
-            }
             inventoryItems[index] = InventoryItem.GetEmptyItem();
             ChangeInventory();
         }
@@ -92,14 +88,15 @@ public class InventoryData : ScriptableObject
 [System.Serializable]
 public struct InventoryItem
 {
-    public Item item;
-    public bool isEmpty => item == null;
+    // public Item item;
+    public ItemData itemData;
+    public bool isEmpty => itemData == null;
 
     public InventoryItem ChangeQuantity(int newCount)
     {
         return new InventoryItem
         {
-            item = this.item,
+            itemData = this.itemData,
         };
     }
 
@@ -107,7 +104,7 @@ public struct InventoryItem
     {
         return new InventoryItem
         {
-            item = null,
+            itemData = null,
         };
     }
 }

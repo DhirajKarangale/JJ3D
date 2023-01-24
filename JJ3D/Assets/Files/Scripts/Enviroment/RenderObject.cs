@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class RenderObject : MonoBehaviour
 {
+    // [SerializeField] float renderDist = 200;
     [Header("Meshs")]
     [SerializeField] Mesh[] meshRock;
     [SerializeField] Mesh[] meshWood;
@@ -46,9 +47,14 @@ public class RenderObject : MonoBehaviour
     private List<List<Matrix4x4>> wood2Pos;
 
 
+    private Transform playerPos;
+
+
 
     private void Start()
     {
+        playerPos = GameManager.instance.playerPos;
+
         InitializeGrass();
         InitializeRocks();
         InitializePlants();
@@ -110,21 +116,25 @@ public class RenderObject : MonoBehaviour
     {
         foreach (var item in grass1Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshGrass[0], 0, matPlant, item);
         }
 
         foreach (var item in grass2Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshGrass[1], 0, matPlant, item);
         }
 
         foreach (var item in grass3Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshGrass[2], 0, matPlant, item);
         }
 
         foreach (var item in grass4Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshGrass[3], 0, matPlant, item);
         }
     }
@@ -172,36 +182,43 @@ public class RenderObject : MonoBehaviour
     {
         foreach (var item in rock1Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshRock[0], 0, matRock, item);
         }
 
         foreach (var item in rock2Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshRock[1], 0, matRock, item);
         }
 
         foreach (var item in rock3Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshRock[2], 0, matRock, item);
         }
 
         foreach (var item in rock4Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshRock[3], 0, matRock, item);
         }
 
         foreach (var item in rock5Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshRock[4], 0, matRock, item);
         }
 
         foreach (var item in rock6Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshRock[5], 0, matRock, item);
         }
 
         foreach (var item in rock7Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshRock[6], 0, matRock, item);
         }
     }
@@ -269,26 +286,31 @@ public class RenderObject : MonoBehaviour
     {
         foreach (var item in plant1Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshPlant[0], 0, matPlant, item);
         }
 
         foreach (var item in plant2Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshPlant[1], 0, matPlant, item);
         }
 
         foreach (var item in plant3Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshPlant[2], 0, matPlant, item);
         }
 
         foreach (var item in plant4Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshPlant[3], 0, matTreeGreen, item);
         }
 
         foreach (var item in plant5Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshPlant[4], 0, matMashroom, item);
         }
     }
@@ -339,11 +361,13 @@ public class RenderObject : MonoBehaviour
     {
         foreach (var item in wood1Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshWood[0], 0, matWood, item);
         }
 
         foreach (var item in wood2Pos)
         {
+            // if (item.Count > 0 && Vector3.Distance(item[item.Count / 2].GetPosition(), playerPos.position) > renderDist) continue;
             Graphics.DrawMeshInstanced(meshWood[1], 0, matWood, item);
         }
     }

@@ -4,10 +4,10 @@ public class DragItem : MonoBehaviour
 {
     [SerializeField] Canvas canvas;
     [SerializeField] InventorySlot inventoryItem;
+    private Vector2 position;
 
     private void Update()
     {
-        Vector2 position;
         RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)canvas.transform, Input.mousePosition, canvas.worldCamera, out position);
         transform.position = canvas.transform.TransformPoint(position);
     }

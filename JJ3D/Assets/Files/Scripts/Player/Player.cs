@@ -40,8 +40,8 @@ public class Player : MonoBehaviour
     private float GetDefence()
     {
         float defence = 0;
-        if (equipmentManager.slotHelmet.item) defence += equipmentManager.slotHelmet.item.itemData.modifier;
-        if (equipmentManager.slotVest.item) defence += equipmentManager.slotVest.item.itemData.modifier;
+        if (equipmentManager.slotHelmet.itemData) defence += equipmentManager.slotHelmet.itemData.modifier;
+        if (equipmentManager.slotVest.itemData) defence += equipmentManager.slotVest.itemData.modifier;
         return defence;
     }
 
@@ -54,27 +54,27 @@ public class Player : MonoBehaviour
     internal float DamageReducer()
     {
         float damage = 0;
-        if (equipmentManager.slotHelmet.item)
+        if (equipmentManager.slotHelmet.itemData)
         {
-            if (equipmentManager.slotHelmet.item.itemData.currHealth <= 0)
+            if (equipmentManager.slotHelmet.itemData.currHealth <= 0)
             {
                 equipmentManager.DestroyHelmet();
                 return damage;
             }
-            damage += equipmentManager.slotHelmet.item.itemData.modifier;
-            equipmentManager.slotHelmet.item.itemData.currHealth -= equipmentManager.slotHelmet.item.itemData.modifier;
+            damage += equipmentManager.slotHelmet.itemData.modifier;
+            equipmentManager.slotHelmet.itemData.currHealth -= equipmentManager.slotHelmet.itemData.modifier;
             equipmentManager.slotHelmet.UpdateSlider();
         }
 
-        if (equipmentManager.slotVest.item)
+        if (equipmentManager.slotVest.itemData)
         {
-            if (equipmentManager.slotVest.item.itemData.currHealth <= 0)
+            if (equipmentManager.slotVest.itemData.currHealth <= 0)
             {
                 equipmentManager.DestroyVest();
                 return damage;
             }
-            damage += equipmentManager.slotVest.item.itemData.modifier;
-            equipmentManager.slotVest.item.itemData.currHealth -= equipmentManager.slotVest.item.itemData.modifier;
+            damage += equipmentManager.slotVest.itemData.modifier;
+            equipmentManager.slotVest.itemData.currHealth -= equipmentManager.slotVest.itemData.modifier;
             equipmentManager.slotVest.UpdateSlider();
         }
 
@@ -89,7 +89,7 @@ public class Player : MonoBehaviour
         detailsData.health = playerHealth.currHealth;
         detailsData.speed = playerMovement.movement.forwardSpeed;
         detailsData.hunger = playerHealth.currHunger;
-        detailsData.attack = equipmentManager.slotWeapon.item ? equipmentManager.slotWeapon.item.itemData.modifier : 0;
+        detailsData.attack = equipmentManager.slotWeapon.itemData ? equipmentManager.slotWeapon.itemData.modifier : 0;
         detailsData.defence = GetDefence();
 
         return detailsData;
@@ -97,33 +97,33 @@ public class Player : MonoBehaviour
 
     internal void ChangeShoesHealth()
     {
-        if (equipmentManager.slotShoes.item)
+        if (equipmentManager.slotShoes.itemData)
         {
-            if (equipmentManager.slotShoes.item.itemData.currHealth <= 0)
+            if (equipmentManager.slotShoes.itemData.currHealth <= 0)
             {
                 equipmentManager.DestroyShoes();
                 return;
             }
 
-            equipmentManager.slotShoes.item.itemData.currHealth--;
+            equipmentManager.slotShoes.itemData.currHealth--;
             equipmentManager.slotShoes.UpdateSlider();
         }
     }
 
-    internal void Eat(Item item)
+    internal void Eat(ItemData itemData)
     {
-        equipmentManager.Eat(item);
+        equipmentManager.Eat(itemData);
     }
 
-    internal void EquipDefence(Item item)
+    internal void EquipDefence(ItemData itemData)
     {
-        equipmentManager.EquipDefence(item);
+        equipmentManager.EquipDefence(itemData);
         ChangeDetails();
     }
 
-    internal void EquipWeapon(Item item)
+    internal void EquipWeapon(ItemData itemData)
     {
-        equipmentManager.SetWeapon(item);
+        equipmentManager.SetWeapon(itemData);
         ChangeDetails();
     }
 

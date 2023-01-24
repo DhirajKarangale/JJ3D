@@ -6,16 +6,23 @@ public class ShootFireBall : MonoBehaviour
     [SerializeField] Transform attackPoint;
     [SerializeField] float force;
     private Transform player;
+    private ObjectPooler objectPooler;
+
+    private Rigidbody currFireBall;
+    private Vector3 dir;
 
     private void Start()
     {
         player = GameManager.instance.playerPos;
+        objectPooler = ObjectPooler.instance;
     }
 
     public void Shoot()
     {
-        GameObject currFireBall = Instantiate(fireBall, attackPoint.position, attackPoint.rotation);
-        Vector3 dir = player.position - attackPoint.position + new Vector3(0, 2, 0);
+        // currFireBall = Instantiate(fireBall, attackPoint.position, attackPoint.rotation);
+        currFireBall = objectPooler.SpwanObject("Fireball",attackPoint.position);
+        currFireBall.rotation = attackPoint.rotation;
+        dir = player.position - attackPoint.position + new Vector3(0, 2, 0);
         dir = dir.normalized;
         currFireBall.GetComponent<Rigidbody>().AddForce(dir * force, ForceMode.Impulse);
     }
