@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using AdvancedCullingSystem.DynamicCullingCore;
 
 public class TerrainChunk
 {
@@ -10,6 +11,7 @@ public class TerrainChunk
     Vector2 sampleCentre;
     Bounds bounds;
     private ForestGenerator forestGenerator = GameManager.instance.forestGenerator;
+    private DynamicCulling dynamicCulling = DynamicCulling.Instance;
 
     MeshRenderer meshRenderer;
     MeshFilter meshFilter;
@@ -126,7 +128,8 @@ public class TerrainChunk
                         meshFilter.mesh = lodMesh.mesh;
 
                         meshCollider.sharedMesh = lodMesh.mesh; // Extra Added for Mesh added for each collider remove UpdateCollisionMesh
-
+                        
+                        dynamicCulling.AddObjectForCulling(meshRenderer);
                         forestGenerator.Generate(lodMesh.mesh.vertices, meshFilter.transform);
                     }
                     else if (!lodMesh.hasRequestedMesh)

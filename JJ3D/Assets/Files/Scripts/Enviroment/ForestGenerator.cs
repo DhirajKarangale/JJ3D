@@ -1,4 +1,5 @@
 using UnityEngine;
+using AdvancedCullingSystem.DynamicCullingCore;
 
 [System.Serializable]
 public class ForestItem
@@ -29,12 +30,23 @@ public class ForestGenerator : MonoBehaviour
     private int currWoodCount;
     private float lastHeight;
     private int testCount = 0;
+    private float currHeight;
+
+
     private Vector3 itemPos;
     private GameObject obj;
     private ForestItem forestItem;
     private AnimalMovement animalMovement;
     private EnemyMovement enemyMovement;
-    private float currHeight;
+    private DynamicCulling dynamicCulling;
+
+
+    private void Start()
+    {
+        dynamicCulling = DynamicCulling.Instance;
+        dynamicCulling.Enable();
+    }
+
 
 
     private void ResetItemCount()
@@ -62,6 +74,14 @@ public class ForestGenerator : MonoBehaviour
         {
             item.itemCount = 1;
             item.currCount = 0;
+        }
+    }
+
+    private void AddCulling(GameObject obj)
+    {
+        foreach (var renderer in obj.GetComponentsInChildren<MeshRenderer>())
+        {
+            dynamicCulling.AddObjectForCulling(renderer);
         }
     }
 
@@ -119,6 +139,7 @@ public class ForestGenerator : MonoBehaviour
                         obj.transform.SetParent(itemParent.transform);
                         obj.isStatic = true;
                         forestItem.currCount++;
+                        AddCulling(obj);
                         // Debug.Log("Dead Tree");
                     }
                 }
@@ -131,6 +152,7 @@ public class ForestGenerator : MonoBehaviour
                         obj.transform.SetParent(itemParent.transform);
                         obj.isStatic = true;
                         forestItem.currCount++;
+                        AddCulling(obj);
                         // Debug.Log("Yellow Tree");
                     }
                 }
@@ -143,6 +165,7 @@ public class ForestGenerator : MonoBehaviour
                         obj.transform.SetParent(itemParent.transform);
                         obj.isStatic = true;
                         forestItem.currCount++;
+                        AddCulling(obj);
                         // Debug.Log("Pink Tree");
                     }
                 }
@@ -155,6 +178,7 @@ public class ForestGenerator : MonoBehaviour
                         obj.transform.SetParent(itemParent.transform);
                         obj.isStatic = true;
                         forestItem.currCount++;
+                        AddCulling(obj);
                         // Debug.Log("Green Tree");
                     }
                 }
@@ -168,6 +192,7 @@ public class ForestGenerator : MonoBehaviour
                         obj.transform.SetParent(itemParent.transform);
                         obj.isStatic = true;
                         forestItem.currCount++;
+                        AddCulling(obj);
                         // Debug.Log("Rock");
                     }
                 }
@@ -181,6 +206,7 @@ public class ForestGenerator : MonoBehaviour
                         obj.transform.SetParent(itemParent.transform);
                         obj.isStatic = true;
                         forestItem.currCount++;
+                        AddCulling(obj);
                         // Debug.Log("Flowers");
                     }
                 }
@@ -198,6 +224,7 @@ public class ForestGenerator : MonoBehaviour
                     animalMovement.StartPos(vertices, itemParent);
                     animalMovement.transform.SetParent(itemParent.transform);
                     forestItem.currCount++;
+                    // AddCulling(animalMovement.gameObject);
                 }
             }
 
@@ -211,6 +238,7 @@ public class ForestGenerator : MonoBehaviour
                     enemyMovement.StartPos(vertices, itemParent);
                     enemyMovement.transform.SetParent(itemParent.transform);
                     forestItem.currCount++;
+                    // AddCulling(enemyMovement.gameObject);
                 }
             }
 
@@ -224,6 +252,7 @@ public class ForestGenerator : MonoBehaviour
                     enemyMovement.StartPos(vertices, itemParent);
                     enemyMovement.transform.SetParent(itemParent.transform);
                     forestItem.currCount++;
+                    // AddCulling(enemyMovement.gameObject);
                 }
             }
 
@@ -237,6 +266,7 @@ public class ForestGenerator : MonoBehaviour
                     enemyMovement.StartPos(vertices, itemParent);
                     enemyMovement.transform.SetParent(itemParent.transform);
                     forestItem.currCount++;
+                    // AddCulling(enemyMovement.gameObject);
                 }
             }
 
@@ -250,6 +280,7 @@ public class ForestGenerator : MonoBehaviour
                     obj.transform.SetParent(itemParent.transform);
                     obj.isStatic = true;
                     forestItem.currCount++;
+                    // AddCulling(obj);
                 }
             }
 
@@ -260,6 +291,7 @@ public class ForestGenerator : MonoBehaviour
                 EnemyMovement currTestObj = Instantiate(testObj, testPos, Quaternion.identity).GetComponent<EnemyMovement>();
                 currTestObj.StartPos(vertices, itemParent);
                 testCount++;
+                // AddCulling(currTestObj.gameObject);
             }
 
             lastHeight = currHeight;
