@@ -23,6 +23,7 @@ public class ForestGenerator : MonoBehaviour
     [SerializeField] ForestItem[] smallEnemies;
     [SerializeField] ForestItem[] midEnemies;
     [SerializeField] ForestItem[] chests;
+    [SerializeField] GameObject[] grass;
     [SerializeField] GameObject testObj;
 
     private int currRockCount;
@@ -34,6 +35,7 @@ public class ForestGenerator : MonoBehaviour
 
 
     private Vector3 itemPos;
+    private Vector3 grassPos;
     private GameObject obj;
     private ForestItem forestItem;
     private AnimalMovement animalMovement;
@@ -101,7 +103,89 @@ public class ForestGenerator : MonoBehaviour
             //  Render Grass
             if (currHeight >= 0.4f && Random.value > 0.998f && (Mathf.Abs(lastHeight - currHeight) < 2.5f) && currHeight <= 3f)
             {
-                renderObject.AddGrass(itemPos);
+                // renderObject.AddGrass(itemPos);
+                // Debug.Log("Grass");
+
+
+
+                grassPos = itemPos;
+                obj = Instantiate(grass[Random.Range(0, grass.Length)], grassPos, Quaternion.identity);
+                obj.transform.SetParent(itemParent.transform);
+                obj.isStatic = true;
+                RaycastHit hit;
+                Ray ray = new Ray(obj.transform.position, Vector3.down);
+                if (Physics.Raycast(ray, out hit))
+                {
+                    obj.transform.rotation = Quaternion.FromToRotation(obj.transform.up, hit.normal) * obj.transform.rotation;
+                }
+                AddCulling(obj);
+
+                grassPos += new Vector3(1, 0, 0);
+                obj = Instantiate(grass[Random.Range(0, grass.Length)], grassPos, Quaternion.identity);
+                obj.transform.SetParent(itemParent.transform);
+                obj.isStatic = true;
+                ray = new Ray(obj.transform.position, Vector3.down);
+                if (Physics.Raycast(ray, out hit))
+                {
+                    obj.transform.rotation = Quaternion.FromToRotation(obj.transform.up, hit.normal) * obj.transform.rotation;
+                }
+                AddCulling(obj);
+
+                grassPos += new Vector3(1, 0, 1);
+                obj = Instantiate(grass[Random.Range(0, grass.Length)], grassPos, Quaternion.identity);
+                obj.transform.SetParent(itemParent.transform);
+                obj.isStatic = true;
+                ray = new Ray(obj.transform.position, Vector3.down);
+                if (Physics.Raycast(ray, out hit))
+                {
+                    obj.transform.rotation = Quaternion.FromToRotation(obj.transform.up, hit.normal) * obj.transform.rotation;
+                }
+                AddCulling(obj);
+
+                grassPos += new Vector3(1, 0, -1);
+                obj = Instantiate(grass[Random.Range(0, grass.Length)], grassPos, Quaternion.identity);
+                obj.transform.SetParent(itemParent.transform);
+                obj.isStatic = true;
+                ray = new Ray(obj.transform.position, Vector3.down);
+                if (Physics.Raycast(ray, out hit))
+                {
+                    obj.transform.rotation = Quaternion.FromToRotation(obj.transform.up, hit.normal) * obj.transform.rotation;
+                }
+                AddCulling(obj);
+
+                grassPos += new Vector3(-1, 0, 0);
+                obj = Instantiate(grass[Random.Range(0, grass.Length)], grassPos, Quaternion.identity);
+                obj.transform.SetParent(itemParent.transform);
+                obj.isStatic = true;
+                ray = new Ray(obj.transform.position, Vector3.down);
+                if (Physics.Raycast(ray, out hit))
+                {
+                    obj.transform.rotation = Quaternion.FromToRotation(obj.transform.up, hit.normal) * obj.transform.rotation;
+                }
+                AddCulling(obj);
+
+                grassPos += new Vector3(-1, 0, 1);
+                obj = Instantiate(grass[Random.Range(0, grass.Length)], grassPos, Quaternion.identity);
+                obj.transform.SetParent(itemParent.transform);
+                obj.isStatic = true;
+                ray = new Ray(obj.transform.position, Vector3.down);
+                if (Physics.Raycast(ray, out hit))
+                {
+                    obj.transform.rotation = Quaternion.FromToRotation(obj.transform.up, hit.normal) * obj.transform.rotation;
+                }
+                AddCulling(obj);
+
+                grassPos += new Vector3(-1, 0, -1);
+                obj = Instantiate(grass[Random.Range(0, grass.Length)], grassPos, Quaternion.identity);
+                obj.transform.SetParent(itemParent.transform);
+                obj.isStatic = true;
+                ray = new Ray(obj.transform.position, Vector3.down);
+                if (Physics.Raycast(ray, out hit))
+                {
+                    obj.transform.rotation = Quaternion.FromToRotation(obj.transform.up, hit.normal) * obj.transform.rotation;
+                }
+                AddCulling(obj);
+
                 // Debug.Log("Grass");
             }
 
