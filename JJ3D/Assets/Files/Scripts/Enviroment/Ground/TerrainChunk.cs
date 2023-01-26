@@ -47,7 +47,7 @@ public class TerrainChunk
         bounds = new Bounds(position, Vector2.one * meshSettings.meshWorldSize);
 
         meshObject = new GameObject("Terrain Chunk");
-        meshObject.isStatic = true;
+        // meshObject.isStatic = true;
         meshRenderer = meshObject.AddComponent<MeshRenderer>();
         meshFilter = meshObject.AddComponent<MeshFilter>();
         meshCollider = meshObject.AddComponent<MeshCollider>();
@@ -129,7 +129,7 @@ public class TerrainChunk
 
                         meshCollider.sharedMesh = lodMesh.mesh; // Extra Added for Mesh added for each collider remove UpdateCollisionMesh
                         
-                        dynamicCulling.AddObjectForCulling(meshRenderer);
+                        // dynamicCulling.AddObjectForCulling(meshRenderer);
                         forestGenerator.Generate(lodMesh.mesh.vertices, meshFilter.transform);
                     }
                     else if (!lodMesh.hasRequestedMesh)

@@ -81,10 +81,11 @@ public class ForestGenerator : MonoBehaviour
 
     private void AddCulling(GameObject obj)
     {
-        foreach (var renderer in obj.GetComponentsInChildren<MeshRenderer>())
-        {
-            dynamicCulling.AddObjectForCulling(renderer);
-        }
+        // obj.isStatic = false;
+        // foreach (var renderer in obj.GetComponentsInChildren<MeshRenderer>())
+        // {
+        //     dynamicCulling.AddObjectForCulling(renderer);
+        // }
     }
 
 

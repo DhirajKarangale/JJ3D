@@ -68,7 +68,7 @@ MonoBehaviour:
   m_UseMipMap: 0
   m_VSyncEnabled: 0
   m_Gizmos: 0
-  m_Stats: 0
+  m_Stats: 1
   m_SelectedSizes: 00000000000000000000000006000000000000000000000000000000000000000000000000000000
   m_ZoomArea:
     m_HRangeLocked: 0
@@ -87,7 +87,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 1
+    m_EnableMouseInput: 0
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -226,8 +226,8 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
+      m_SelectedIDs: 40b80000
+      m_LastClickedID: 47168
       m_ExpandedIDs: 102bfcff7632fcff7a32fcffa633fcffec89fdffe8cffdffc241feff9c8bfeff36fbffff6a7400007474000068af0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
@@ -540,7 +540,7 @@ MonoBehaviour:
   m_Position:
     m_Target: {x: 0.07185525, y: 0.50574625, z: 0.081126794}
     speed: 2
-    m_Value: {x: 0.07183176, y: 0.5057407, z: 0.08111882}
+    m_Value: {x: 0.07185525, y: 0.50574625, z: 0.081126794}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -593,7 +593,7 @@ MonoBehaviour:
   m_Size:
     m_Target: 0.8578685
     speed: 2
-    m_Value: 0.8578774
+    m_Value: 0.8578685
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -628,7 +628,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: ProjectBrowser
+  m_Name: ConsoleWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -637,15 +637,15 @@ MonoBehaviour:
     y: 340
     width: 938
     height: 239.33331
-  m_MinSize: {x: 231, y: 271}
-  m_MaxSize: {x: 10001, y: 10021}
-  m_ActualView: {fileID: 10}
+  m_MinSize: {x: 101, y: 121}
+  m_MaxSize: {x: 4001, y: 4021}
+  m_ActualView: {fileID: 11}
   m_Panes:
   - {fileID: 10}
   - {fileID: 11}
   - {fileID: 12}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -688,22 +688,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Files/Prefabs/Enviroment
+    - Assets/Files/Models/Player
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Files/Prefabs/Enviroment
+  - Assets/Files/Models/Player
   m_LastFoldersGridSize: -1
   m_LastProjectPath: E:\Game\Projects\JJ3D\JJ3D
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 213.66669}
-    m_SelectedIDs: 18ef0000
-    m_LastClickedID: 61208
-    m_ExpandedIDs: 000000000e690000126900001469000016690000186900001a6900001c6900001e6900002069000030690000466900000673000000ca9a3b
+    scrollPos: {x: 0, y: 229.66669}
+    m_SelectedIDs: 100d0100
+    m_LastClickedID: 68880
+    m_ExpandedIDs: 000000000e690000126900001469000016690000186900001a6900001c6900001e690000206900003069000044690000067300000a0d0100902b010000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -731,7 +731,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000000e69000010690000126900001469000016690000186900001a6900001c6900001e69000020690000
+    m_ExpandedIDs: 000000000e690000126900001469000016690000186900001a6900001c6900001e690000206900003069000044690000067300000a0d0100902b010000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -783,7 +783,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 64.33334}
+    m_ScrollPosition: {x: 0, y: 0}
     m_GridSize: 64
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 207
