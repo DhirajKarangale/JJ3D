@@ -21,7 +21,6 @@ public class Fruit : MonoBehaviour
             rigidBody.isKinematic = false;
             fruitGenerator.RemoveFruit(index);
         }
-        Destroy(GetComponent<Fruit>());
     }
 
     private void OnCollisionEnter(Collision collision)

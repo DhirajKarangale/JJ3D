@@ -4,8 +4,6 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     public ItemData itemData;
-    // [SerializeField] GameObject obj;
-    // [SerializeField] internal Rigidbody rigidBody;
     internal Vector3 startScale;
     private float duration = 0.3f;
 
@@ -26,11 +24,9 @@ public class Item : MonoBehaviour
             yield return null;
         }
         transform.localScale = endScale;
-        // obj.SetActive(false);
 
         yield return null;
         transform.localScale = startScale;
-        // rigidBody.isKinematic = true;
         gameObject.SetActive(false);
     }
 
@@ -38,18 +34,4 @@ public class Item : MonoBehaviour
     {
         StartCoroutine(AnimateItemPickup());
     }
-
-    // internal void ThrowItem(Vector3 pos)
-    // {
-    //     gameObject.SetActive(true);
-    //     // rigidBody.isKinematic = false;
-    //     transform.localScale = startScale;
-    //     transform.position = pos + new Vector3(0, 5, 0);
-    //     // rigidBody.velocity = Vector3.zero;
-    // }
-
-    // internal void DestoryItem()
-    // {
-    //     gameObject.SetActive(false);
-    // }
 }

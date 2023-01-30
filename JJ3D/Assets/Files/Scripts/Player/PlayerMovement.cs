@@ -232,9 +232,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        animator.SetFloat("vertical", GetInput().y);
-        animator.SetFloat("horrizontal", GetInput().x);
         animator.SetBool("isJump", isJumping);
+        if (!isJumping)
+        {
+            animator.SetFloat("vertical", GetInput().y);
+            animator.SetFloat("horrizontal", GetInput().x);
+        }
 
         if (Application.platform == RuntimePlatform.Android)
         {
@@ -363,13 +366,13 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit hitInfo;
         if (Physics.SphereCast(transform.position, capsuleCollider.radius * (1.0f - advanced.shellOffset) / 4, Vector3.down, out hitInfo, ((capsuleCollider.height / 2f) - capsuleCollider.radius) + advanced.groundCheckDistance, ~0, QueryTriggerInteraction.Ignore))
         {
-            if ((hitInfo.collider.gameObject.layer == 6) && !isGrounded)
+            if ((hitInfo.collider.gameObject.layer != 7) && !isGrounded)
             {
                 psFall.Play();
                 player.PlayAudio(clipFall);
                 CamController.instance.Shake(0.2f);
+                isGrounded = true;
             }
-            isGrounded = true;
             m_GroundContactNormal = hitInfo.normal;
         }
         else

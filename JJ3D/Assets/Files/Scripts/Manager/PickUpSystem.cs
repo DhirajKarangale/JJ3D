@@ -54,10 +54,10 @@ public class PickUpSystem : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        // Pick On Collide
-        // Item item = collision.gameObject.GetComponent<Item>();
-        // PickUp(item);
-    }
+    // private void OnCollisionEnter(Collision collision)
+    // {
+    //     // Pick On Collide
+    //     Item item = collision.gameObject.GetComponent<Item>();
+    //     PickUp(item, null);
+    // }
 }

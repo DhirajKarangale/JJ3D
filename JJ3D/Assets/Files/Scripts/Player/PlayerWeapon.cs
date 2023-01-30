@@ -25,12 +25,12 @@ public class PlayerWeapon : MonoBehaviour
             Vector3 dir = collision.transform.position - this.transform.position;
             dir = dir.normalized;
             if (rigidBody.useGravity) rigidBody.AddForce(dir * impactForce, ForceMode.Impulse);
-            if (iceSward) iceSward.Freez(rigidBody);
         }
 
         NPCHealth npcHealth = collision.gameObject.GetComponent<NPCHealth>();
         if (npcHealth)
         {
+            if (iceSward) iceSward.Freez(rigidBody);
             if (npcHealth.health <= 0 && iceSward) iceSward.DeFreez();
             if(!npcHealth.isDestroyBody) gameManager.effects.EnemyBloodEffect(collision.GetContact(0).point);
             else gameManager.effects.RockEnemyEffect(collision.GetContact(0).point);

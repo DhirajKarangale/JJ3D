@@ -30,6 +30,7 @@ public class IceSward : MonoBehaviour
             if (enemyMovement) enemyMovement.enabled = false;
 
             animator = rigidBody.GetComponent<Animator>();
+            if(animator == null) animator = rigidBody.GetComponentInChildren<Animator>();
             if (animator) animator.enabled = false;
 
             currFreezEffect = Instantiate(freezEffect, rigidBody.transform.position, Quaternion.identity);
@@ -60,6 +61,8 @@ public class IceSward : MonoBehaviour
             if (animalMovement) animalMovement.enabled = true;
             if (enemyMovement) enemyMovement.enabled = true;
             if (animator) animator.enabled = true;
+
+            Destroy(currFreezEffect);
         }
     }
 }
