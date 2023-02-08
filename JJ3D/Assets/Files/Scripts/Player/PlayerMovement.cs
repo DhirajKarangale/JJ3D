@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
                 yRot = lookInput.x * sensitivity;
 
             }
-            else if (Application.platform == RuntimePlatform.WindowsEditor)
+            else //if (Application.platform == RuntimePlatform.WindowsEditor)
             {
                 yRot = Input.GetAxis("Mouse X") * sensitivity;
                 xRot = Input.GetAxis("Mouse Y") * sensitivity;
@@ -97,8 +97,8 @@ public class PlayerMovement : MonoBehaviour
                 camParent.localRotation = playerTargetRot;
             }
 
-            camera.LookAt(camParent);
-            UpdateCursorLock();
+            // camera.LookAt(camParent);
+            // UpdateCursorLock();
         }
 
         public void SetCursorLock(bool value)
@@ -245,7 +245,7 @@ public class PlayerMovement : MonoBehaviour
             if (rightFingerId != -1) RotateView();
 
         }
-        else if (Application.platform == RuntimePlatform.WindowsEditor)
+        else //if (Application.platform == RuntimePlatform.WindowsEditor)
         {
             if (Input.GetKeyDown(KeyCode.P)) PerspectiveButton(); // Move on a Button
             if (Input.GetButtonDown("Jump") && !isJump) isJump = true; // Move on a Button
@@ -350,7 +350,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            look.LookAround(cam.transform);
+            look.LookRotation(transform, cam.transform, lookInput);
+            // look.LookAround(cam.transform);
         }
 
         if (isGrounded || advanced.airControl)
