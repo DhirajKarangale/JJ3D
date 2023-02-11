@@ -266,22 +266,23 @@ public class ForestGenerator : MonoBehaviour
 
             itemPos.y += 4; // animals should spwan above ground at +5 height
 
-            // Farm Animals
-            if (Random.value > 0.9999)
-            {
-                forestItem = farmAnimals[Random.Range(0, farmAnimals.Length)];
-                if (forestItem.currCount < forestItem.itemCount)
-                {
-                    animalMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<AnimalMovement>();
-                    animalMovement.StartPos(vertices, itemParent);
-                    animalMovement.transform.SetParent(itemParent.transform);
-                    forestItem.currCount++;
-                    // AddCulling(animalMovement.gameObject);
-                }
-            }
+            // // Farm Animals
+            // if (Random.value > 0.9999)
+            // {
+            //     forestItem = farmAnimals[Random.Range(0, farmAnimals.Length)];
+            //     if (forestItem.currCount < forestItem.itemCount)
+            //     {
+            //         animalMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<AnimalMovement>();
+            //         animalMovement.StartPos(vertices, itemParent);
+            //         animalMovement.transform.SetParent(itemParent.transform);
+            //         forestItem.currCount++;
+            //         // AddCulling(animalMovement.gameObject);
+            //     }
+            // }
 
             // Dinasours
-            if (Random.value > 0.99997f)
+            // if (Random.value > 0.99997f)
+            if (Random.value > 0.99f)
             {
                 forestItem = dinasours[Random.Range(0, dinasours.Length)];
                 if (forestItem.currCount < forestItem.itemCount)
@@ -294,33 +295,33 @@ public class ForestGenerator : MonoBehaviour
                 }
             }
 
-            // Small Enemis
-            if (Random.value > 0.99991f)
-            {
-                forestItem = smallEnemies[Random.Range(0, smallEnemies.Length)];
-                if (forestItem.currCount < forestItem.itemCount)
-                {
-                    enemyMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<EnemyMovement>();
-                    enemyMovement.StartPos(vertices, itemParent);
-                    enemyMovement.transform.SetParent(itemParent.transform);
-                    forestItem.currCount++;
-                    // AddCulling(enemyMovement.gameObject);
-                }
-            }
+            // // Small Enemis
+            // if (Random.value > 0.99991f)
+            // {
+            //     forestItem = smallEnemies[Random.Range(0, smallEnemies.Length)];
+            //     if (forestItem.currCount < forestItem.itemCount)
+            //     {
+            //         enemyMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<EnemyMovement>();
+            //         enemyMovement.StartPos(vertices, itemParent);
+            //         enemyMovement.transform.SetParent(itemParent.transform);
+            //         forestItem.currCount++;
+            //         // AddCulling(enemyMovement.gameObject);
+            //     }
+            // }
 
-            // Mid Enemis
-            if (Random.value > 0.99992f)
-            {
-                forestItem = midEnemies[Random.Range(0, midEnemies.Length)];
-                if (forestItem.currCount < forestItem.itemCount)
-                {
-                    enemyMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<EnemyMovement>();
-                    enemyMovement.StartPos(vertices, itemParent);
-                    enemyMovement.transform.SetParent(itemParent.transform);
-                    forestItem.currCount++;
-                    // AddCulling(enemyMovement.gameObject);
-                }
-            }
+            // // Mid Enemis
+            // if (Random.value > 0.99992f)
+            // {
+            //     forestItem = midEnemies[Random.Range(0, midEnemies.Length)];
+            //     if (forestItem.currCount < forestItem.itemCount)
+            //     {
+            //         enemyMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<EnemyMovement>();
+            //         enemyMovement.StartPos(vertices, itemParent);
+            //         enemyMovement.transform.SetParent(itemParent.transform);
+            //         forestItem.currCount++;
+            //         // AddCulling(enemyMovement.gameObject);
+            //     }
+            // }
 
             // Chest
             if (Random.value > 0.9995f)

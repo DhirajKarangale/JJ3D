@@ -6,9 +6,12 @@ public class Projectile : MonoBehaviour
     [SerializeField] bool isCollisionDestroy;
     [SerializeField] DestroyEffect destroyEffect;
 
+    private int collided;
+
     private void Start()
     {
-        Invoke("DestroyProjectile", 3);
+        collided = 0;
+        Invoke("DesableObj", 5);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -20,7 +23,7 @@ public class Projectile : MonoBehaviour
             {
                 if (npcHealth.isDestroyBody)
                 {
-                    DestroyProjectile();
+                    DestroyProjectile(collision.gameObject);
                     // Debug.Log("Destroy NPC");
                 }
                 else
@@ -31,7 +34,7 @@ public class Projectile : MonoBehaviour
             }
             else
             {
-                DestroyProjectile();
+                DestroyProjectile(collision.gameObject);
             }
         }
         else
@@ -40,16 +43,28 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private void DestroyProjectile()
+    private void DestroyProjectile(GameObject collision)
     {
         if (destroyEffect == DestroyEffect.Object)
         {
+            if (collision.layer == 6 && collided < 2)
+            {
+                collided++;
+                return;
+            }
             GameManager.instance.effects.DestroyEffect(transform.position);
+            this.gameObject.SetActive(false);
+            collided = 0;
         }
         else
         {
             GameManager.instance.effects.FireballDestroyEffect(transform.position);
+            this.gameObject.SetActive(false);
         }
+    }
+
+    private void DesableObj()
+    {
         this.gameObject.SetActive(false);
     }
 }

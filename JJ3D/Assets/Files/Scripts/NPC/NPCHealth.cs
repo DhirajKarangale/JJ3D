@@ -4,7 +4,7 @@ public class NPCHealth : MonoBehaviour
 {
     public bool isDestroyBody;
     [SerializeField] float mxHealth;
-    [SerializeField] NPC npc;
+    [SerializeField] internal NPC npc;
     [SerializeField] HealthBar healthBar;
     [SerializeField] string itemTag;
     [SerializeField] int itemCount;
@@ -17,6 +17,8 @@ public class NPCHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (npc.isDye) return;
+
         health -= damage;
         healthBar.SetBar(health / mxHealth);
         if (health <= 0) Dye();
@@ -26,7 +28,6 @@ public class NPCHealth : MonoBehaviour
     private void Dye()
     {
         CamController.instance.Shake(0.9f);
-        if (IsInvoking("DestroyBody")) return;
         npc.Dye();
         Invoke("DestroyBody", 5);
     }
@@ -44,7 +45,7 @@ public class NPCHealth : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             Vector3 spwanPos = transform.position + new Vector3(Random.Range(-3f, 3f), Random.Range(0.5f, 3f), Random.Range(-3f, 3f));
-            objectPooler.SpwanObject(itemTag,spwanPos);
+            objectPooler.SpwanObject(itemTag, spwanPos);
         }
         Destroy(this.gameObject);
     }

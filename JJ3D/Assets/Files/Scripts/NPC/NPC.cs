@@ -6,6 +6,7 @@ public class NPC : MonoBehaviour
     [Header("Refrences")]
     [SerializeField] protected Animator animator;
     [SerializeField] protected Rigidbody rigidBody;
+    [SerializeField] protected GameObject[] orgColliders;
 
     [Header("Attributes")]
     [SerializeField] protected float moveSpeed;
@@ -19,7 +20,7 @@ public class NPC : MonoBehaviour
     protected bool isWalk;
     protected bool isRun;
     protected bool isAttack;
-    protected bool isDye;
+    public bool isDye;
 
     protected virtual void Start()
     {
@@ -102,6 +103,11 @@ public class NPC : MonoBehaviour
         DyeState();
         rigidBody.useGravity = true;
         rigidBody.mass = 100000;
+
+        foreach (GameObject orgCollider in orgColliders)
+        {
+            orgCollider.SetActive(false);
+        }
     }
 
     protected virtual void ChangePos()

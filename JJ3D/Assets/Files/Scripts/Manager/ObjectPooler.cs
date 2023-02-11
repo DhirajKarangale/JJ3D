@@ -31,7 +31,8 @@ public class ObjectPooler : Singleton<ObjectPooler>
     public Rigidbody SpwanObject(string tag, Vector3 pos)
     {
         obj = poolDictonary[tag].Dequeue();
-        obj.transform.position = pos;
+        // obj.transform.position = pos;
+        obj.transform.localPosition = pos;
         obj.velocity = Vector3.zero;
         obj.transform.rotation = Quaternion.identity;
         obj.gameObject.SetActive(true);

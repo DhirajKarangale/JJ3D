@@ -72,6 +72,7 @@ public class EnemyMovement : NPC
 
     private void Attack()
     {
+        if (isDye) return;
         StopAllCoroutines();
         AttackState();
     }
