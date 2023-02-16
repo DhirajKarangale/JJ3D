@@ -13,10 +13,10 @@ public class Collectables : MonoBehaviour
             switch (collectableType)
             {
                 case CollectableType.Coin:
-                    CollectableData.instance.UpdateCoin(5, transform.position);
+                    CollectableData.instance.UpdateCoin(5, collision.GetContact(0).point);
                     break;
                 case CollectableType.Key:
-                    CollectableData.instance.UpdateKey(1, transform.position);
+                    CollectableData.instance.UpdateKey(1, collision.GetContact(0).point);
                     break;
             }
             this.gameObject.SetActive(false);

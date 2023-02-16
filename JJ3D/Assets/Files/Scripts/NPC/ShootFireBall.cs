@@ -22,7 +22,7 @@ public class ShootFireBall : MonoBehaviour
         // currFireBall = Instantiate(fireBall, attackPoint.position, attackPoint.rotation);
         currFireBall = objectPooler.SpwanObject("Fireball",attackPoint.position);
         currFireBall.rotation = attackPoint.rotation;
-        dir = player.position - attackPoint.position + new Vector3(0, 2, 0);
+        dir = player.position - attackPoint.position;
         dir = dir.normalized;
         currFireBall.GetComponent<Rigidbody>().AddForce(dir * force, ForceMode.Impulse);
     }

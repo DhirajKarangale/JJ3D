@@ -39,7 +39,7 @@ public class ForestGenerator : MonoBehaviour
     private AnimalMovement animalMovement;
     private EnemyMovement enemyMovement;
 
-  
+
     private void ResetItemCount()
     {
         ResetCount(rocks);
@@ -68,7 +68,7 @@ public class ForestGenerator : MonoBehaviour
         }
     }
 
-   
+
     public void Generate(Vector3[] vertices, Transform itemParent)
     {
         ResetItemCount();
@@ -266,7 +266,7 @@ public class ForestGenerator : MonoBehaviour
 
             itemPos.y += 4; // animals should spwan above ground at +5 height
 
-            // // Farm Animals
+            // Farm Animals
             // if (Random.value > 0.9999)
             // {
             //     forestItem = farmAnimals[Random.Range(0, farmAnimals.Length)];
@@ -295,7 +295,7 @@ public class ForestGenerator : MonoBehaviour
                 }
             }
 
-            // // Small Enemis
+            // Small Enemis
             // if (Random.value > 0.99991f)
             // {
             //     forestItem = smallEnemies[Random.Range(0, smallEnemies.Length)];

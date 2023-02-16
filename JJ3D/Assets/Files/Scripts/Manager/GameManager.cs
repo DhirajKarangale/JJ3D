@@ -31,9 +31,9 @@ public class GameManager : Singleton<GameManager>
 
     private void InitializeWeapon()
     {
-        ObjectPooler.instance.SpwanObject("BowThree", playerPos.position + new Vector3(0, 11, 0));
-        ObjectPooler.instance.SpwanObject("BowFire", playerPos.position + new Vector3(0, 11, 0));
-        // ObjectPooler.instance.SpwanObject("BowNormal", playerPos.position + new Vector3(0, 11, 0));
+        ObjectPooler.instance.SpwanObject("BowNormal", playerPos.position + new Vector3(0, 11, 0));
+        // ObjectPooler.instance.SpwanObject("BowThree", playerPos.position + new Vector3(0, 11, 0));
+        // ObjectPooler.instance.SpwanObject("BowFire", playerPos.position + new Vector3(0, 11, 0));
         
         // ObjectPooler.instance.SpwanObject("SwardNormal", playerPos.position + new Vector3(0, 11, 0));
         // ObjectPooler.instance.SpwanObject("SwardIce", playerPos.position + new Vector3(0, 11, 0));

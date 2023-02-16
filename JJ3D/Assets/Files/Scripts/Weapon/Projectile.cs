@@ -5,14 +5,26 @@ public class Projectile : MonoBehaviour
     private enum DestroyEffect { Fireball, Object };
     [SerializeField] bool isCollisionDestroy;
     [SerializeField] DestroyEffect destroyEffect;
+    private GameManager gameManager;
+    [SerializeField] float speed;
 
     private int collided;
 
     private void Start()
     {
+        gameManager = GameManager.instance;
         collided = 0;
         Invoke("DesableObj", 5);
     }
+
+    private void Update()
+    {
+        if (destroyEffect == DestroyEffect.Fireball && collided > 0)
+        {
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, gameManager.playerPos.position, Time.deltaTime * speed);
+        }
+    }
+
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -58,8 +70,14 @@ public class Projectile : MonoBehaviour
         }
         else
         {
+            if (collision.layer == 6 && collided < 1)
+            {
+                collided++;
+                return;
+            }
             GameManager.instance.effects.FireballDestroyEffect(transform.position);
             this.gameObject.SetActive(false);
+            collided = 0;
         }
     }
 

@@ -6,7 +6,7 @@ public class NPC : MonoBehaviour
     [Header("Refrences")]
     [SerializeField] protected Animator animator;
     [SerializeField] protected Rigidbody rigidBody;
-    [SerializeField] protected GameObject[] orgColliders;
+    [SerializeField] protected Collider[] colliders;
 
     [Header("Attributes")]
     [SerializeField] protected float moveSpeed;
@@ -104,9 +104,9 @@ public class NPC : MonoBehaviour
         rigidBody.useGravity = true;
         rigidBody.mass = 100000;
 
-        foreach (GameObject orgCollider in orgColliders)
+        foreach (Collider item in colliders)
         {
-            orgCollider.SetActive(false);
+            item.enabled = false;
         }
     }
 
