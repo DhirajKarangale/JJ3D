@@ -171,33 +171,27 @@ public class PlayerAttack : MonoBehaviour
 
         if (equipementManager.objBowFire.activeInHierarchy)
         {
-            // currArrow = Instantiate(fireArrowPrefab, firePos.position, Quaternion.identity);
             currArrow = objectPooler.SpwanObject("FireArrow", firePos.position);
-            // currArrow.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.transform.localRotation = Quaternion.LookRotation(firePos.forward);
             currArrow.AddForce(shootDir * force, ForceMode.Impulse);
             currArrow.GetComponent<FireArrow>().damage = equipementManager.slotWeapon.itemData.modifier;
         }
         else
         {
-            // GameObject currArrow = Instantiate(arrowPrefab, firePos.position, Quaternion.identity);
             currArrow = objectPooler.SpwanObject("Arrow", firePos.position);
-            currArrow.transform.localRotation = Quaternion.LookRotation(firePos.forward);
+            currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.AddForce(shootDir * force, ForceMode.Impulse);
             currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.itemData.modifier;
         }
 
         if (equipementManager.objBowThree.activeInHierarchy)
         {
-            // GameObject currArrow = Instantiate(arrowPrefab, firePos1.position, Quaternion.identity);
             currArrow = objectPooler.SpwanObject("Arrow", firePos1.position);
-            // currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.transform.localRotation = Quaternion.LookRotation(firePos.forward);
             currArrow.AddForce(shootDir * force, ForceMode.Impulse);
             currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.itemData.modifier;
 
             currArrow = objectPooler.SpwanObject("Arrow", firePos2.position);
-            // currArrow.transform.rotation = Quaternion.LookRotation(firePos.forward);
             currArrow.transform.localRotation = Quaternion.LookRotation(firePos.forward);
             currArrow.AddForce(shootDir * force, ForceMode.Impulse);
             currArrow.GetComponent<PlayerWeapon>().damage = equipementManager.slotWeapon.itemData.modifier;

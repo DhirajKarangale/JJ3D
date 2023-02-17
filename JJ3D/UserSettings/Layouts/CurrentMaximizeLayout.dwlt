@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: -1
+  controlID: 18790
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -87,7 +87,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 0
+    m_EnableMouseInput: 1
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -142,7 +142,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: -1
+  controlID: 18791
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: -1
+  controlID: 18792
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -187,8 +187,8 @@ MonoBehaviour:
     y: 0
     width: 325.33334
     height: 348.66666
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 6}
   m_Panes:
   - {fileID: 6}
@@ -228,7 +228,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 6ca2f7ff70a2f7ff96a2f7ffb0a2f7ffbca2f7ffc4a2f7ffd6a2f7ff2406feff666ffeff36fbffff
+      m_ExpandedIDs: 5a33f0ff4230f3ff4c32f3ff34fbffffb047000048130100
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -335,7 +335,7 @@ MonoBehaviour:
       floating: 0
       collapsed: 0
       displayed: 1
-      snapOffset: {x: 0, y: 0}
+      snapOffset: {x: 0, y: 24.666666}
       snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
       id: unity-scene-view-toolbar
@@ -538,9 +538,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 1.7412615, y: 2.9195688, z: 2.8707554}
+    m_Target: {x: 0.051056266, y: 15.014227, z: 0.06908095}
     speed: 2
-    m_Value: {x: 1.7412615, y: 2.9195688, z: 2.8707554}
+    m_Value: {x: 0.05105481, y: 15.014228, z: 0.069080405}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -587,13 +587,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.0521309, y: -0.42016968, z: -0.024186498, w: 0.90562546}
+    m_Target: {x: 0.042659357, y: -0.83868474, z: -0.06639473, w: -0.5388762}
     speed: 2
-    m_Value: {x: -0.052130833, y: -0.42016914, z: -0.024186466, w: 0.9056243}
+    m_Value: {x: -0.042659357, y: 0.83868474, z: 0.06639473, w: 0.5388762}
   m_Size:
-    m_Target: 5.7192917
+    m_Target: 2.9700773
     speed: 2
-    m_Value: 5.7192917
+    m_Value: 2.970077
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -611,7 +611,7 @@ MonoBehaviour:
     m_FarClip: 10000
     m_DynamicClip: 1
     m_OcclusionCulling: 0
-  m_LastSceneViewRotation: {x: -0.22518076, y: 0.49288815, z: -0.1337592, w: -0.829751}
+  m_LastSceneViewRotation: {x: 0.025407024, y: -0.5725105, z: 0.01775333, w: 0.81931436}
   m_LastSceneViewOrtho: 0
   m_ReplacementShader: {fileID: 0}
   m_ReplacementString: 
@@ -687,22 +687,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Files/Prefabs/Enemy/Mid
+    - Assets
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Files/Prefabs/Enemy/Mid
+  - Assets
   m_LastFoldersGridSize: -1
   m_LastProjectPath: E:\Game\Projects\JJ3D\JJ3D
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 230.33334}
-    m_SelectedIDs: deb20000
-    m_LastClickedID: 45790
-    m_ExpandedIDs: 00000000ac650000ae650000b0650000b2650000b4650000b6650000b8650000ba650000bc650000be650000c0650000c2650000c4650000c6650000c8650000ca650000cc650000ce650000d0650000d2650000d4650000d6650000d8650000f26500000066000000ca9a3b
+    scrollPos: {x: 0, y: 79}
+    m_SelectedIDs: ac650000
+    m_LastClickedID: 26028
+    m_ExpandedIDs: 00000000ac650000ae650000b0650000b2650000b4650000b6650000b8650000ba650000bc650000be650000c0650000c2650000c4650000c6650000c8650000ca650000cc650000ce650000d0650000d2650000d4650000d6650000d865000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -730,7 +730,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000ac650000ae650000b0650000b2650000b4650000b6650000b8650000ba650000bc650000be650000c0650000c2650000c4650000c6650000c8650000ca650000cc650000ce650000d0650000d2650000d4650000d6650000d86500000066000000ca9a3b
+    m_ExpandedIDs: 00000000ac650000ae650000b0650000b2650000b4650000b6650000b8650000ba650000bc650000be650000c0650000c2650000c4650000c6650000c8650000ca650000cc650000ce650000d0650000d2650000d4650000d6650000d865000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

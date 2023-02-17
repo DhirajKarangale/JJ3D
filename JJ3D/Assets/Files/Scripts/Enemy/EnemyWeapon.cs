@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EnemyWeapon : MonoBehaviour
 {
+    [SerializeField] bool isProjectile;
+    [SerializeField] bool isFireball;
     [SerializeField] float throwForce = 200;
     [SerializeField] float damage;
     private GameManager gameManager;
@@ -9,6 +11,12 @@ public class EnemyWeapon : MonoBehaviour
     private void Start()
     {
         gameManager = GameManager.instance;
+    }
+
+    private void OnEnable()
+    {
+        CancelInvoke();
+        if (isProjectile) Invoke(nameof(Disable), 4);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -23,5 +31,16 @@ public class EnemyWeapon : MonoBehaviour
             gameManager.effects.PlayerBloodEffect(collision.GetContact(0).point);
             player.playerHealth.TakeDamage(damage);
         }
+        if (isProjectile)
+        {
+            if (isFireball) gameManager.effects.FireballDestroyEffect(collision.GetContact(0).point);
+            else gameManager.effects.DestroyEffect(collision.GetContact(0).point);
+            this.gameObject.SetActive(false);
+        }
+    }
+
+    private void Disable()
+    {
+        this.gameObject.SetActive(false);
     }
 }

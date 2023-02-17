@@ -2,14 +2,17 @@ using UnityEngine;
 
 public class PlayerWeapon : MonoBehaviour
 {
+    [SerializeField] bool isProjectile;
     [SerializeField] float impactForce;
     [SerializeField] IceSward iceSward;
     [HideInInspector] internal float damage;
     private GameManager gameManager;
     private ItemData itemWeapon;
+    private int collided;
 
     private void Start()
     {
+        collided = 0;
         gameManager = GameManager.instance;
         itemWeapon = gameManager.equipementManager.slotWeapon.itemData;
     }
@@ -27,17 +30,37 @@ public class PlayerWeapon : MonoBehaviour
             if (rigidBody.useGravity) rigidBody.AddForce(dir * impactForce, ForceMode.Impulse);
         }
 
-        NPCHealth npcHealth = collision.gameObject.GetComponent<NPCHealth>();
-        if (npcHealth)
+
+        if (collision.gameObject.layer == 8)
         {
-            if (iceSward) iceSward.Freez(rigidBody);
-            if (npcHealth.health <= 0 && iceSward) iceSward.DeFreez();
-            if (!npcHealth.npc.isDye)
+            if (collision.gameObject.CompareTag("DestFX"))
             {
-                if (!npcHealth.isDestroyBody) gameManager.effects.EnemyBloodEffect(collision.GetContact(0).point);
-                else gameManager.effects.RockEnemyEffect(collision.GetContact(0).point);
+                gameManager.effects.RockEnemyEffect(collision.GetContact(0).point);
             }
-            npcHealth.TakeDamage(damage);
+            else
+            {
+                gameManager.effects.EnemyBloodEffect(collision.GetContact(0).point);
+            }
+
+            NPCHealth npcHealth = collision.gameObject.GetComponent<NPCHealth>();
+            if (npcHealth)
+            {
+                if (iceSward) iceSward.Freez(rigidBody);
+                if (npcHealth.health <= 0 && iceSward) iceSward.DeFreez();
+                npcHealth.TakeDamage(damage);
+                if (isProjectile) this.gameObject.SetActive(false);
+            }
+        }
+        else if (isProjectile)
+        {
+            if (collision.gameObject.layer == 6 && collided < 2)
+            {
+                collided++;
+                return;
+            }
+            gameManager.effects.DestroyEffect(transform.localPosition);
+            collided = 0;
+            this.gameObject.SetActive(false);
         }
     }
 }

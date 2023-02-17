@@ -19,7 +19,6 @@ public class ShootFireBall : MonoBehaviour
 
     public void Shoot()
     {
-        // currFireBall = Instantiate(fireBall, attackPoint.position, attackPoint.rotation);
         currFireBall = objectPooler.SpwanObject("Fireball",attackPoint.position);
         currFireBall.rotation = attackPoint.rotation;
         dir = player.position - attackPoint.position;
