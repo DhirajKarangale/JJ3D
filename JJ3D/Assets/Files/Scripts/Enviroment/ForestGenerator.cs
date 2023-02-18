@@ -207,18 +207,17 @@ public class ForestGenerator : MonoBehaviour
 
             // Dinasours
             // if (Random.value > 0.99997f)
-            if (Random.value > 0.99f)
-            {
-                forestItem = dinasours[Random.Range(0, dinasours.Length)];
-                if (forestItem.currCount < forestItem.itemCount)
-                {
-                    enemyMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<EnemyMovement>();
-                    enemyMovement.StartPos(vertices, itemParent);
-                    enemyMovement.transform.SetParent(itemParent.transform);
-                    forestItem.currCount++;
-                    // AddCulling(enemyMovement.gameObject);
-                }
-            }
+            // {
+            //     forestItem = dinasours[Random.Range(0, dinasours.Length)];
+            //     if (forestItem.currCount < forestItem.itemCount)
+            //     {
+            //         enemyMovement = Instantiate(forestItem.item, itemPos, Quaternion.identity).GetComponent<EnemyMovement>();
+            //         enemyMovement.StartPos(vertices, itemParent);
+            //         enemyMovement.transform.SetParent(itemParent.transform);
+            //         forestItem.currCount++;
+            //         // AddCulling(enemyMovement.gameObject);
+            //     }
+            // }
 
             // Small Enemis
             // if (Random.value > 0.99991f)

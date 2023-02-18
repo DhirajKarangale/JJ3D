@@ -38,9 +38,19 @@ public class EnemyMovement : NPC
         {
             if (TimeController.isDay)
             {
+                if (AnimatorIsPlaying("Attack"))
+                {
+                    Debug.Log(name + " is Attcking");
+                }
                 if (!isAttack && playerDist < attackDist) Attack();
-                else if (isAttack && playerDist > (attackDist + 1.7f) && playerDist < followDist) FollowPlayer();
-                // else if (isAttack && playerDist > (attackDist) && playerDist < followDist) FollowPlayer();
+                // else if (isAttack && playerDist > (attackDist + 1.7f) && playerDist < followDist) FollowPlayer();
+                else if (isAttack && !AnimatorIsPlaying() && playerDist > (attackDist) && playerDist < followDist)
+                {
+                    Debug.Log("Invoking Follow");
+                    CancelInvoke();
+                    Invoke(nameof(FollowPlayer), 0.1f);
+                    // FollowPlayer();
+                }
                 else if (!isAttack && ((playerDist < followDist) || isHurt)) FollowPlayer();
                 else if (!isAttack && playerDist > followDist && !isWalk && !isIdle) StartCoroutine(IEWalkIdle());
             }
@@ -51,6 +61,17 @@ public class EnemyMovement : NPC
             }
         }
         base.Update();
+    }
+
+    bool AnimatorIsPlaying()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).length >
+               animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+    }
+
+    bool AnimatorIsPlaying(string stateName)
+    {
+        return AnimatorIsPlaying() && animator.GetCurrentAnimatorStateInfo(0).IsName(stateName);
     }
 
     protected override void Move(float speed)

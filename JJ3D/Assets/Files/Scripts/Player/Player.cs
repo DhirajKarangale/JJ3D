@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField] internal PlayerMovement playerMovement;
     [SerializeField] internal PlayerAttack playerAttack;
     [SerializeField] internal PlayerHealth playerHealth;
-    private EquipmentManager equipmentManager;
+    internal EquipmentManager equipmentManager;
 
     internal event Action OnDetailsChanged;
 

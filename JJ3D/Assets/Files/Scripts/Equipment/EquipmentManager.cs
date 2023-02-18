@@ -96,17 +96,9 @@ public class EquipmentManager : MonoBehaviour
         yield return new WaitForSeconds(3);
         if (gameManager.isGameOver) yield break;
 
-        audioSourcePlayer.volume = 1;
-        audioSourcePlayer.Stop();
-        objMeat.SetActive(false);
-        objApple.SetActive(false);
-        objMango.SetActive(false);
-        psEat.Stop();
         player.playerHealth.IncreaseHealth(modifier);
 
-        player.animator.SetBool("isEating", false);
-
-        if (slotWeapon.itemData) ActiveWeapon(slotWeapon.itemData.name);
+        StopEating();
     }
 
 
@@ -170,6 +162,20 @@ public class EquipmentManager : MonoBehaviour
     }
 
 
+
+    internal void StopEating()
+    {
+        audioSourcePlayer.volume = 1;
+        audioSourcePlayer.Stop();
+        objMeat.SetActive(false);
+        objApple.SetActive(false);
+        objMango.SetActive(false);
+        psEat.Stop();
+
+        player.animator.SetBool("isEating", false);
+
+        if (slotWeapon.itemData) ActiveWeapon(slotWeapon.itemData.name);
+    }
 
     internal void DesableWeapon()
     {

@@ -68,6 +68,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void PlayerDye()
     {
+        player.equipmentManager.StopEating();
         player.animator.Play("Dye");
         player.rigidBody.mass = 2000;
         GameManager.instance.GameOver();
