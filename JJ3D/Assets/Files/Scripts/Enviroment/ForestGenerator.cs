@@ -265,8 +265,8 @@ public class ForestGenerator : MonoBehaviour
             if (testObj && testCount < 1)
             {
                 Vector3 testPos = new Vector3(0, 10, 0);
-                EnemyMovement currTestObj = Instantiate(testObj, testPos, Quaternion.identity).GetComponent<EnemyMovement>();
-                currTestObj.StartPos(vertices, itemParent);
+                NPC_New currTestObj = Instantiate(testObj, testPos, Quaternion.identity).GetComponent<NPC_New>();
+                // currTestObj.StartPos(vertices, itemParent);
                 testCount++;
                 // AddCulling(currTestObj.gameObject);
             }

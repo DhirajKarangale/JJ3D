@@ -26,7 +26,7 @@ public class HealthBar : MonoBehaviour
             obj.SetActive(true);
             bar.localScale = new Vector3(health, 1, 1);
             CancelInvoke();
-            Invoke("DesableHealthBar", 20);
+            Invoke(nameof(DesableHealthBar), 20);
         }
         else
         {
